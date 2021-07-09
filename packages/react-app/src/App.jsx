@@ -427,6 +427,16 @@ function App(props) {
               Transfers
             </Link>
           </Menu.Item>
+          <Menu.Item key="/avatar">
+            <Link
+              onClick={() => {
+                setRoute("/avatar");
+              }}
+              to="/avatar"
+            >
+              Avatar
+            </Link>
+          </Menu.Item>          
           <Menu.Item key="/ipfsup">
             <Link
               onClick={() => {
@@ -538,6 +548,49 @@ function App(props) {
               />
             </div>
           </Route>
+
+          <Route path="/avatar">
+          <div style={{ paddingTop: 32, width: 740, margin: "auto", textAlign: "left" }}>
+              <ReactJson
+                style={{ padding: 8 }}
+                src={yourJSON}
+                theme="pop"
+                enableClipboard={false}
+                onEdit={(edit, a) => {
+                  setYourJSON(edit.updated_src);
+                }}
+                onAdd={(add, a) => {
+                  setYourJSON(add.updated_src);
+                }}
+                onDelete={(del, a) => {
+                  setYourJSON(del.updated_src);
+                }}
+              />
+            </div>
+
+            <Button
+              style={{ margin: 8 }}
+              loading={sending}
+              size="large"
+              shape="round"
+              type="primary"
+              onClick={async () => {
+                console.log("UPLOADING...", yourJSON);
+                setSending(true);
+                setIpfsHash();
+                const result = await ipfs.add(JSON.stringify(yourJSON)); // addToIPFS(JSON.stringify(yourJSON))
+                if (result && result.path) {
+                  setIpfsHash(result.path);
+                }
+                setSending(false);
+                console.log("RESULT:", result);
+              }}
+            >
+              Upload to IPFS
+            </Button>
+
+            <div style={{ padding: 16, paddingBottom: 150 }}>{ipfsHash}</div>
+          </Route>          
 
           <Route path="/ipfsup">
             <div style={{ paddingTop: 32, width: 740, margin: "auto", textAlign: "left" }}>
