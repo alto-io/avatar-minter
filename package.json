@@ -51,7 +51,7 @@
     "mint": "yarn workspace @scaffold-eth/hardhat mint",
     "theme": "yarn workspace @scaffold-eth/react-app theme",
     "watch-theme": "yarn workspace @scaffold-eth/react-app watch",
-    "run-avatar": "yarn workspace @scaffold-eth/avatar start"
+    "run-avatar-api": "yarn workspace @scaffold-eth/avatar start"
   },
   "workspaces": {
     "packages": [
