@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 
 /*
   ~ What it does? ~
@@ -16,6 +16,9 @@ import { useEffect, useState } from "react";
 
 */
 
+export const canvasWidth = 400;
+export const canvasHeight = 400;
+
 const useAvatar = (props) => {
 
     // load jsora and lodash
@@ -25,35 +28,52 @@ const useAvatar = (props) => {
     var rend;
     var randomConfig = { "Root": {} };
 
+    const canvasRef = useRef(null);
     const [config, setConfig] = useState(null);
-    const [canvas, setCanvas] = useState(null);
 
     useEffect(() => {
-        const getAvatar = async () => {
 
-            randomConfig = { "Root": {} };
-
-            let loaded_file = await fetch(`avatars/AvatarImages.ora`).then(r => r.blob());
-            await project.load(loaded_file);
-
-            rend = new jsora.Renderer(project);
-
-            // first time to retrieve from project 
-            await getAvatarConfiguration(project);
-
-            await randomizeHiddenParts();
-
-            // second time to retrieve new random parts
-            await getAvatarConfiguration(project);
-
-
-            setConfig(randomConfig);
-            setCanvas(await renderAvatar());
-            
-        };
         getAvatar();
     }, [props]);
 
+    const getAvatar = async () => {
+            
+
+        randomConfig = { "Root": {} };
+
+        let loaded_file = await fetch(`avatars/AvatarImages.ora`).then(r => r.blob());
+        await project.load(loaded_file);
+
+        rend = new jsora.Renderer(project);
+
+        // first time to retrieve default config from project 
+        await getAvatarConfiguration(project);
+
+        await randomizeHiddenParts();
+
+        // second time to retrieve new random parts
+        await getAvatarConfiguration(project);
+
+
+        setConfig(randomConfig);
+
+        await drawAvatar();
+        
+    };
+
+    async function drawAvatar() {
+        const canvasObj = canvasRef.current;
+        const ctx = canvasObj.getContext('2d');
+        var newCanvas = await renderAvatar();
+        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+        ctx.drawImage(newCanvas, 0, 0);
+
+    }
+
+    async function setNewAvatar() {
+
+        getAvatar();
+    }
 
     async function randomizeHiddenParts() {
 
@@ -146,7 +166,7 @@ const useAvatar = (props) => {
 
     }
 
-    return [canvas, config]
+    return [config, canvasRef, canvasWidth, canvasHeight, setNewAvatar]
 };
 
 export default useAvatar;

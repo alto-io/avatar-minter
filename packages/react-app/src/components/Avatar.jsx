@@ -34,14 +34,35 @@ import { useAvatar } from "../hooks";
 
 export default function Avatar() {
 
-    const [canvas, config] = useAvatar();
+    const [config, canvasRef, canvasWidth, canvasHeight, setNewAvatar] = useAvatar();
 
-    console.log(canvas);
-    console.log(config);
+
+    const handleClickNewAvatarButton = (event) => {
+        setNewAvatar();
+    }
 
     return (
         <div style={{ paddingTop: 32, width: 740, margin: "auto", textAlign: "left" }}>
-        
+        <div>
+            <canvas
+                className="Avatar-canvas"
+                ref={canvasRef}
+                width={canvasWidth}
+                height={canvasHeight}
+            />
+</div>
+            <Button
+                onClick={handleClickNewAvatarButton}
+                size="large"
+                shape="round"
+            >
+                <span style={{ marginRight: 8 }}>
+                    <span role="img" aria-label="fuelpump">
+                        😀
+                    </span>
+                </span>
+                New Avatar
+            </Button>
 
         </div>
     );
