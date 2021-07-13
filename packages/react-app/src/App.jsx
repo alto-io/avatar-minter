@@ -7,7 +7,7 @@ import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
 import Web3Modal from "web3modal";
 import "./App.css";
 import { Account, Address, AddressInput, Contract, Faucet, GasGauge, Header, Ramp, ThemeSwitch } from "./components";
-import {INFURA_ID, NETWORK, NETWORKS } from "./constants";
+import { INFURA_ID, NETWORK, NETWORKS } from "./constants";
 import { Transactor } from "./helpers";
 import {
   useBalance,
@@ -20,7 +20,7 @@ import {
   useUserSigner,
 } from "./hooks";
 
-import { Avatar } from "./components";
+import { AvatarViewer, AvatarMinter } from "./components";
 
 const { BufferList } = require("bl");
 // https://www.npmjs.com/package/ipfs-http-client
@@ -429,16 +429,26 @@ function App(props) {
               Transfers
             </Link>
           </Menu.Item>
-          <Menu.Item key="/avatar">
+          <Menu.Item key="/avatarviewer">
             <Link
               onClick={() => {
-                setRoute("/avatar");
+                setRoute("/avatarviewer");
               }}
-              to="/avatar"
+              to="/avatarviewer"
             >
-              Avatar
+              Avatar Viewer
             </Link>
-          </Menu.Item>          
+          </Menu.Item>
+          <Menu.Item key="/avatarminter">
+            <Link
+              onClick={() => {
+                setRoute("/avatarminter");
+              }}
+              to="/avatarminter"
+            >
+              Avatar Minter
+            </Link>
+          </Menu.Item>
           <Menu.Item key="/ipfsup">
             <Link
               onClick={() => {
@@ -551,9 +561,13 @@ function App(props) {
             </div>
           </Route>
 
-          <Route path="/avatar">
-                <Avatar/>
-          </Route>          
+          <Route path="/avatarviewer">
+            <AvatarViewer />
+          </Route>
+
+          <Route path="/avatarminter">
+            <AvatarMinter />
+          </Route>
 
           <Route path="/ipfsup">
             <div style={{ paddingTop: 32, width: 740, margin: "auto", textAlign: "left" }}>
