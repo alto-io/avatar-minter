@@ -71,8 +71,15 @@ const useAvatar = (props) => {
     }
 
     async function setNewAvatar() {
-
         getAvatar();
+    }
+
+    async function getMintingConfig() {
+        await getAvatar();
+
+        var newConfig = config;
+        newConfig.amountToMint = 100;
+        return newConfig;
     }
 
     async function randomizeHiddenParts() {
@@ -166,7 +173,7 @@ const useAvatar = (props) => {
 
     }
 
-    return [config, canvasRef, canvasWidth, canvasHeight, setNewAvatar]
+    return [config, canvasRef, canvasWidth, canvasHeight, setNewAvatar, getMintingConfig]
 };
 
 export default useAvatar;
