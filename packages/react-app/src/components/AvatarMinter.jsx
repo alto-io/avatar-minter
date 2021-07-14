@@ -21,10 +21,14 @@ import ReactJson from "react-json-view";
 
   ~ How can I use? ~
 
-  Put your .ora file in public/avatars/avatarimages.ora
+  1. Press (📝 Init Config)  to retrieve the config parameters from the ORA file.  
+  2. Edit the <b>config.json</b> below with the desired generation parameters.
+  3. Press (🎲 Generate) to start generating the images+metadata and to start uploading them to IPFS.
+  4. Once generation is done, copy the resulting <b>metadata.json</b> to packages/avatar/src/metadata.json.
+  5. To mint an NFT, specify an amount in the input field and then press <BankOutlined/>
 
   Client Side:
-  <Avatar/>
+  <AvatarMinter/>
 
   Server Side:
   Copy the metadata json to packages/avatar/data/metadata.json
@@ -46,13 +50,12 @@ const STARTING_METADATA_JSON = {
 
 export default function AvatarMinter() {
 
-    const [config, canvasRef, canvasWidth, canvasHeight, setNewAvatar] = useAvatar();
+    const [config, canvasRef, canvasWidth, canvasHeight, setNewAvatar, getMintingConfig] = useAvatar();
     const [configJSON, setConfigJSON] = useState(STARTING_CONFIG_JSON);
     const [metadataJSON, setMetadataJSON] = useState(STARTING_METADATA_JSON);
 
-    const handleClickInitConfigButton = (event) => {
-        setNewAvatar();
-        setConfigJSON(config);
+    const handleClickInitConfigButton = async (event) => {
+        setConfigJSON(await getMintingConfig());
     }
 
     const handleClickMintButton = (event) => {
