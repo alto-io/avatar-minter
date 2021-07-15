@@ -31,11 +31,13 @@ const useAvatar = (props) => {
     const [mintingConfig, setMintingConfig] = useState(
         {
             "fileName": "config.json",
-            "amountToMint": "10",
+            "amountToCreate": 10,
             "initialized": false
         }
     )
     const [partsList, setPartsList] = useState({ "PartsList": {} });
+
+    const [metadataJson, setMetadataJson] = useState({});
 
     const canvasRef = useRef(null);
 
@@ -86,11 +88,35 @@ const useAvatar = (props) => {
         return randomConfig;
     }
 
+    async function getNewAvatarMetadata() {
+        setRandomConfig({ "Root": {} });
+        await loadProject();
+        await getAvatarConfiguration(project);
+        await randomizeHiddenParts();
+        await getAvatarConfiguration(project);
+        return randomConfig;
+        
+    }
+
     async function generateMetadataJson() {
-        console.log(mintingConfig)
         if (mintingConfig.initialized)
-        return {
-            "1": "2"
+        {
+            var amountToCreate = mintingConfig.amountToCreate;
+            var mintArray = [];
+
+            for (var i = 1; i <= amountToCreate; i++)
+            {
+                var newConfig = await getNewAvatarMetadata();
+                mintArray.push(newConfig);
+            }
+
+            var tempMetadataJson = {
+                "tokenMetadata": mintArray
+            }
+
+            setMetadataJson(tempMetadataJson);
+            return tempMetadataJson;
+
         }
         else {
             return {
@@ -258,7 +284,7 @@ const useAvatar = (props) => {
 
     }
 
-    return [canvasRef, canvasWidth, canvasHeight, setNewAvatar, getMintingConfig, generateMetadataJson]
+    return [canvasRef, canvasWidth, canvasHeight, setNewAvatar, getMintingConfig, generateMetadataJson, setMintingConfig]
 };
 
 export default useAvatar;
