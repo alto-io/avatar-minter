@@ -26,11 +26,20 @@ const useAvatar = (props) => {
     const _ = window._;
     const project = new jsora.JSOra();
     var rend;
-    var randomConfig = { "Root": {} };
-    var mintingConfig = { "PartsList": {} };
+
+    const [randomConfig, setRandomConfig] = useState({ "Root": {} });
+    const [mintingConfig, setMintingConfig] = useState(
+        {
+            "fileName": "config.json",
+            "amountToMint": "10",
+            "initialized": false
+        }
+    )
+    const [partsList, setPartsList] = useState({ "PartsList": {} });
 
     const canvasRef = useRef(null);
-    const [config, setConfig] = useState(null);
+
+    var tempPartsList = { "PartsList": {} }
 
     useEffect(() => {
 
@@ -45,7 +54,7 @@ const useAvatar = (props) => {
 
     const getAvatar = async () => {
             
-        randomConfig = { "Root": {} };
+        setRandomConfig({ "Root": {} });
 
         await loadProject();
 
@@ -58,9 +67,6 @@ const useAvatar = (props) => {
 
         // // second time to retrieve new random parts
         await getAvatarConfiguration(project);
-
-
-        await setConfig(randomConfig);
 
         await drawAvatar();
         
@@ -80,21 +86,30 @@ const useAvatar = (props) => {
         return randomConfig;
     }
 
+    async function generateMetadataJson() {
+        console.log(mintingConfig)
+        if (mintingConfig.initialized)
+        return {
+            "1": "2"
+        }
+        else {
+            return {
+                "filename": "metadata.json"                
+            }
+        }
+    }
+
     async function getMintingConfig() {
         await loadProject();
 
-        mintingConfig = { "PartsList": {} };
-
-        var newConfig = {};
-
-        newConfig.fileName = "config.json";
-        newConfig.amountToMint = 10;
-
         await getAllPartsJson(project);
 
-        newConfig = _.merge(newConfig, mintingConfig);
+        var newConfig = _.merge(mintingConfig, tempPartsList);
+        newConfig.initialized = true;
 
-        return newConfig;
+        setPartsList(tempPartsList);
+        setMintingConfig(newConfig);
+        return mintingConfig;
     }
 
     async function getAllPartsJson(project) {
@@ -108,12 +123,12 @@ const useAvatar = (props) => {
             if (child.children != undefined) {
                 recurseOverParts(child, parent + "." + child.name)
             } else {
-                    addToMintingConfig(parent + "." + child.name);
+                    addToPartsList(parent + "." + child.name);
             }
         }
     }
 
-    function addToMintingConfig(partString) {
+    function addToPartsList(partString) {
         var objectToAdd = recursivelyCreateNodes(partString.split(".").reverse());
         var partStringArray = partString.split(".");
 
@@ -139,7 +154,7 @@ const useAvatar = (props) => {
         var partCategory = partString.slice(0, partString.lastIndexOf("."));
 
         // check if object should be added to array
-        var currentPartSet =_.get(mintingConfig, partCategory);
+        var currentPartSet =_.get(tempPartsList, partCategory);
         if (currentPartSet == undefined) {
             currentPartSet = [partToAdd]
         }
@@ -149,7 +164,7 @@ const useAvatar = (props) => {
 
         _.set(objectToAdd, partCategory, currentPartSet);
 
-        mintingConfig = _.merge(mintingConfig, objectToAdd);
+        tempPartsList = _.merge(tempPartsList, objectToAdd);
     }
     
     async function randomizeHiddenParts() {
@@ -220,7 +235,7 @@ const useAvatar = (props) => {
 
     function addToConfig(partString) {
         var objectToAdd = recursivelyCreateNodes(partString.split(".").reverse());
-        randomConfig = _.merge(randomConfig, objectToAdd);
+        setRandomConfig(_.merge(randomConfig, objectToAdd));
     }
 
     function recursivelyCreateNodes(partArray) {
@@ -243,7 +258,7 @@ const useAvatar = (props) => {
 
     }
 
-    return [config, canvasRef, canvasWidth, canvasHeight, setNewAvatar, getMintingConfig]
+    return [canvasRef, canvasWidth, canvasHeight, setNewAvatar, getMintingConfig, generateMetadataJson]
 };
 
 export default useAvatar;
