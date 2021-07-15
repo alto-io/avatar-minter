@@ -40,8 +40,10 @@ import ReactJson from "react-json-view";
   - Assumes avatars are pre-minted for now
 */
 
+// if initialized == false, use INIT_CONFIG. Otherwise specify config info here
 const STARTING_CONFIG_JSON = {
-    "info": "config.json"
+    "filename": "config.json",
+    "amountToMint": 10
 };
 
 const STARTING_METADATA_JSON = {
@@ -55,6 +57,7 @@ export default function AvatarMinter() {
     const [metadataJSON, setMetadataJSON] = useState(STARTING_METADATA_JSON);
 
     const handleClickInitConfigButton = async (event) => {
+        if (!STARTING_CONFIG_JSON.initialized)
         setConfigJSON(await getMintingConfig());
     }
 
@@ -65,23 +68,25 @@ export default function AvatarMinter() {
         <div style={{ paddingTop: 32, width: 740, margin: "auto", textAlign: "left" }}>
             <h3>How to Mint</h3>
             <div style={{ paddingBottom: 8 }}>
+
+            <div style={{ paddingBottom: 8 }}>
+                    <b>[1a]</b> Edit <b>STARTING_CONFIG_JSON</b> in AvatarMinter.jsx directly, or,
+                </div>
+
                 <div style={{ paddingBottom: 8 }}>
-                    <b>[1]</b> Press
+                    <b>[1b]</b> Press
                     <span
                         className="highlight"
                         style={{ margin: 4, /* backgroundColor: "#f9f9f9", */ padding: 4, borderRadius: 4, fontWeight: "bolder" }}
                     >
                         📝 Init Config
                     </span>{" "}
-                    to retrieve the config parameters from the ORA file.
+                    to retrieve the config parameters from the ORA file, then 
+                    edit the <b>config.json</b> below with the desired generation parameters.
                 </div>
 
                 <div style={{ paddingBottom: 8 }}>
-                    <b>[2]</b> Edit the <b>config.json</b> below with the desired generation parameters.
-                </div>
-
-                <div style={{ paddingBottom: 8 }}>
-                    <b>[3]</b> Press
+                    <b>[2]</b> Press
                     <span
                         className="highlight"
                         style={{ margin: 4, /* backgroundColor: "#f9f9f9", */ padding: 4, borderRadius: 4, fontWeight: "bolder" }}
@@ -92,11 +97,11 @@ export default function AvatarMinter() {
                 </div>
 
                 <div style={{ paddingBottom: 8 }}>
-                    <b>[4]</b> Once generation is done, copy the resulting <b>metadata.json</b> to packages/avatar/src/metadata.json.
+                    <b>[3]</b> Once generation is done, copy the resulting <b>metadata.json</b> to packages/avatar/src/metadata.json.
                 </div>
 
                 <div style={{ paddingBottom: 8 }}>
-                    <b>[5]</b> To mint an NFT, specify an amount in the input field and then press
+                    <b>[4]</b> To mint an NFT, specify an amount in the input field and then press
                     <span
                         className="highlight"
                         style={{ margin: 4, /* backgroundColor: "#f9f9f9", */ padding: 4, borderRadius: 4, fontWeight: "bolder" }}
