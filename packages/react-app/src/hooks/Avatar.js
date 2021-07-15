@@ -56,11 +56,11 @@ const useAvatar = (props) => {
 
         await randomizeHiddenParts();
 
-        // second time to retrieve new random parts
+        // // second time to retrieve new random parts
         await getAvatarConfiguration(project);
 
 
-        setConfig(randomConfig);
+        await setConfig(randomConfig);
 
         await drawAvatar();
         
@@ -76,7 +76,8 @@ const useAvatar = (props) => {
     }
 
     async function setNewAvatar() {
-        getAvatar();
+        await getAvatar();
+        return randomConfig;
     }
 
     async function getMintingConfig() {
