@@ -77,8 +77,13 @@ const useAvatar = (props) => {
     async function getMintingConfig() {
         await getAvatar();
 
-        var newConfig = config;
-        newConfig.amountToMint = 100;
+        var newConfig = {};
+
+        newConfig.fileName = "config.json";
+        newConfig.amountToMint = 10;
+
+        newConfig = _.merge(newConfig, config);
+
         return newConfig;
     }
 
