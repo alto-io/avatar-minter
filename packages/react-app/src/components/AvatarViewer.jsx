@@ -41,7 +41,7 @@ const STARTING_CONFIG_JSON = {
 export default function AvatarViewer() {
 
     const [configJSON, setConfigJSON] = useState(STARTING_CONFIG_JSON);
-    const [config, canvasRef, canvasWidth, canvasHeight, setNewAvatar] = useAvatar();
+    const [canvasRef, canvasWidth, canvasHeight, setNewAvatar] = useAvatar();
 
     const handleClickNewAvatarButton = async (event) => {
         setConfigJSON(await setNewAvatar()); 

@@ -47,12 +47,12 @@ const STARTING_CONFIG_JSON = {
 };
 
 const STARTING_METADATA_JSON = {
-    "info": "metadata.json"
+    "filename": "metadata.json"
 }
 
 export default function AvatarMinter() {
 
-    const [config, canvasRef, canvasWidth, canvasHeight, setNewAvatar, getMintingConfig] = useAvatar();
+    const [canvasRef, canvasWidth, canvasHeight, setNewAvatar, getMintingConfig, generateMetadataJson] = useAvatar();
     const [mintingConfigJSON, setMintingConfigJSON] = useState(STARTING_CONFIG_JSON);
     const [metadataJSON, setMetadataJSON] = useState(STARTING_METADATA_JSON);
 
@@ -60,7 +60,8 @@ export default function AvatarMinter() {
         setMintingConfigJSON(await getMintingConfig());
     }
 
-    const handleClickMintButton = (event) => {
+    const handleClickMintButton = async (event) => {
+        setMetadataJSON(await generateMetadataJson());
     }
 
     return (
