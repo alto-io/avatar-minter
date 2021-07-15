@@ -27,6 +27,7 @@ const useAvatar = (props) => {
     const project = new jsora.JSOra();
     var rend;
     var randomConfig = { "Root": {} };
+    var mintingConfig = { "PartsList": {} };
 
     const canvasRef = useRef(null);
     const [config, setConfig] = useState(null);
@@ -36,13 +37,17 @@ const useAvatar = (props) => {
         getAvatar();
     }, [props]);
 
-    const getAvatar = async () => {
-            
-
-        randomConfig = { "Root": {} };
-
+    const loadProject = async () => {
         let loaded_file = await fetch(`avatars/AvatarImages.ora`).then(r => r.blob());
         await project.load(loaded_file);
+
+    }
+
+    const getAvatar = async () => {
+            
+        randomConfig = { "Root": {} };
+
+        await loadProject();
 
         rend = new jsora.Renderer(project);
 
@@ -75,18 +80,77 @@ const useAvatar = (props) => {
     }
 
     async function getMintingConfig() {
-        await getAvatar();
+        await loadProject();
+
+        mintingConfig = { "PartsList": {} };
 
         var newConfig = {};
 
         newConfig.fileName = "config.json";
         newConfig.amountToMint = 10;
 
-        newConfig = _.merge(newConfig, config);
+        await getAllPartsJson(project);
+
+        newConfig = _.merge(newConfig, mintingConfig);
 
         return newConfig;
     }
 
+    async function getAllPartsJson(project) {
+           // extract avatar format from layers
+           recurseOverParts(project, "PartsList");
+    }
+
+    function recurseOverParts(obj, parent) {
+        for (let child of obj.children) {
+
+            if (child.children != undefined) {
+                recurseOverParts(child, parent + "." + child.name)
+            } else {
+                    addToMintingConfig(parent + "." + child.name);
+            }
+        }
+    }
+
+    function addToMintingConfig(partString) {
+        var objectToAdd = recursivelyCreateNodes(partString.split(".").reverse());
+        var partStringArray = partString.split(".");
+
+        var partToAdd = { 
+            "name": partStringArray[partStringArray.length - 1],
+            "weight": 10 
+            
+            // weight is used to detemine chance to get.
+            //
+            // chance to get is determined by sum of all weights in a partCategory 
+            // divided by a specific part's weight.
+            // 
+            // For example, if there are 5 parts in a partCategory and each part has a weight of 10
+            // then all parts have an equal chance of being selected. 
+            //
+            // If one part has a weight of 20, and all others have a weight of 10, 
+            // then that part has twice the chance of being selected from all the others.
+            //
+            // All part weights start as 10 for the initial configuration,
+            // meaning they can all be selected equally.
+        }
+
+        var partCategory = partString.slice(0, partString.lastIndexOf("."));
+
+        // check if object should be added to array
+        var currentPartSet =_.get(mintingConfig, partCategory);
+        if (currentPartSet == undefined) {
+            currentPartSet = [partToAdd]
+        }
+        else {
+            currentPartSet.push(partToAdd)
+        }
+
+        _.set(objectToAdd, partCategory, currentPartSet);
+
+        mintingConfig = _.merge(mintingConfig, objectToAdd);
+    }
+    
     async function randomizeHiddenParts() {
 
         function traverse(jsonObj, parent) {

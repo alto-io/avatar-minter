@@ -53,12 +53,11 @@ const STARTING_METADATA_JSON = {
 export default function AvatarMinter() {
 
     const [config, canvasRef, canvasWidth, canvasHeight, setNewAvatar, getMintingConfig] = useAvatar();
-    const [configJSON, setConfigJSON] = useState(STARTING_CONFIG_JSON);
+    const [mintingConfigJSON, setMintingConfigJSON] = useState(STARTING_CONFIG_JSON);
     const [metadataJSON, setMetadataJSON] = useState(STARTING_METADATA_JSON);
 
     const handleClickInitConfigButton = async (event) => {
-        if (!STARTING_CONFIG_JSON.initialized)
-        setConfigJSON(await getMintingConfig());
+        setMintingConfigJSON(await getMintingConfig());
     }
 
     const handleClickMintButton = (event) => {
@@ -69,12 +68,8 @@ export default function AvatarMinter() {
             <h3>How to Mint</h3>
             <div style={{ paddingBottom: 8 }}>
 
-            <div style={{ paddingBottom: 8 }}>
-                    <b>[1a]</b> Edit <b>STARTING_CONFIG_JSON</b> in AvatarMinter.jsx directly, or,
-                </div>
-
                 <div style={{ paddingBottom: 8 }}>
-                    <b>[1b]</b> Press
+                    <b>[1a]</b> Press
                     <span
                         className="highlight"
                         style={{ margin: 4, /* backgroundColor: "#f9f9f9", */ padding: 4, borderRadius: 4, fontWeight: "bolder" }}
@@ -82,7 +77,11 @@ export default function AvatarMinter() {
                         📝 Init Config
                     </span>{" "}
                     to retrieve the config parameters from the ORA file, then 
-                    edit the <b>config.json</b> below with the desired generation parameters.
+                    edit the <b>config.json</b> below with the desired generation parameters, OR
+                </div>
+
+                <div style={{ paddingBottom: 8 }}>
+                    <b>[1b]</b> Edit <b>STARTING_CONFIG_JSON</b> in AvatarMinter.jsx directly
                 </div>
 
                 <div style={{ paddingBottom: 8 }}>
@@ -176,17 +175,17 @@ export default function AvatarMinter() {
             <div>
                 <ReactJson
                     style={{ padding: 8 }}
-                    src={configJSON}
+                    src={mintingConfigJSON}
                     theme="pop"
                     enableClipboard={false}
                     onEdit={(edit, a) => {
-                        setConfigJSON(edit.updated_src);
+                        setMintingConfigJSON(edit.updated_src);
                     }}
                     onAdd={(add, a) => {
-                        setConfigJSON(add.updated_src);
+                        setMintingConfigJSON(add.updated_src);
                     }}
                     onDelete={(del, a) => {
-                        setConfigJSON(del.updated_src);
+                        setMintingConfigJSON(del.updated_src);
                     }}
                 />
             </div>
@@ -197,15 +196,6 @@ export default function AvatarMinter() {
                     src={metadataJSON}
                     theme="pop"
                     enableClipboard={false}
-                    onEdit={(edit, a) => {
-                        setConfigJSON(edit.updated_src);
-                    }}
-                    onAdd={(add, a) => {
-                        setConfigJSON(add.updated_src);
-                    }}
-                    onDelete={(del, a) => {
-                        setConfigJSON(del.updated_src);
-                    }}
                 />
             </div>
 
