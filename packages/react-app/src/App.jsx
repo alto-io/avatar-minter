@@ -21,6 +21,7 @@ import {
 } from "./hooks";
 
 import { AvatarViewer, AvatarMinter } from "./components";
+import { ClawGame } from "./components/ClawGame";
 
 const { BufferList } = require("bl");
 // https://www.npmjs.com/package/ipfs-http-client
@@ -479,6 +480,16 @@ function App(props) {
               Debug Contracts
             </Link>
           </Menu.Item>
+          <Menu.Item key="/clawgame">
+            <Link
+              onClick={() => {
+                setRoute("/clawgame");
+              }}
+              to="/clawgame"
+            >
+              Claw Game
+            </Link>
+          </Menu.Item>
         </Menu>
 
         <Switch>
@@ -651,6 +662,9 @@ function App(props) {
               address={address}
               blockExplorer={blockExplorer}
             />
+          </Route>
+          <Route path="/clawgame">
+            <ClawGame></ClawGame>
           </Route>
         </Switch>
       </BrowserRouter>

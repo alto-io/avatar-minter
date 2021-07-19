@@ -38,6 +38,7 @@
     "graphql": "^15.3.0",
     "isomorphic-fetch": "^3.0.0",
     "node-watch": "^0.7.1",
+    "phaser": "^3.55.2",
     "postcss": "^8.2.6",
     "qrcode.react": "^1.0.0",
     "react": "^16.14.0",
