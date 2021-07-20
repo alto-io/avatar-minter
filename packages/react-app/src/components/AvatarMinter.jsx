@@ -43,7 +43,7 @@ import ReactJson from "react-json-view";
 // if initialized == false, use INIT_CONFIG. Otherwise specify config info here
 const STARTING_CONFIG_JSON = {
     "filename": "config.json",
-    "amountToCreate": 10
+    "amountToCreate": 100
 };
 
 const STARTING_METADATA_JSON = {
