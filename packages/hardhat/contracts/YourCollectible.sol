@@ -31,4 +31,26 @@ contract YourCollectible is ERC721, Ownable {
 
       return id;
   }
+
+  function mintMultiple(address to, string memory tokenURI, uint amount)
+      public
+      onlyOwner
+  {
+    for (uint i = 0; i < amount; i++)
+    {
+      _tokenIds.increment();
+
+      uint256 id = _tokenIds.current();
+      _mint(to, id);
+      _setTokenURI(id, tokenURI);
+    }
+  }
+
+
+  function setURI(string memory baseURI) 
+      public
+      onlyOwner
+  {
+    _setBaseURI(baseURI);
+  }
 }
