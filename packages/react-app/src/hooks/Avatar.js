@@ -31,7 +31,7 @@ const useAvatar = (props) => {
     const [mintingConfig, setMintingConfig] = useState(
         {
             "fileName": "config.json",
-            "amountToCreate": 10,
+            "amountToCreate": 9,
             "initialized": false
         }
     )
@@ -74,6 +74,10 @@ const useAvatar = (props) => {
         
     };
 
+    async function drawAvatarAlbum(metadataJSON) {
+        
+    }
+
     async function drawAvatar() {
         const canvasObj = canvasRef.current;
         const ctx = canvasObj.getContext('2d');
@@ -88,27 +92,57 @@ const useAvatar = (props) => {
         return randomConfig;
     }
 
-    async function getNewAvatarMetadata() {
-        setRandomConfig({ "Root": {} });
-        await loadProject();
-        await getAvatarConfiguration(project);
-        await randomizeHiddenParts();
-        await getAvatarConfiguration(project);
-        return randomConfig;
-        
+    async function drawMiniAvatar(i, amountToCreate) {
+        const canvasObj = canvasRef.current;
+        const ctx = canvasObj.getContext('2d');
+        const MAX_PER_ROW = Math.ceil(Math.sqrt(amountToCreate));
+       
+        var index = i - 1;
+        var TOTAL_ROWS = amountToCreate / MAX_PER_ROW;
+        var x = index % MAX_PER_ROW;
+        var y = Math.floor(index / MAX_PER_ROW);
+        var width = canvasWidth / MAX_PER_ROW;
+        var height = canvasHeight / TOTAL_ROWS;
+
+        var dx = x * width;
+        var dy = y * height;
+
+        // console.log(index + "," + x + ", " + y + "," + dx + ", " + dy + ", " + width + ", " + height);
+
+        var newCanvas = await renderAvatar();
+        ctx.drawImage(newCanvas, 0, 0, canvasWidth, canvasHeight, 
+                     dx, dy, width, height);
     }
 
-    async function generateMetadataJson() {
-        if (mintingConfig.initialized)
+
+    async function getNewAvatarMetadata() {
+        setRandomConfig({ "Root": {} });
+        await randomizeHiddenParts();
+        await getAvatarConfiguration(project);
+    }
+
+    async function generateMetadataJson(mintingConfigJSON) {
+        if (mintingConfigJSON.initialized)
         {
-            var amountToCreate = mintingConfig.amountToCreate;
+            var amountToCreate = mintingConfigJSON.amountToCreate;
             var mintArray = [];
 
+            await loadProject();
+            await getAvatarConfiguration(project);
+            rend = new jsora.Renderer(project);
+
+            const canvasObj = canvasRef.current;
+            const ctx = canvasObj.getContext('2d');
+            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    
             for (var i = 1; i <= amountToCreate; i++)
             {
-                var newConfig = await getNewAvatarMetadata();
-                mintArray.push(newConfig);
+                await getNewAvatarMetadata();
+                mintArray.push(JSON.parse(JSON.stringify(randomConfig.Root)));
+                await drawMiniAvatar(i, amountToCreate);
             }
+
+            // console.log(mintArray);
 
             var tempMetadataJson = {
                 "tokenMetadata": mintArray
@@ -284,7 +318,9 @@ const useAvatar = (props) => {
 
     }
 
-    return [canvasRef, canvasWidth, canvasHeight, setNewAvatar, getMintingConfig, generateMetadataJson, setMintingConfig]
+    return [canvasRef, canvasWidth, canvasHeight, 
+        setNewAvatar, getMintingConfig, generateMetadataJson, 
+        setMintingConfig, drawAvatarAlbum]
 };
 
 export default useAvatar;

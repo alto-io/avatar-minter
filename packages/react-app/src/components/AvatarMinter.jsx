@@ -52,7 +52,9 @@ const STARTING_METADATA_JSON = {
 
 export default function AvatarMinter() {
 
-    const [canvasRef, canvasWidth, canvasHeight, setNewAvatar, getMintingConfig, generateMetadataJson, setMintingConfig] = useAvatar();
+    const [canvasRef, canvasWidth, canvasHeight, 
+           setNewAvatar, getMintingConfig, 
+           generateMetadataJson, setMintingConfig, drawAvatarAlbum] = useAvatar();
     const [mintingConfigJSON, setMintingConfigJSON] = useState(STARTING_CONFIG_JSON);
     const [metadataJSON, setMetadataJSON] = useState(STARTING_METADATA_JSON);
 
@@ -60,17 +62,13 @@ export default function AvatarMinter() {
         setMintingConfigJSON(await getMintingConfig());
     }
 
-    const handleClickMintButton = async (event) => {
-        setMetadataJSON(await generateMetadataJson());
+    const handleClickGenerateButton = async (event) => {
+        setMetadataJSON(await generateMetadataJson(mintingConfigJSON));
     }
 
     const handleClickDrawButton = async (event) => {
         var metadataArray = metadataJSON.tokenMetadata;
-        if (metadataArray != undefined) {
-            for (var token of metadataArray) {
-                console.log(token);
-            }
-        }
+        drawAvatarAlbum(metadataArray); 
     }
 
     const handleClickUploadButton = async (event) => {
@@ -164,10 +162,36 @@ export default function AvatarMinter() {
                         </span>
                         Initialize
                     </Button>
+                </span>
+            </div>
 
+            <div
+                    style={{ padding: 8, height: "400px", "overflow-y": "auto" }}>
+                <ReactJson
+                    style={{ padding: 8 }}
+                    src={mintingConfigJSON}
+                    theme="pop"
+                    enableClipboard={false}
+                    onEdit={(edit, a) => {
+                        setMintingConfigJSON(edit.updated_src);
+                        setMintingConfig(edit.updated_src);
+                    }}
+                    onAdd={(add, a) => {
+                        setMintingConfigJSON(add.updated_src);
+                        setMintingConfig(add.updated_src);                        
+                    }}
+                    onDelete={(del, a) => {
+                        setMintingConfigJSON(del.updated_src);
+                        setMintingConfig(del.updated_src);
+                    }}
+                />
+            </div>
+
+            <div style={{ paddingBottom: 16, paddingTop: 16 }} >
+                <span style={{ width: "100%" }}>
                     <Button
                         style={{ marginRight: 8 }}
-                        onClick={handleClickMintButton}
+                        onClick={handleClickGenerateButton}
                         size="large"
                         shape="round"
                     >
@@ -228,42 +252,24 @@ export default function AvatarMinter() {
                 </span>
             </div>
 
-            <div style={{ display: "none" }}>
-                <canvas
-                    className="Avatar-canvas"
-                    ref={canvasRef}
-                    width={canvasWidth}
-                    height={canvasHeight}
-                />
-            </div>
-            <div>
-                <ReactJson
-                    style={{ padding: 8 }}
-                    src={mintingConfigJSON}
-                    theme="pop"
-                    enableClipboard={false}
-                    onEdit={(edit, a) => {
-                        setMintingConfigJSON(edit.updated_src);
-                        setMintingConfig(edit.updated_src);
-                    }}
-                    onAdd={(add, a) => {
-                        setMintingConfigJSON(add.updated_src);
-                        setMintingConfig(add.updated_src);                        
-                    }}
-                    onDelete={(del, a) => {
-                        setMintingConfigJSON(del.updated_src);
-                        setMintingConfig(del.updated_src);
-                    }}
-                />
-            </div>
+            <div
+                style= {{"display":"flex", "flex-direction": "row"}}>
 
-            <div>
                 <ReactJson
                     style={{ padding: 8 }}
                     src={metadataJSON}
                     theme="pop"
                     enableClipboard={false}
                 />
+                <div>
+                    <canvas
+                        className="Avatar-canvas"
+                        ref={canvasRef}
+                        width={canvasWidth}
+                        height={canvasHeight}
+                    />
+                </div>
+
             </div>
 
         </div>

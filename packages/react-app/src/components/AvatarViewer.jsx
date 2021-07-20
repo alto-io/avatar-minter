@@ -64,15 +64,16 @@ export default function AvatarViewer() {
                 </Button>
             </div>
 
-            <div>
-                <canvas
-                    className="Avatar-canvas"
-                    ref={canvasRef}
-                    width={canvasWidth}
-                    height={canvasHeight}
-                />
-            </div>
-            <div>
+            <div 
+                style= {{"display":"flex", "flex-direction": "row"}}>
+                <div>
+                    <canvas
+                        className="Avatar-canvas"
+                        ref={canvasRef}
+                        width={canvasWidth}
+                        height={canvasHeight}
+                    />
+                </div>
                 <ReactJson
                     style={{ padding: 8 }}
                     src={configJSON}
@@ -89,7 +90,6 @@ export default function AvatarViewer() {
                     }}
                 />
             </div>
-
         </div>
 
     );
