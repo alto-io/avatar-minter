@@ -42,16 +42,18 @@ import ReactJson from "react-json-view";
 
 // if initialized == false, use INIT_CONFIG. Otherwise specify config info here
 const STARTING_CONFIG_JSON = {
-    "amountToCreate": 9,
+    "amountToCreate": 2,
     "initialized": false
 };
 
 export default function AvatarMinter() {
 
     const [canvasRef, canvasWidth, canvasHeight, setNewAvatar, getMintingConfig, 
-           generateMetadataJson, setMintingConfig, metadataJson, uploadedTokenURI] = useAvatar();
+           generateMetadataJson, setMintingConfig, metadataJson, uploadedTokenURI, startIPFSUpload] = useAvatar();
     const [mintingConfigJSON, setMintingConfigJSON] = useState(STARTING_CONFIG_JSON);
 
+    const [sending, setSending] = useState();
+    
     const handleClickInitConfigButton = async (event) => {
         setMintingConfigJSON(await getMintingConfig());
     }
@@ -61,6 +63,13 @@ export default function AvatarMinter() {
     }
 
     const handleClickUploadButton = async (event) => {
+        setSending(true);        
+        startIPFSUpload().then( () => {
+            setTimeout(() => {
+                setSending(false);        
+            }, 1);
+            
+        });
     }
 
     return (
@@ -201,8 +210,10 @@ export default function AvatarMinter() {
                     <Button
                         style={{ marginRight: 8 }}
                         onClick={handleClickUploadButton}
+                        loading={sending}          
                         size="large"
                         shape="round"
+                        type="primary"
                     >
                         <span style={{ marginRight: 8 }}>
                             <span role="img" aria-label="fuelpump">

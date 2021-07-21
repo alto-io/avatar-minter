@@ -18,6 +18,9 @@ import { useRef, useEffect, useState } from "react";
 
 export const canvasWidth = 400;
 export const canvasHeight = 400;
+const ipfsAPI = require("ipfs-http-client");
+const ipfs = ipfsAPI({ host: "ipfs.infura.io", port: "5001", protocol: "https" });
+
 
 const useAvatar = (props) => {
 
@@ -30,7 +33,7 @@ const useAvatar = (props) => {
     const [randomConfig, setRandomConfig] = useState({ "Root": {} });
     const [mintingConfig, setMintingConfig] = useState(
         {
-            "amountToCreate": 9,
+            "amountToCreate": 2,
             "initialized": false
         }
     )
@@ -40,6 +43,7 @@ const useAvatar = (props) => {
     
     const [uploadedTokenURI, setUploadedTokenURI] = useState({ });
     
+    const [ipfsHash, setIpfsHash] = useState();
 
     const canvasRef = useRef(null);
 
@@ -54,6 +58,79 @@ const useAvatar = (props) => {
         let loaded_file = await fetch(`avatars/AvatarImages.ora`).then(r => r.blob());
         await project.load(loaded_file);
 
+    }
+
+    async function drawAvatarFromMetadata(metadata, index, amountToCreate) {
+
+        setRandomConfig({ "Root": {} });
+
+        // unhide project layers according to metadata
+        await refreshProjectLayers(project, metadata);
+
+        await drawMiniAvatar(index + 1, amountToCreate);
+    }
+
+    async function refreshProjectLayers(project, metadata) {
+
+        recurseOverMetadata(project, "Root", metadata);
+    }
+
+    function recurseOverMetadata(obj, parent, metadata) {
+        for (let child of obj.children) {
+
+            var fullName = parent + "." + child.name;
+
+            if (child.children != undefined) {
+                recurseOverMetadata(child, fullName, metadata)
+            } else {
+                // unhide layers specified in metadata
+                if (_.get(metadata,parent) == child.name) {
+                    child.hidden = false;
+                }
+                else {
+                    child.hidden = true;
+                }
+            }
+        }
+    }
+
+
+    const startIPFSUpload = async () => {
+
+        await loadProject();
+        rend = new jsora.Renderer(project);
+
+        const canvasObj = canvasRef.current;
+        const ctx = canvasObj.getContext('2d');
+        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+                
+        var tokenMetadata = metadataJson.tokenMetadata;
+
+        // redraw avatar from metadata json       
+        for (var i = 0; i < tokenMetadata.length; i++) {
+            await drawAvatarFromMetadata(tokenMetadata[i], i, tokenMetadata.length);
+        } 
+
+        // // upload images on IPFS
+        // console.log(metadataJson);
+        // var file = new File(["foo"], "foo.txt", {
+        //     type: "text/plain",
+        //   });
+        // setIpfsHash();
+        // ipfs.add()
+        // generate token URI JSON File
+
+        // call setTokenURI
+
+        // console.log("UPLOADING...", yourJSON);
+        //     setSending(true);
+        //     const result = await ipfs.add(JSON.stringify(yourJSON)); // addToIPFS(JSON.stringify(yourJSON))
+        //     if (result && result.path) {
+        //       setIpfsHash(result.path);
+        //     }
+        //     setSending(false);
+        //     console.log("RESULT:", result);
+        //   }        
     }
 
     const getAvatar = async () => {
@@ -136,7 +213,7 @@ const useAvatar = (props) => {
             for (var i = 1; i <= amountToCreate; i++)
             {
                 await getNewAvatarMetadata();
-                mintArray.push(JSON.parse(JSON.stringify(randomConfig.Root)));
+                mintArray.push(JSON.parse(JSON.stringify(randomConfig)));
                 await drawMiniAvatar(i, amountToCreate);
 
                 var tempMetadataJson = {
@@ -319,7 +396,7 @@ const useAvatar = (props) => {
 
     return [canvasRef, canvasWidth, canvasHeight, 
         setNewAvatar, getMintingConfig, generateMetadataJson, 
-        setMintingConfig, metadataJson, uploadedTokenURI]
+        setMintingConfig, metadataJson, uploadedTokenURI, startIPFSUpload]
 };
 
 export default useAvatar;
