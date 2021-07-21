@@ -67,7 +67,9 @@ const useAvatar = (props) => {
         // unhide project layers according to metadata
         await refreshProjectLayers(project, metadata);
 
-        await drawMiniAvatar(index + 1, amountToCreate);
+        const ipfsHash = await drawMiniAvatar(index + 1, amountToCreate, true);
+
+        console.log(ipfsHash);
     }
 
     async function refreshProjectLayers(project, metadata) {
@@ -167,7 +169,18 @@ const useAvatar = (props) => {
         return randomConfig;
     }
 
-    async function drawMiniAvatar(i, amountToCreate) {
+    function toBlobWrapper(canvas) {
+        return new Promise( (resolve, reject) => {
+            canvas.toBlob( async (blob) => {
+                var result = await ipfs.add(blob);
+                resolve(result);
+            }, (errorResponse) => {
+                reject(errorResponse)
+            }
+        )})
+    }
+
+    async function drawMiniAvatar(i, amountToCreate, uploadToIPFS) {
         const canvasObj = canvasRef.current;
         const ctx = canvasObj.getContext('2d');
         const MAX_PER_ROW = Math.ceil(Math.sqrt(amountToCreate));
@@ -185,8 +198,24 @@ const useAvatar = (props) => {
         // console.log(index + "," + x + ", " + y + "," + dx + ", " + dy + ", " + width + ", " + height);
 
         var newCanvas = await renderAvatar();
-        ctx.drawImage(newCanvas, 0, 0, canvasWidth, canvasHeight, 
+
+        if (uploadToIPFS) {
+            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+            ctx.drawImage(newCanvas, 0, 0, canvasWidth, canvasHeight);
+
+            const result = await toBlobWrapper(newCanvas);
+
+            if (result && result.path) {
+                return result.path;
+            };
+        }
+
+        else {
+           ctx.drawImage(newCanvas, 0, 0, canvasWidth, canvasHeight, 
                      dx, dy, width, height);
+
+            return null;
+        }
     }
 
 
@@ -214,7 +243,7 @@ const useAvatar = (props) => {
             {
                 await getNewAvatarMetadata();
                 mintArray.push(JSON.parse(JSON.stringify(randomConfig)));
-                await drawMiniAvatar(i, amountToCreate);
+                await drawMiniAvatar(i, amountToCreate, false);
 
                 var tempMetadataJson = {
                     "tokenMetadata": mintArray
