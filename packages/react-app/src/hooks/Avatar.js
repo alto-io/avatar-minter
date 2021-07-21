@@ -30,7 +30,6 @@ const useAvatar = (props) => {
     const [randomConfig, setRandomConfig] = useState({ "Root": {} });
     const [mintingConfig, setMintingConfig] = useState(
         {
-            "fileName": "config.json",
             "amountToCreate": 9,
             "initialized": false
         }
@@ -38,6 +37,9 @@ const useAvatar = (props) => {
     const [partsList, setPartsList] = useState({ "PartsList": {} });
 
     const [metadataJson, setMetadataJson] = useState({ "tokenMetadata": {} });
+    
+    const [uploadedTokenURI, setUploadedTokenURI] = useState({ });
+    
 
     const canvasRef = useRef(null);
 
@@ -73,10 +75,6 @@ const useAvatar = (props) => {
         await drawAvatar();
         
     };
-
-    async function drawAvatarAlbum(metadataJSON) {
-        
-    }
 
     async function drawAvatar() {
         const canvasObj = canvasRef.current;
@@ -321,7 +319,7 @@ const useAvatar = (props) => {
 
     return [canvasRef, canvasWidth, canvasHeight, 
         setNewAvatar, getMintingConfig, generateMetadataJson, 
-        setMintingConfig, drawAvatarAlbum, metadataJson]
+        setMintingConfig, metadataJson, uploadedTokenURI]
 };
 
 export default useAvatar;
