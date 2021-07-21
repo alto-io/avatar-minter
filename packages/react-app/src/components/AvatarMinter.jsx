@@ -54,20 +54,20 @@ export default function AvatarMinter() {
 
     const [canvasRef, canvasWidth, canvasHeight, 
            setNewAvatar, getMintingConfig, 
-           generateMetadataJson, setMintingConfig, drawAvatarAlbum] = useAvatar();
+           generateMetadataJson, setMintingConfig, drawAvatarAlbum,
+           metadataJson] = useAvatar();
     const [mintingConfigJSON, setMintingConfigJSON] = useState(STARTING_CONFIG_JSON);
-    const [metadataJSON, setMetadataJSON] = useState(STARTING_METADATA_JSON);
 
     const handleClickInitConfigButton = async (event) => {
         setMintingConfigJSON(await getMintingConfig());
     }
 
     const handleClickGenerateButton = async (event) => {
-        setMetadataJSON(await generateMetadataJson(mintingConfigJSON));
+        generateMetadataJson(mintingConfigJSON);
     }
 
     const handleClickDrawButton = async (event) => {
-        var metadataArray = metadataJSON.tokenMetadata;
+        var metadataArray = metadataJson.tokenMetadata;
         drawAvatarAlbum(metadataArray); 
     }
 
@@ -256,10 +256,11 @@ export default function AvatarMinter() {
                 style= {{"display":"flex", "flex-direction": "row"}}>
 
                 <ReactJson
-                    style={{ padding: 8 }}
-                    src={metadataJSON}
+                    style={{ padding: 8, height: "400px", "overflow-y": "auto"  }}
+                    src={metadataJson}
                     theme="pop"
                     enableClipboard={false}
+                    collapsed={2}
                 />
                 <div>
                     <canvas

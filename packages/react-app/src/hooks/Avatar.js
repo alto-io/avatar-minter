@@ -37,7 +37,7 @@ const useAvatar = (props) => {
     )
     const [partsList, setPartsList] = useState({ "PartsList": {} });
 
-    const [metadataJson, setMetadataJson] = useState({});
+    const [metadataJson, setMetadataJson] = useState({ "tokenMetadata": {} });
 
     const canvasRef = useRef(null);
 
@@ -140,15 +140,16 @@ const useAvatar = (props) => {
                 await getNewAvatarMetadata();
                 mintArray.push(JSON.parse(JSON.stringify(randomConfig.Root)));
                 await drawMiniAvatar(i, amountToCreate);
+
+                var tempMetadataJson = {
+                    "tokenMetadata": mintArray
+                }
+    
+                setMetadataJson(tempMetadataJson);
             }
 
             // console.log(mintArray);
 
-            var tempMetadataJson = {
-                "tokenMetadata": mintArray
-            }
-
-            setMetadataJson(tempMetadataJson);
             return tempMetadataJson;
 
         }
@@ -320,7 +321,7 @@ const useAvatar = (props) => {
 
     return [canvasRef, canvasWidth, canvasHeight, 
         setNewAvatar, getMintingConfig, generateMetadataJson, 
-        setMintingConfig, drawAvatarAlbum]
+        setMintingConfig, drawAvatarAlbum, metadataJson]
 };
 
 export default useAvatar;
