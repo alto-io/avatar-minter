@@ -45,7 +45,10 @@ const STARTING_CONFIG_JSON = {
     "initialized": false
 };
 
-export default function AvatarMinter() {
+export default function AvatarMinter(props) {
+
+    const callSetURI = props.callSetURI;
+    const callMintMultiple = props.callMintMultiple;
 
     const [canvasRef, canvasWidth, canvasHeight, setNewAvatar, getMintingConfig, 
            generateMetadataJson, setMintingConfig, metadataJson, uploadedTokenURI, 
@@ -53,6 +56,8 @@ export default function AvatarMinter() {
     const [mintingConfigJSON, setMintingConfigJSON] = useState(STARTING_CONFIG_JSON);
 
     const [sending, setSending] = useState();
+    const [mintAmount, setMintAmount] = useState();
+
     
     const handleClickInitConfigButton = async (event) => {
         setMintingConfigJSON(await getMintingConfig());
@@ -200,7 +205,6 @@ export default function AvatarMinter() {
                         ⬆ Upload
                     </span>{" "}
                     to upload the images and metadata to IPFS. The resulting tokenURI will be shown below. 
-                    <br/>This will also call <b>setTokenURI</b>, go ahead and sign the transaction with Metamask. 
                 </div>
             </div>
 
@@ -213,7 +217,6 @@ export default function AvatarMinter() {
                         loading={sending}          
                         size="large"
                         shape="round"
-                        type="primary"
                     >
                         <span style={{ marginRight: 8 }}>
                             <span role="img" aria-label="fuelpump">
@@ -239,33 +242,63 @@ export default function AvatarMinter() {
             </div>
 
             
-            <div style={{ padding: 16, paddingBottom: 150 }}>
+            <div style={{ padding: 16, paddingBottom: 30 }}>
                 <a href={"https://ipfs.io/ipfs/" + ipfsHash} target="_blank">
                     IPFS Hash: {ipfsHash}
                 </a>
             </div>
+            
 
             <div style={{ paddingBottom: 8 }}>
 
                 <div style={{ paddingBottom: 8 }}>
                     <b>[4] </b> 
-                    Once Upload is completed, input the amount to mint below and press <BankOutlined/>. Go to <b>MyCollectibles</b> to see your NFTs!
+                    Once Upload is completed, press 📜 Set Base URI to update the contract URI.
                 </div>
             </div>
 
-            
             <div style={{ paddingBottom: 16, paddingTop: 16 }} >
                 <span style={{ width: "100%" }}>
-                    <Input style={{ width: "100%", marginTop: 16 }}
+
+                    <Button
+                        style={{ marginRight: 8 }}
+                        onClick={() => callSetURI("https://ipfs.io/ipfs/" + ipfsHash + "/")}
+                        loading={sending}          
+                        size="large"
+                        shape="round"
+                    >
+                        <span style={{ marginRight: 8 }}>
+                            <span role="img" aria-label="fuelpump">
+                                📜
+                            </span>
+                        </span>
+                        Set Base URI
+                    </Button>
+                </span>
+            </div>   
+
+            <div style={{ paddingBottom: 8 }}>
+
+                <div style={{ paddingBottom: 8 }}>
+                    <b>[5] </b> 
+                    Finally, input the amount to mint below and press <BankOutlined/>. Go to <b>MyCollectibles</b> to see your NFTs!
+                </div>
+            </div>
+
+            <div style={{ paddingBottom: 16, paddingTop: 16 }} >
+                <span style={{ width: "100%" }}>
+                    <Input style={{ width: "100%", marginTop: 16, marginBottom: 150 }}
                         size="large"
                         placeholder={"amount to mint"}
                         onChange={e => {
+                            setMintAmount(e.target.value);
                         }}
                         suffix={
                             <Tooltip title="Mint: Mint the specified quantity to current wallet.">
                                 <Button
-                                    onClick={() => {
-                                    }}
+                                    onClick={() => 
+                                        callMintMultiple(parseInt(mintAmount))
+                                    }
                                     shape="circle"
                                     icon={<BankOutlined />}
                                 />
@@ -274,8 +307,6 @@ export default function AvatarMinter() {
                     />
                 </span>
             </div>                  
-
-
         </div>
 
     );

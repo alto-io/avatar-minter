@@ -52,7 +52,6 @@ const useAvatar = (props) => {
     var tempPartsList = { "PartsList": {} }
 
     useEffect(() => {
-
         getAvatar();
     }, [props]);
 

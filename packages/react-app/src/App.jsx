@@ -403,6 +403,15 @@ function App(props) {
 
   const [transferToAddresses, setTransferToAddresses] = useState({});
 
+  const callSetURI = async (newURI) => {
+    tx(writeContracts.YourCollectible.setURI(newURI));
+  }
+
+  const callMintMultiple = async (amount) => {
+    console.log(address, amount);
+    tx(writeContracts.YourCollectible.mintMultiple(address, amount));
+  }
+
   return (
     <div className="App">
       {/* ✏️ Edit the header and change the title to your project name */}
@@ -577,7 +586,7 @@ function App(props) {
           </Route>
 
           <Route path="/avatarminter">
-            <AvatarMinter />
+            <AvatarMinter callSetURI={callSetURI} callMintMultiple={callMintMultiple}/>
           </Route>
 
           <Route path="/ipfsup">
