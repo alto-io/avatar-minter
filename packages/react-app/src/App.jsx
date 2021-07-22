@@ -459,6 +459,7 @@ function App(props) {
               Avatar Minter
             </Link>
           </Menu.Item>
+{/*
           <Menu.Item key="/ipfsup">
             <Link
               onClick={() => {
@@ -479,16 +480,7 @@ function App(props) {
               IPFS Download
             </Link>
           </Menu.Item>
-          <Menu.Item key="/debugcontracts">
-            <Link
-              onClick={() => {
-                setRoute("/debugcontracts");
-              }}
-              to="/debugcontracts"
-            >
-              Debug Contracts
-            </Link>
-          </Menu.Item>
+*/}
           <Menu.Item key="/clawgame">
             <Link
               onClick={() => {
@@ -499,6 +491,18 @@ function App(props) {
               Claw Game
             </Link>
           </Menu.Item>
+
+          <Menu.Item key="/debugcontracts">
+            <Link
+              onClick={() => {
+                setRoute("/debugcontracts");
+              }}
+              to="/debugcontracts"
+            >
+              Debug Contracts
+            </Link>
+          </Menu.Item>
+
         </Menu>
 
         <Switch>
