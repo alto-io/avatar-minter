@@ -1,16 +1,16 @@
-# 🏗 Scaffold-ETH - 🎟 Simple NFT Example
+# 🕹 Game-Legos - 🎭 Avatar Example
 
-> Build, mint, and send around your own ERC721!
+> Create generative ERC-721 NFT Avatars!
 
 # 🏃‍♀️ Quick Start
 Required: [Node](https://nodejs.org/dist/latest-v12.x/) plus [Yarn](https://classic.yarnpkg.com/en/docs/install/#mac-stable) and [Git](https://git-scm.com/downloads)
 
 ```
-git clone https://github.com/austintgriffith/scaffold-eth.git simple-nft-example
+git clone https://github.com/alto-io/game-legos.git avatar
 ```
 ```
-cd simple-nft-example
-git checkout simple-nft-example
+cd avatar
+git checkout avatar
 yarn install
 yarn start
 ```
@@ -18,31 +18,39 @@ yarn start
 > in a second terminal window:
 
 ```
-cd simple-nft-example
+cd avatar
 yarn chain
 ```
 
 > in a third terminal window:
 
 ```
-cd simple-nft-example
+cd avatar
 yarn deploy
 ```
 
 📱 Open http://localhost:3000 to see the app
 
-> ✏️ Edit the mint script mint.js in packages/hardhat/scripts and update the toAddress to your frontend address (wallet address in the top right or localhost:3000).
+👤 The best way to test game-legos locally is by creating a separate test account with its own test wallet on Chrome. Create an account by clicking here:
 
-![nft1](https://user-images.githubusercontent.com/526558/124386962-37e5dd00-dcb3-11eb-911e-0afce760d7ee.png)
+![profile](images/profile.jpg)
 
-> in a terminal window run the mint script:
+
+🦊 The localhost example uses the default hardhat mnemonic as the contract owner and deployer. Import it into metamask and connect your wallet to the app:
+
 ```
-yarn mint
+test test test test test test test test test test test junk
 ```
-![nft2](https://user-images.githubusercontent.com/526558/124386972-3d432780-dcb3-11eb-933e-dad7dfd313b2.png)
 
-👀 You should see your collectibles show up if you minted to the correct address:
+🏦 On the web app, Go to the `Avatar Minter` page and follow the steps.
 
+
+👀 If successful you should see your collectibles show in `Your Collectibles`:
+
+![images](images/collectibles.jpg)
+
+
+<!--
 ![nft3](https://user-images.githubusercontent.com/526558/124386983-48965300-dcb3-11eb-88a7-e88ad6307976.png)
 
 👛 Open an incognito window and navigate to http://localhost:3000 (You'll notice it has a new wallet address).
@@ -161,3 +169,5 @@ For a more in-depth explanation, documentation, quick start guide, tutorials, ti
 # 💬 Support Chat
 
 Join the telegram [support chat 💬](https://t.me/joinchat/KByvmRe5wkR-8F_zz6AjpA) to ask questions and find others building with 🏗 scaffold-eth!
+
+-->
