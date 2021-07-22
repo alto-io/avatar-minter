@@ -50,6 +50,10 @@ test test test test test test test test test test test junk
 ![images](images/collectibles.jpg)
 
 
+# Documentation
+
+[Game Lego NFT Avatars](https://github.com/polats/game-lego-nft-avatars) - More info on how the avatars are generated
+
 <!--
 ![nft3](https://user-images.githubusercontent.com/526558/124386983-48965300-dcb3-11eb-88a7-e88ad6307976.png)
 
