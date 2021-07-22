@@ -20,7 +20,7 @@ export const canvasWidth = 400;
 export const canvasHeight = 400;
 const ipfsAPI = require("ipfs-http-client");
 const ipfs = ipfsAPI({ host: "ipfs.infura.io", port: "5001", protocol: "https" });
-
+const all = require('it-all')
 
 const useAvatar = (props) => {
 
@@ -34,6 +34,8 @@ const useAvatar = (props) => {
     const [mintingConfig, setMintingConfig] = useState(
         {
             "amountToCreate": 2,
+            "description": "An avatar for the open metaverse!",
+            "external_url": "https://kernel.community/en/track-gaming/module-1",
             "initialized": false
         }
     )
@@ -41,7 +43,7 @@ const useAvatar = (props) => {
 
     const [metadataJson, setMetadataJson] = useState({ "tokenMetadata": {} });
     
-    const [uploadedTokenURI, setUploadedTokenURI] = useState({ });
+    const [uploadedTokenURI, setUploadedTokenURI] = useState({"tokenURI": {}});
     
     const [ipfsHash, setIpfsHash] = useState();
 
@@ -69,7 +71,7 @@ const useAvatar = (props) => {
 
         const ipfsHash = await drawMiniAvatar(index + 1, amountToCreate, true);
 
-        console.log(ipfsHash);
+        return ipfsHash;
     }
 
     async function refreshProjectLayers(project, metadata) {
@@ -108,31 +110,48 @@ const useAvatar = (props) => {
                 
         var tokenMetadata = metadataJson.tokenMetadata;
 
+        var files = []
+        var tokenURIArray = []
+
+        const IMAGE_BASE_URI = "https://ipfs.io/ipfs/";
+        const NAME_BASE = "Avatar "
+
         // redraw avatar from metadata json       
         for (var i = 0; i < tokenMetadata.length; i++) {
-            await drawAvatarFromMetadata(tokenMetadata[i], i, tokenMetadata.length);
+            var ipfsHash = await drawAvatarFromMetadata(tokenMetadata[i], i, tokenMetadata.length);
+
+            // move token metadata to attributes (for opensea)
+            var attrib = tokenMetadata[i].Root;
+            
+            // generate the token URI
+            var tokenURI = {
+                name: NAME_BASE + (i + 1),
+                description: mintingConfig.description,
+                external_url: mintingConfig.external_url,
+                image: IMAGE_BASE_URI + ipfsHash,
+                attributes: attrib
+            }
+
+            tokenURIArray.push(tokenURI);
+
+            var tempTokenURI = {
+                "tokenURI": tokenURIArray
+            }
+
+            setUploadedTokenURI(tempTokenURI);
+            
+            files.push(
+                {
+                    path: "/tmp/" + (i + 1),
+                    content: JSON.stringify(tokenURI)
+                }
+            )
+
         } 
+         
+          const cid = (await all(ipfs.addAll(files))).pop().cid.string;
 
-        // // upload images on IPFS
-        // console.log(metadataJson);
-        // var file = new File(["foo"], "foo.txt", {
-        //     type: "text/plain",
-        //   });
-        // setIpfsHash();
-        // ipfs.add()
-        // generate token URI JSON File
-
-        // call setTokenURI
-
-        // console.log("UPLOADING...", yourJSON);
-        //     setSending(true);
-        //     const result = await ipfs.add(JSON.stringify(yourJSON)); // addToIPFS(JSON.stringify(yourJSON))
-        //     if (result && result.path) {
-        //       setIpfsHash(result.path);
-        //     }
-        //     setSending(false);
-        //     console.log("RESULT:", result);
-        //   }        
+          setIpfsHash(cid);
     }
 
     const getAvatar = async () => {
@@ -425,7 +444,7 @@ const useAvatar = (props) => {
 
     return [canvasRef, canvasWidth, canvasHeight, 
         setNewAvatar, getMintingConfig, generateMetadataJson, 
-        setMintingConfig, metadataJson, uploadedTokenURI, startIPFSUpload]
+        setMintingConfig, metadataJson, uploadedTokenURI, startIPFSUpload, ipfsHash]
 };
 
 export default useAvatar;

@@ -42,14 +42,14 @@ import ReactJson from "react-json-view";
 
 // if initialized == false, use INIT_CONFIG. Otherwise specify config info here
 const STARTING_CONFIG_JSON = {
-    "amountToCreate": 2,
     "initialized": false
 };
 
 export default function AvatarMinter() {
 
     const [canvasRef, canvasWidth, canvasHeight, setNewAvatar, getMintingConfig, 
-           generateMetadataJson, setMintingConfig, metadataJson, uploadedTokenURI, startIPFSUpload] = useAvatar();
+           generateMetadataJson, setMintingConfig, metadataJson, uploadedTokenURI, 
+           startIPFSUpload, ipfsHash] = useAvatar();
     const [mintingConfigJSON, setMintingConfigJSON] = useState(STARTING_CONFIG_JSON);
 
     const [sending, setSending] = useState();
@@ -234,7 +234,15 @@ export default function AvatarMinter() {
                     theme="pop"
                     enableClipboard={false}
                     onEdit={false}
+                    collapsed={2}
                 />
+            </div>
+
+            
+            <div style={{ padding: 16, paddingBottom: 150 }}>
+                <a href={"https://ipfs.io/ipfs/" + ipfsHash} target="_blank">
+                    IPFS Hash: {ipfsHash}
+                </a>
             </div>
 
             <div style={{ paddingBottom: 8 }}>
