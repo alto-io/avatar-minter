@@ -30,6 +30,7 @@ const useAvatar = (props) => {
     const project = new jsora.JSOra();
     var rend;
 
+    const [baseClassArray, setBaseClassArray] = useState([]);
     const [randomConfig, setRandomConfig] = useState({ "Root": {} });
     const [mintingConfig, setMintingConfig] = useState(
         {
@@ -352,25 +353,43 @@ const useAvatar = (props) => {
     
     async function randomizeHiddenParts() {
 
-        function traverse(jsonObj, parent) {
+        function traverse(jsonObj, parent, hideAll) {
             if (jsonObj !== null && typeof jsonObj == "object") {
                 Object.entries(jsonObj).forEach(([key, value]) => {
                     // key is either an array index or object key
                     var parentTrace = parent === "" ? key : parent + "/" + key
-                    traverse(value, parentTrace);
+                    traverse(value, parentTrace, hideAll);
                 });
             }
             else {
-                randomizePart(parent + "//" + jsonObj)
+                randomizePart(parent + "//" + jsonObj, hideAll)
             }
         }
-        traverse(randomConfig, "");
+
+        var baseClass = baseClassArray[Math.floor(Math.random()*baseClassArray.length)];
+
+        Object.entries(randomConfig.Root).forEach(([key, value]) => {
+            var path = "Root/" + key;
+            var hideAll = true;
+
+            if (key === baseClass) {
+                hideAll = false;
+                
+            }
+
+            if (key != "IGNORE") {
+                traverse(value, path, hideAll);
+                project.get_by_path("/" + key).hidden = hideAll;
+            }
+        });
+
     }
 
     // TODO: We assume some layer properties and layer depth here.
     // we should remove these assumptions and encode part properties on layer name (is it nullable, etc)
-    function randomizePart(partString) {
-        var currentPart = partString.split("//")[1];
+    function randomizePart(partString, hideAll) {
+
+        // var currentPart = partString.split("//")[1];
         var path = "/" + partString.split("Root/")[1].split("//")[0];
         var partType = path.split("/")[1];
 
@@ -391,20 +410,44 @@ const useAvatar = (props) => {
             child.hidden = true;
         }
 
+        if (hideAll) {
+            return;
+        }
+
         // unhide one part (with accessory check)
         if (randomPartIndex != layer.children.length) {
+
+            // console.log( layer.children[randomPartIndex].name)
+
             layer.children[randomPartIndex].hidden = false;
         }
     }    
 
     async function getAvatarConfiguration(project) {
 
+        // get base classes
+        getBaseClasses(project);
+
         // extract avatar format from layers
         recurseOverChildren(project, "Root");
+
+    }
+
+    function getBaseClasses(obj) {
+        var tempBaseClassArray = [];
+        for (let child of obj.children) {
+            if (child.name != "IGNORE") {
+                tempBaseClassArray.push(child.name);
+            }
+        }
+        setBaseClassArray(tempBaseClassArray);
     }
 
     function recurseOverChildren(obj, parent) {
         for (let child of obj.children) {
+            if (child.name === "IGNORE") {
+                continue;
+            }
 
             if (child.children != undefined) {
                 recurseOverChildren(child, parent + "." + child.name)
