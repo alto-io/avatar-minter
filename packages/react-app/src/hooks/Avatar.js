@@ -377,9 +377,9 @@ const useAvatar = (props) => {
                 
             }
 
-            if (key != "IGNORE") {
+            if (!key.includes("IGNORE")) {
                 traverse(value, path, hideAll);
-                project.get_by_path("/" + key).hidden = hideAll;
+                project.get_by_path("/" + key).hidden = (hideAll && !key.includes("UNIVERSAL"));
             }
         });
 
@@ -393,14 +393,18 @@ const useAvatar = (props) => {
         var path = "/" + partString.split("Root/")[1].split("//")[0];
         var partType = path.split("/")[1];
 
+        console.log(partString)
         // get node in open-raster project
         var layer = project.get_by_path(path);
 
-        // accessories are optional
-        var isAccessory = partType === "Accessories";
+        // disable accessories check
+        // // accessories are optional
+        // var isAccessory = partType === "Accessories";
 
-        // if accessory, last option means no accessory is chosen
-        var totalOptions = isAccessory ? layer.children.length + 1 : layer.children.length
+        // // if accessory, last option means no accessory is chosen
+        // var totalOptions = isAccessory ? layer.children.length + 1 : layer.children.length
+
+        var totalOptions = layer.children.length;
 
         // randomize a number
         var randomPartIndex = Math.floor(Math.random() * totalOptions);
@@ -410,7 +414,7 @@ const useAvatar = (props) => {
             child.hidden = true;
         }
 
-        if (hideAll) {
+        if (hideAll && !partString.includes("UNIVERSAL")) {
             return;
         }
 
@@ -436,7 +440,7 @@ const useAvatar = (props) => {
     function getBaseClasses(obj) {
         var tempBaseClassArray = [];
         for (let child of obj.children) {
-            if (child.name != "IGNORE") {
+            if (!child.name.includes("IGNORE") && !child.name.includes("UNIVERSAL")) {
                 tempBaseClassArray.push(child.name);
             }
         }
