@@ -393,7 +393,6 @@ const useAvatar = (props) => {
         var path = "/" + partString.split("Root/")[1].split("//")[0];
         var partType = path.split("/")[1];
 
-        console.log(partString)
         // get node in open-raster project
         var layer = project.get_by_path(path);
 
