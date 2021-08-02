@@ -362,7 +362,26 @@ const useAvatar = (props) => {
                 });
             }
             else {
+
+
+                // if layer name includes OPTIONAL_%, do a randomization
+                var optional_percent = 1.1;
+
+                if (parent.includes("OPTIONAL"))
+                {
+                    var i = parent.lastIndexOf("OPTIONAL_") + "OPTIONAL_".length;
+                    var j = parent.lastIndexOf("%") + 1;
+                    optional_percent = parseFloat(parent.substring(i,j))/100.0;    
+                }
+
+                if (Math.random() >= optional_percent) {
+                    // console.log("hide: " + (parent + "/" + jsonObj));
+                    project.get_by_path(parent.split("Root/")[1] + "/" + jsonObj).hidden = true;
+                }
+                
+                else {
                 randomizePart(parent + "//" + jsonObj, hideAll)
+                }
             }
         }
 
