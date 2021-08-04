@@ -52,6 +52,8 @@ const useAvatar = (props) => {
 
     var tempPartsList = { "PartsList": {} }
 
+    var requiredPartsList = [];
+
     useEffect(() => {
         getAvatar();
     }, [props]);
@@ -353,6 +355,8 @@ const useAvatar = (props) => {
     
     async function randomizeHiddenParts() {
 
+        requiredPartsList = [];
+
         function traverse(jsonObj, parent, hideAll) {
             if (jsonObj !== null && typeof jsonObj == "object") {
                 Object.entries(jsonObj).forEach(([key, value]) => {
@@ -401,12 +405,10 @@ const useAvatar = (props) => {
                 project.get_by_path("/" + key).hidden = (hideAll && !key.includes("UNIVERSAL"));
             }
         });
-
     }
 
-    // TODO: We assume some layer properties and layer depth here.
-    // we should remove these assumptions and encode part properties on layer name (is it nullable, etc)
     function randomizePart(partString, hideAll) {
+
 
         // var currentPart = partString.split("//")[1];
         var path = "/" + partString.split("Root/")[1].split("//")[0];
@@ -414,13 +416,6 @@ const useAvatar = (props) => {
 
         // get node in open-raster project
         var layer = project.get_by_path(path);
-
-        // disable accessories check
-        // // accessories are optional
-        // var isAccessory = partType === "Accessories";
-
-        // // if accessory, last option means no accessory is chosen
-        // var totalOptions = isAccessory ? layer.children.length + 1 : layer.children.length
 
         var totalOptions = layer.children.length;
 
@@ -432,6 +427,16 @@ const useAvatar = (props) => {
             child.hidden = true;
         }
 
+        // if a part is part of required list, unhide it and exit function
+        for (var child of layer.children) {
+            if (requiredPartsList.includes(child.name)) {
+                child.hidden = false;
+                return;
+            }
+            
+        }
+
+        // don't show a part if hideAll is true, unless layer is UNIVERSAL
         if (hideAll && !partString.includes("UNIVERSAL")) {
             return;
         }
@@ -440,10 +445,53 @@ const useAvatar = (props) => {
         if (randomPartIndex != layer.children.length) {
 
             // console.log( layer.children[randomPartIndex].name)
-
             layer.children[randomPartIndex].hidden = false;
+
+            // check if the part requires other parts unhidden
+            checkRequiredParts(layer.children[randomPartIndex].name);
+
         }
     }    
+
+    function checkRequiredParts(partString) {
+        var splitStringArray = partString.split(" ");
+
+        for (var i = 0; i < splitStringArray.length; i++) {
+            if (splitStringArray[i] === "REQUIRES") {
+
+                var requiredPart = splitStringArray[i+1];
+
+                // save required parts parent so they can be overridden
+                requiredPartsList.push(requiredPart);
+
+
+                i++;
+            }
+        }
+    }
+
+    function findPartFromProject(partName) {
+        return recursivelyFindPart(project, "Root", partName);
+    }
+
+    function recursivelyFindPart(obj, parent, partName) {
+        var node = undefined;
+
+        for (let child of obj.children) {
+            if (child.children != undefined) {
+                node = recursivelyFindPart(child, parent + "." + child.name, partName)
+
+                if (node != undefined) {
+                    return node;
+                }
+
+            } else {
+                if (child.name === partName) {
+                    return child;
+                }
+            }
+        }
+    }
 
     async function getAvatarConfiguration(project) {
 
