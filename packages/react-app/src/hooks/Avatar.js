@@ -53,6 +53,8 @@ const useAvatar = (props) => {
     var tempPartsList = { "PartsList": {} }
 
     var requiredPartsList = [];
+    var selectedClasses = [];
+    var currentRandomConfig = { "Root": {} };
 
     useEffect(() => {
         getAvatar();
@@ -157,24 +159,35 @@ const useAvatar = (props) => {
     }
 
     const getAvatar = async () => {
-            
-        setRandomConfig({ "Root": {} });
+
+        currentRandomConfig = { "Root": {} };
+
+        // setRandomConfig({ "Root": {} });
 
         await loadProject();
 
         rend = new jsora.Renderer(project);
 
-        // first time to retrieve default config from project 
         await getAvatarConfiguration(project);
-
+        await hideLayersRecursively(project, "Root");
         await randomizeHiddenParts();
 
-        // // second time to retrieve new random parts
-        await getAvatarConfiguration(project);
+        setRandomConfig(currentRandomConfig);
 
         await drawAvatar();
         
     };
+
+    function hideLayersRecursively(obj, parent) {
+        for (let child of obj.children) {
+
+            child.hidden = !child.name.includes("UNIVERSAL");
+
+            if (child.children != undefined) {
+                hideLayersRecursively(child, parent + "." + child.name)
+            } 
+        }
+    }
 
     async function drawAvatar() {
         const canvasObj = canvasRef.current;
@@ -361,12 +374,16 @@ const useAvatar = (props) => {
             if (jsonObj !== null && typeof jsonObj == "object") {
                 Object.entries(jsonObj).forEach(([key, value]) => {
                     // key is either an array index or object key
-                    var parentTrace = parent === "" ? key : parent + "/" + key
+                    var parentTrace = parent === "" ? key : parent + "/" + key;
+
+                    if (key != "Root") {
+                        findPartFromProject(key).hidden = false;
+                    }
+
                     traverse(value, parentTrace, hideAll);
                 });
             }
             else {
-
 
                 // if layer name includes OPTIONAL_%, do a randomization
                 var optional_percent = 1.1;
@@ -380,7 +397,7 @@ const useAvatar = (props) => {
 
                 if (Math.random() >= optional_percent) {
                     // console.log("hide: " + (parent + "/" + jsonObj));
-                    project.get_by_path(parent.split("Root/")[1] + "/" + jsonObj).hidden = true;
+                    project.get_by_path(parent.split("Root/Root")[1] + "/" + jsonObj).hidden = true;
                 }
                 
                 else {
@@ -389,29 +406,28 @@ const useAvatar = (props) => {
             }
         }
 
-        var baseClass = baseClassArray[Math.floor(Math.random()*baseClassArray.length)];
+        traverse(randomConfig, "Root", false);
 
-        Object.entries(randomConfig.Root).forEach(([key, value]) => {
-            var path = "Root/" + key;
-            var hideAll = true;
+        // Object.entries(randomConfig.Root).forEach(([key, value]) => {
+        //     var path = "Root/" + key;
+        //     var hideAll = true;
 
-            if (key === baseClass) {
-                hideAll = false;
+        //     if (key === baseClass) {
+        //         hideAll = false;
                 
-            }
+        //     }
 
-            if (!key.includes("IGNORE")) {
-                traverse(value, path, hideAll);
-                project.get_by_path("/" + key).hidden = (hideAll && !key.includes("UNIVERSAL"));
-            }
-        });
+        //     if (!key.includes("IGNORE")) {
+        //         traverse(value, path, hideAll);
+        //         project.get_by_path("/" + key).hidden = (hideAll && !key.includes("UNIVERSAL"));
+        //     }
+        // });
     }
 
     function randomizePart(partString, hideAll) {
 
-
         // var currentPart = partString.split("//")[1];
-        var path = "/" + partString.split("Root/")[1].split("//")[0];
+        var path = partString.split("Root/Root")[1].split("//")[0];
         var partType = path.split("/")[1];
 
         // get node in open-raster project
@@ -477,7 +493,13 @@ const useAvatar = (props) => {
     function recursivelyFindPart(obj, parent, partName) {
         var node = undefined;
 
+
         for (let child of obj.children) {
+
+            if (child.name === partName) {
+                return child;
+            }
+    
             if (child.children != undefined) {
                 node = recursivelyFindPart(child, parent + "." + child.name, partName)
 
@@ -495,22 +517,39 @@ const useAvatar = (props) => {
 
     async function getAvatarConfiguration(project) {
 
-        // get base classes
-        getBaseClasses(project);
+        // randomize over classes
+        getRandomClasses();
 
         // extract avatar format from layers
-        recurseOverChildren(project, "Root");
-
+        recurseOverChildren(project, "Root");        
     }
 
-    function getBaseClasses(obj) {
-        var tempBaseClassArray = [];
-        for (let child of obj.children) {
-            if (!child.name.includes("IGNORE") && !child.name.includes("UNIVERSAL")) {
-                tempBaseClassArray.push(child.name);
+    function getRandomClasses() {
+
+        var tempClassArray = [];        
+        var classNode = project;
+
+        while (classNode != null && classNode.children != undefined) {
+            var classArray = [];
+
+            for (let child of classNode.children) {
+                if (child.name.includes("CLASS")) {
+                    classArray.push(child);
+                }
+            }
+
+            if (classArray.length > 0)
+            {
+                var selectedClass = classArray[Math.floor(Math.random()*classArray.length)];
+                tempClassArray.push(selectedClass.name);
+                classNode = selectedClass;
+            } 
+            else {
+                classNode = null;
             }
         }
-        setBaseClassArray(tempBaseClassArray);
+
+        selectedClasses = tempClassArray;
     }
 
     function recurseOverChildren(obj, parent) {
@@ -519,19 +558,27 @@ const useAvatar = (props) => {
                 continue;
             }
 
+            if (child.name.includes("CLASS") && !selectedClasses.includes(child.name)) {
+                continue;
+            }
+
+
             if (child.children != undefined) {
                 recurseOverChildren(child, parent + "." + child.name)
             } else {
-                if (!child.hidden) {
-                    addToConfig(parent + "." + child.name);
-                }
+                addToConfig(parent + "." + child.name);
             }
         }
     }
 
     function addToConfig(partString) {
         var objectToAdd = recursivelyCreateNodes(partString.split(".").reverse());
-        setRandomConfig(_.merge(randomConfig, objectToAdd));
+        // setRandomConfig(_.merge(randomConfig, objectToAdd));
+        
+        currentRandomConfig = _.merge(currentRandomConfig, objectToAdd);
+
+        // setRandomConfig(_.merge(randomConfig, objectToAdd));
+
     }
 
     function recursivelyCreateNodes(partArray) {
