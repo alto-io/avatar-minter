@@ -198,11 +198,10 @@ const useAvatar = (props) => {
         const ctx1 = canvas1.getContext("2d");
         var newCanvas = await renderAvatar();
 
-        ctx1.clearRect(0, 0, newCanvas.width, newCanvas.height);
+       /*  ctx1.clearRect(0, 0, newCanvas.width, newCanvas.height);
+        ctx1.drawImage(newCanvas, 0, 0); */
 
-        ctx1.drawImage(newCanvas, 0, 0);
-
-       /*  var head = new Image(newCanvas.width, newCanvas.height);
+        var head = new Image(newCanvas.width, newCanvas.height);
         head.src = getHeadValue();
         function getHeadValue() {
             for (let i = 0; i < dataParts.length; i++) {
@@ -255,10 +254,7 @@ const useAvatar = (props) => {
                 };
             }
 
-            ctx1.drawImage(newCanvas, 0, 0);
-            ctx1.drawImage(canvas2, 0, 0);
-
-        }; */
+        };
 
             
     }
