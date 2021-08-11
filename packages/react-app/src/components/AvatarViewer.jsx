@@ -5,6 +5,9 @@ import { useAvatar } from "../hooks";
 
 import ReactJson from "react-json-view";
 
+import { ColorPicker, useColor } from "react-color-palette";
+import "react-color-palette/lib/css/styles.css";
+
 /*
   ~ What it does? ~
 
@@ -36,15 +39,16 @@ import ReactJson from "react-json-view";
 
 const STARTING_CONFIG_JSON = {
     "Getting Started": "Press ( 😀 New Avatar ), this JSON view will contain the avatar's config.json once it's been loaded."
-  };
-  
+};
+
 export default function AvatarViewer() {
 
     const [configJSON, setConfigJSON] = useState(STARTING_CONFIG_JSON);
-    const [canvasRef, canvasWidth, canvasHeight, setNewAvatar] = useAvatar();
+    const [canvasRef, canvasDraw, canvasWidth, canvasHeight, setNewAvatar] = useAvatar();
+    const [color, setColor] = useColor("hex", "#121212");
 
     const handleClickNewAvatarButton = async (event) => {
-        setConfigJSON(await setNewAvatar()); 
+        setConfigJSON(await setNewAvatar(color));
     }
 
     return (
@@ -64,12 +68,19 @@ export default function AvatarViewer() {
                 </Button>
             </div>
 
-            <div 
-                style= {{"display":"flex", "flex-direction": "row"}}>
+            <div
+                style={{ "display": "flex", "flex-direction": "row" }}>
                 <div>
                     <canvas
                         className="Avatar-canvas"
                         ref={canvasRef}
+                        width={canvasWidth}
+                        height={canvasHeight}
+                    />
+                    <ColorPicker width={400} height={100} color={color} onChange={setColor} hideHSV dark />
+                    <canvas
+                        className="Avatar-canvas"
+                        ref={canvasDraw}
                         width={canvasWidth}
                         height={canvasHeight}
                     />

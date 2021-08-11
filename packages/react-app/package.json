@@ -44,6 +44,7 @@
     "qrcode.react": "^1.0.0",
     "react": "^16.14.0",
     "react-blockies": "^1.4.1",
+    "react-color-palette": "^6.1.0",
     "react-css-theme-switcher": "^0.2.2",
     "react-dom": "^16.14.0",
     "react-json-view": "^1.21.1",
