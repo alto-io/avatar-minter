@@ -17803,6 +17803,11 @@ react-blockies@^1.4.1:
   dependencies:
     prop-types "^15.5.10"
 
+react-color-palette@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/react-color-palette/-/react-color-palette-6.1.0.tgz#1b3ba6212b54bacaed4f82c972576656bfd14406"
+  integrity sha512-Bj3qcKg5jLwpFmNYDsV6x+ZpUmBrkOAvxMFktGsaHr36qMUA2Wq6R5ltrjGlvp+iAw2+MMcI6PnEmUhE0gmrMA==
+
 react-css-theme-switcher@^0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/react-css-theme-switcher/-/react-css-theme-switcher-0.2.2.tgz#7741de2f8acd9a12c24b84be641a94335f401db7"
