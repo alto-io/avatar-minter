@@ -5,9 +5,6 @@ import { useAvatar } from "../hooks";
 
 import ReactJson from "react-json-view";
 
-import { ColorPicker, useColor } from "react-color-palette";
-import "react-color-palette/lib/css/styles.css";
-
 /*
   ~ What it does? ~
 
@@ -38,27 +35,32 @@ import "react-color-palette/lib/css/styles.css";
 */
 
 const STARTING_CONFIG_JSON = {
-    "Getting Started": "Press ( 😀 New Avatar ), this JSON view will contain the avatar's config.json once it's been loaded."
+    "Getting Started":
+        "Press ( 😀 New Avatar ), this JSON view will contain the avatar's config.json once it's been loaded.",
 };
 
 export default function AvatarViewer() {
-
     const [configJSON, setConfigJSON] = useState(STARTING_CONFIG_JSON);
-    const [canvasRef, canvasDraw, canvasWidth, canvasHeight, setNewAvatar] = useAvatar();
-    const [color, setColor] = useColor("hex", "#121212");
+    const [canvasRef, dataParts, infoDataParts, setInfoDataParts, changeAvatarColor,/*  canvasDraw,  canvasDraw1, */ canvasWidth, canvasHeight, setNewAvatar] = useAvatar();
 
-    const handleClickNewAvatarButton = async (event) => {
-        setConfigJSON(await setNewAvatar(color));
+    console.log("your parts", dataParts);
+
+    const handleClickNewAvatarButton = async event => {
+        setConfigJSON(await setNewAvatar());
+        //console.log(infoDataParts, "-------------------------------------");
+    };
+
+    function changeItemColor(i, color, e) {
+        //console.log(e);
+        dataParts[i].color = color;
+        //setInfoDataParts(dataParts);
+        changeAvatarColor(dataParts);
     }
 
     return (
         <div style={{ paddingTop: 32, width: 740, margin: "auto", textAlign: "left" }}>
             <div>
-                <Button
-                    onClick={handleClickNewAvatarButton}
-                    size="large"
-                    shape="round"
-                >
+                <Button onClick={handleClickNewAvatarButton} size="large" shape="round">
                     <span style={{ marginRight: 8 }}>
                         <span role="img" aria-label="fuelpump">
                             😀
@@ -68,22 +70,21 @@ export default function AvatarViewer() {
                 </Button>
             </div>
 
-            <div
-                style={{ "display": "flex", "flex-direction": "row" }}>
+            <div style={{ display: "flex", "flex-direction": "row" }}>
                 <div>
-                    <canvas
-                        className="Avatar-canvas"
-                        ref={canvasRef}
-                        width={canvasWidth}
-                        height={canvasHeight}
-                    />
-                    <ColorPicker width={400} height={100} color={color} onChange={setColor} hideHSV dark />
-                    <canvas
-                        className="Avatar-canvas"
-                        ref={canvasDraw}
-                        width={canvasWidth}
-                        height={canvasHeight}
-                    />
+                    <canvas className="Avatar-canvas" ref={canvasRef} width={canvasWidth} height={canvasHeight} />
+                    <ul>
+                        {infoDataParts.map((item, index) => (
+                            <ul>
+                            <li>{item.name}</li>
+                            <li >{item.color}</li>
+                            <input type="color" value={item.color} onChange={e => changeItemColor(index, e.target.value, item)} />
+                            <p></p>
+                            <p></p>
+                            <p></p>
+                            </ul>
+                        ))}
+                    </ul>
                 </div>
                 <ReactJson
                     style={{ padding: 8 }}
@@ -102,6 +103,5 @@ export default function AvatarViewer() {
                 />
             </div>
         </div>
-
     );
 }

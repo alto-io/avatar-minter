@@ -20,10 +20,14 @@ export const canvasWidth = 400;
 export const canvasHeight = 400;
 const ipfsAPI = require("ipfs-http-client");
 const ipfs = ipfsAPI({ host: "ipfs.infura.io", port: "5001", protocol: "https" });
-const all = require('it-all')
+const all = require("it-all");
 
-const useAvatar = (props) => {
+var dataParts = [];
+var colors = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#00FFFF", "#FF00FF", "#FFA500", "#FF69B4", "#DAA520", "#B22222", "#F0FFF0", "#C0C0C0", "#00FF00", "#808000", "#FF6347"];
+var currentColor = "#FF00FF";
+var currentColor1 = "#0000FF";
 
+const useAvatar = props => {
     // load jsora and lodash
     const jsora = window.jsora;
     const _ = window._;
@@ -31,34 +35,32 @@ const useAvatar = (props) => {
     var rend;
 
     const [baseClassArray, setBaseClassArray] = useState([]);
-    const [randomConfig, setRandomConfig] = useState({ "Root": {} });
-    const [mintingConfig, setMintingConfig] = useState(
-        {
-            "amountToCreate": 2,
-            "description": "An avatar for the open metaverse!",
-            "external_url": "https://kernel.community/en/track-gaming/module-1",
-            "initialized": false
-        }
-    )
-    const [partsList, setPartsList] = useState({ "PartsList": {} });
+    const [randomConfig, setRandomConfig] = useState({ Root: {} });
+    const [mintingConfig, setMintingConfig] = useState({
+        amountToCreate: 2,
+        description: "An avatar for the open metaverse!",
+        external_url: "https://kernel.community/en/track-gaming/module-1",
+        initialized: false,
+    });
+    const [partsList, setPartsList] = useState({ PartsList: {} });
 
-    const [metadataJson, setMetadataJson] = useState({ "tokenMetadata": {} });
+    const [metadataJson, setMetadataJson] = useState({ tokenMetadata: {} });
 
-    const [uploadedTokenURI, setUploadedTokenURI] = useState({ "tokenURI": {} });
+    const [uploadedTokenURI, setUploadedTokenURI] = useState({ tokenURI: {} });
 
     const [ipfsHash, setIpfsHash] = useState();
 
     const canvasRef = useRef(null);
-    const canvasDraw = useRef(null);
+    /* const canvasDraw = useRef(null);
+    const canvasDraw1 = useRef(null); */
 
-    var dataParts = [];
-    var currentColor = "#FF00FF";
+    const [infoDataParts, setInfoDataParts] = useState([]);
 
-    var tempPartsList = { "PartsList": {} }
+    var tempPartsList = { PartsList: {} };
 
     var requiredPartsList = [];
     var selectedClasses = [];
-    var currentRandomConfig = { "Root": {} };
+    var currentRandomConfig = { Root: {} };
 
     useEffect(() => {
         getAvatar();
@@ -67,12 +69,10 @@ const useAvatar = (props) => {
     const loadProject = async () => {
         let loaded_file = await fetch(`avatars/AvatarImages.ora`).then(r => r.blob());
         await project.load(loaded_file);
-
-    }
+    };
 
     async function drawAvatarFromMetadata(metadata, index, amountToCreate) {
-
-        setRandomConfig({ "Root": {} });
+        setRandomConfig({ Root: {} });
 
         // unhide project layers according to metadata
         await refreshProjectLayers(project, metadata);
@@ -83,48 +83,43 @@ const useAvatar = (props) => {
     }
 
     async function refreshProjectLayers(project, metadata) {
-
         recurseOverMetadata(project, "Root", metadata);
     }
 
     function recurseOverMetadata(obj, parent, metadata) {
         for (let child of obj.children) {
-
             var fullName = parent + "." + child.name;
 
             if (child.children != undefined) {
-                recurseOverMetadata(child, fullName, metadata)
+                recurseOverMetadata(child, fullName, metadata);
             } else {
                 // unhide layers specified in metadata
                 if (_.get(metadata, parent) == child.name) {
                     child.hidden = false;
-                }
-                else {
+                } else {
                     child.hidden = true;
                 }
             }
         }
     }
 
-
     const startIPFSUpload = async () => {
-
         await loadProject();
         rend = new jsora.Renderer(project);
 
         const canvasObj = canvasRef.current;
-        const ctx = canvasObj.getContext('2d');
+        const ctx = canvasObj.getContext("2d");
         ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
         var tokenMetadata = metadataJson.tokenMetadata;
 
-        var files = []
-        var tokenURIArray = []
+        var files = [];
+        var tokenURIArray = [];
 
         const IMAGE_BASE_URI = "https://ipfs.io/ipfs/";
-        const NAME_BASE = "Avatar "
+        const NAME_BASE = "Avatar ";
 
-        // redraw avatar from metadata json       
+        // redraw avatar from metadata json
         for (var i = 0; i < tokenMetadata.length; i++) {
             var ipfsHash = await drawAvatarFromMetadata(tokenMetadata[i], i, tokenMetadata.length);
 
@@ -137,34 +132,30 @@ const useAvatar = (props) => {
                 description: mintingConfig.description,
                 external_url: mintingConfig.external_url,
                 image: IMAGE_BASE_URI + ipfsHash,
-                attributes: attrib
-            }
+                attributes: attrib,
+            };
 
             tokenURIArray.push(tokenURI);
 
             var tempTokenURI = {
-                "tokenURI": tokenURIArray
-            }
+                tokenURI: tokenURIArray,
+            };
 
             setUploadedTokenURI(tempTokenURI);
 
-            files.push(
-                {
-                    path: "/tmp/" + (i + 1),
-                    content: JSON.stringify(tokenURI)
-                }
-            )
-
+            files.push({
+                path: "/tmp/" + (i + 1),
+                content: JSON.stringify(tokenURI),
+            });
         }
 
         const cid = (await all(ipfs.addAll(files))).pop().cid.string;
 
         setIpfsHash(cid);
-    }
+    };
 
     const getAvatar = async () => {
-
-        currentRandomConfig = { "Root": {} };
+        currentRandomConfig = { Root: {} };
 
         // setRandomConfig({ "Root": {} });
 
@@ -179,29 +170,99 @@ const useAvatar = (props) => {
         setRandomConfig(currentRandomConfig);
 
         await drawAvatar();
-
     };
 
     function hideLayersRecursively(obj, parent) {
         for (let child of obj.children) {
-
             child.hidden = !child.name.includes("UNIVERSAL");
 
             if (child.children != undefined) {
-                hideLayersRecursively(child, parent + "." + child.name)
+                hideLayersRecursively(child, parent + "." + child.name);
             }
         }
     }
+
+
+    function changeAvatarColor(paramArray) {
+        const canvas1 = canvasRef.current;
+        const ctx1 = canvas1.getContext("2d");
+        var newCanvas = {width: 400, height: 400};
+
+        ctx1.clearRect(0, 0, newCanvas.width, newCanvas.height);
+        paramArray.sort((a, b) => a.zIndex - b.zIndex);
+        for (let i = 0; i < paramArray.length; i++) {
+            let currentImg = new Image(newCanvas.width, newCanvas.height);
+            currentImg.src = paramArray[i].value;
+            currentImg.onload = function () {
+                const currentCanvas = document.createElement('canvas');
+                currentCanvas.setAttribute("id", "currentCanvas" + i.toString());
+                const currentContext = currentCanvas.getContext("2d");
+                currentCanvas.width = newCanvas.width;
+                currentCanvas.height = newCanvas.height;
+                currentContext.clearRect(0, 0, newCanvas.width, newCanvas.height);
+                currentContext.drawImage(currentImg, 0, 0);
+                currentContext.globalCompositeOperation = "source-atop";
+                currentContext.fillStyle =  paramArray[i].color;
+                //console.log(paramArray[i].name, paramArray[i].zIndex, currentContext.fillStyle);
+                currentContext.fillRect(0, 0, newCanvas.width, newCanvas.height);
+                currentContext.globalCompositeOperation = "source-over";
+
+                ctx1.globalCompositeOperation = "source-over";
+                ctx1.drawImage(currentImg, 0, 0);
+                ctx1.globalCompositeOperation = "color";
+                ctx1.drawImage(currentCanvas, 0, 0);
+
+                currentCanvas.remove();
+            }
+        }
+
+        setInfoDataParts(paramArray);
+    }
+
 
     async function drawAvatar() {
         const canvas1 = canvasRef.current;
         const ctx1 = canvas1.getContext("2d");
         var newCanvas = await renderAvatar();
 
-        ctx1.clearRect(0, 0, newCanvas.width, newCanvas.height);
-        ctx1.drawImage(newCanvas, 0, 0); 
 
-        /*
+        ctx1.clearRect(0, 0, newCanvas.width, newCanvas.height);
+        dataParts.sort((a, b) => a.zIndex - b.zIndex);
+        for (let i = 0; i < dataParts.length; i++) {
+            let currentImg = new Image(newCanvas.width, newCanvas.height);
+            currentImg.src = dataParts[i].value;
+            currentImg.onload = function () {
+                const currentCanvas = document.createElement('canvas');
+                currentCanvas.setAttribute("id", "currentCanvas" + i.toString());
+                const currentContext = currentCanvas.getContext("2d");
+                currentCanvas.width = newCanvas.width;
+                currentCanvas.height = newCanvas.height;
+                currentContext.clearRect(0, 0, newCanvas.width, newCanvas.height);
+                currentContext.drawImage(currentImg, 0, 0);
+                currentContext.globalCompositeOperation = "source-atop";
+                currentContext.fillStyle = colors[Math.floor(Math.random() * colors.length)];
+                dataParts[i].color = currentContext.fillStyle;
+                //console.log(dataParts[i].name, dataParts[i].zIndex, currentContext.fillStyle);
+                currentContext.fillRect(0, 0, newCanvas.width, newCanvas.height);
+                currentContext.globalCompositeOperation = "source-over";
+
+                ctx1.globalCompositeOperation = "source-over";
+                ctx1.drawImage(currentImg, 0, 0);
+                ctx1.globalCompositeOperation = "color";
+                ctx1.drawImage(currentCanvas, 0, 0);
+
+                currentCanvas.remove();
+            }
+        }
+
+        setInfoDataParts(dataParts);
+
+        //ctx1.clearRect(0, 0, newCanvas.width, newCanvas.height);
+        //ctx1.drawImage(newCanvas, 0, 0);
+
+       /*  var bottom = new Image(newCanvas.width, newCanvas.height);
+        bottom.src = getBottomValue();
+
         var head = new Image(newCanvas.width, newCanvas.height);
         head.src = getHeadValue();
         function getHeadValue() {
@@ -211,14 +272,20 @@ const useAvatar = (props) => {
                 }
             }
         }
+        function getBottomValue() {
+            for (let i = 0; i < dataParts.length; i++) {
+                if (dataParts[i].name.includes("Bottom") || dataParts[i].name.includes("bottom")) {
+                    return dataParts[i].value;
+                }
+            }
+        }
         head.onload = function () {
             ctx1.clearRect(0, 0, newCanvas.width, newCanvas.height);
 
-            const canvas2 = canvasDraw.current;
+            const canvas2 = document.createElement('canvas');
             const ctx2 = canvas2.getContext("2d");
             canvas2.width = newCanvas.width;
             canvas2.height = newCanvas.height;
-
             ctx2.clearRect(0, 0, newCanvas.width, newCanvas.height);
             ctx2.drawImage(head, 0, 0);
             ctx2.globalCompositeOperation = "source-atop";
@@ -226,14 +293,30 @@ const useAvatar = (props) => {
             ctx2.fillRect(0, 0, newCanvas.width, newCanvas.height);
             ctx2.globalCompositeOperation = "source-over";
 
-
+            const canvas3 = document.createElement('canvas');
+            const ctx3 = canvas3.getContext("2d");
+            canvas3.width = newCanvas.width;
+            canvas3.height = newCanvas.height;
+            ctx3.clearRect(0, 0, newCanvas.width, newCanvas.height);
+            ctx3.drawImage(bottom, 0, 0);
+            ctx3.globalCompositeOperation = "source-atop";
+            ctx3.fillStyle = currentColor1;
+            ctx3.fillRect(0, 0, newCanvas.width, newCanvas.height);
+            ctx3.globalCompositeOperation = "source-over";
 
             dataParts.sort((a, b) => a.zIndex - b.zIndex);
             for (let i = 0; i < dataParts.length; i++) {
                 let currentImg = new Image(newCanvas.width, newCanvas.height);
                 currentImg.src = dataParts[i].value;
                 currentImg.onload = function () {
-                    ctx1.drawImage(currentImg, 0, 0);
+                    if (
+                        !(dataParts[i].name.includes("Head") || dataParts[i].name.includes("head")) &&
+                        !(dataParts[i].name.includes("Background") || dataParts[i].name.includes("background")) &&
+                        !(dataParts[i].name.includes("Bottom") || dataParts[i].name.includes("bottom"))
+                    ) {
+                        ctx1.globalCompositeOperation = "source-over";
+                        ctx1.drawImage(currentImg, 0, 0);
+                    }
 
                     if (dataParts[i].name.includes("Background") || dataParts[i].name.includes("background")) {
                         ctx1.globalCompositeOperation = "destination-over";
@@ -241,49 +324,47 @@ const useAvatar = (props) => {
                         ctx1.globalCompositeOperation = "source-over";
                     }
 
-                    else if (dataParts[i].name.includes("Head") || dataParts[i].name.includes("head")) {
-                        console.log(dataParts[i].zIndex);
-                        ctx1.globalCompositeOperation = "color";
-                        ctx1.drawImage(canvas2, 0, 0);
-                        //ctx1.globalCompositeOperation = "source-atop";
-                    }
-
-                    else {
+                    if (dataParts[i].name.includes("Head") || dataParts[i].name.includes("head")) {
                         ctx1.globalCompositeOperation = "source-over";
                         ctx1.drawImage(currentImg, 0, 0);
+                        ctx1.globalCompositeOperation = "color";
+                        ctx1.drawImage(canvas2, 0, 0);
+                    }
+
+                    if (dataParts[i].name.includes("Bottom") || dataParts[i].name.includes("bottom")) {
+                        ctx1.globalCompositeOperation = "source-over";
+                        ctx1.drawImage(currentImg, 0, 0);
+                        ctx1.globalCompositeOperation = "color";
+                        ctx1.drawImage(canvas3, 0, 0);
                     }
                 };
             }
-
-        };
-        */
-            
+        } */;
     }
 
-    async function setNewAvatar(color) {
-        console.log("~~~~~~~~~");
-        console.log(color.hex);
-        console.log("~~~~~~~~~");
-        currentColor = color.hex;
+    async function setNewAvatar() {
+        dataParts.length = 0;
         await getAvatar();
         return randomConfig;
     }
 
     function toBlobWrapper(canvas) {
         return new Promise((resolve, reject) => {
-            canvas.toBlob(async (blob) => {
-                var result = await ipfs.add(blob);
-                resolve(result);
-            }, (errorResponse) => {
-                reject(errorResponse)
-            }
-            )
-        })
+            canvas.toBlob(
+                async blob => {
+                    var result = await ipfs.add(blob);
+                    resolve(result);
+                },
+                errorResponse => {
+                    reject(errorResponse);
+                },
+            );
+        });
     }
 
     async function drawMiniAvatar(i, amountToCreate, uploadToIPFS) {
         const canvasObj = canvasRef.current;
-        const ctx = canvasObj.getContext('2d');
+        const ctx = canvasObj.getContext("2d");
         const MAX_PER_ROW = Math.ceil(Math.sqrt(amountToCreate));
 
         var index = i - 1;
@@ -308,20 +389,16 @@ const useAvatar = (props) => {
 
             if (result && result.path) {
                 return result.path;
-            };
-        }
-
-        else {
-            ctx.drawImage(newCanvas, 0, 0, canvasWidth, canvasHeight,
-                dx, dy, width, height);
+            }
+        } else {
+            ctx.drawImage(newCanvas, 0, 0, canvasWidth, canvasHeight, dx, dy, width, height);
 
             return null;
         }
     }
 
-
     async function getNewAvatarMetadata() {
-        setRandomConfig({ "Root": {} });
+        setRandomConfig({ Root: {} });
         await randomizeHiddenParts();
         await getAvatarConfiguration(project);
     }
@@ -336,7 +413,7 @@ const useAvatar = (props) => {
             rend = new jsora.Renderer(project);
 
             const canvasObj = canvasRef.current;
-            const ctx = canvasObj.getContext('2d');
+            const ctx = canvasObj.getContext("2d");
             ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
             for (var i = 1; i <= amountToCreate; i++) {
@@ -345,8 +422,8 @@ const useAvatar = (props) => {
                 await drawMiniAvatar(i, amountToCreate, false);
 
                 var tempMetadataJson = {
-                    "tokenMetadata": mintArray
-                }
+                    tokenMetadata: mintArray,
+                };
 
                 setMetadataJson(tempMetadataJson);
             }
@@ -354,12 +431,10 @@ const useAvatar = (props) => {
             // console.log(mintArray);
 
             return tempMetadataJson;
-
-        }
-        else {
+        } else {
             return {
-                "filename": "metadata.json"
-            }
+                filename: "metadata.json",
+            };
         }
     }
 
@@ -383,9 +458,8 @@ const useAvatar = (props) => {
 
     function recurseOverParts(obj, parent) {
         for (let child of obj.children) {
-
             if (child.children != undefined) {
-                recurseOverParts(child, parent + "." + child.name)
+                recurseOverParts(child, parent + "." + child.name);
             } else {
                 addToPartsList(parent + "." + child.name);
             }
@@ -397,33 +471,32 @@ const useAvatar = (props) => {
         var partStringArray = partString.split(".");
 
         var partToAdd = {
-            "name": partStringArray[partStringArray.length - 1],
-            "weight": 10
+            name: partStringArray[partStringArray.length - 1],
+            weight: 10,
 
             // weight is used to detemine chance to get.
             //
-            // chance to get is determined by sum of all weights in a partCategory 
+            // chance to get is determined by sum of all weights in a partCategory
             // divided by a specific part's weight.
-            // 
-            // For example, if there are 5 parts in a partCategory and each part has a weight of 10
-            // then all parts have an equal chance of being selected. 
             //
-            // If one part has a weight of 20, and all others have a weight of 10, 
+            // For example, if there are 5 parts in a partCategory and each part has a weight of 10
+            // then all parts have an equal chance of being selected.
+            //
+            // If one part has a weight of 20, and all others have a weight of 10,
             // then that part has twice the chance of being selected from all the others.
             //
             // All part weights start as 10 for the initial configuration,
             // meaning they can all be selected equally.
-        }
+        };
 
         var partCategory = partString.slice(0, partString.lastIndexOf("."));
 
         // check if object should be added to array
         var currentPartSet = _.get(tempPartsList, partCategory);
         if (currentPartSet == undefined) {
-            currentPartSet = [partToAdd]
-        }
-        else {
-            currentPartSet.push(partToAdd)
+            currentPartSet = [partToAdd];
+        } else {
+            currentPartSet.push(partToAdd);
         }
 
         _.set(objectToAdd, partCategory, currentPartSet);
@@ -432,7 +505,6 @@ const useAvatar = (props) => {
     }
 
     async function randomizeHiddenParts() {
-
         requiredPartsList = [];
 
         function traverse(jsonObj, parent, hideAll) {
@@ -447,9 +519,7 @@ const useAvatar = (props) => {
 
                     traverse(value, parentTrace, hideAll);
                 });
-            }
-            else {
-
+            } else {
                 // if layer name includes OPTIONAL_%, do a randomization
                 var optional_percent = 1.1;
 
@@ -462,10 +532,8 @@ const useAvatar = (props) => {
                 if (Math.random() >= optional_percent) {
                     // console.log("hide: " + (parent + "/" + jsonObj));
                     project.get_by_path(parent.split("Root/Root")[1] + "/" + jsonObj).hidden = true;
-                }
-
-                else {
-                    randomizePart(parent + "//" + jsonObj, hideAll)
+                } else {
+                    randomizePart(parent + "//" + jsonObj, hideAll);
                 }
             }
         }
@@ -489,7 +557,6 @@ const useAvatar = (props) => {
     }
 
     function randomizePart(partString, hideAll) {
-
         // var currentPart = partString.split("//")[1];
         var path = partString.split("Root/Root")[1].split("//")[0];
         var partType = path.split("/")[1];
@@ -497,18 +564,35 @@ const useAvatar = (props) => {
         // get node in open-raster project
         var layer = project.get_by_path(path);
 
+        var index;
         const layer_base64 = project
             .get_by_path(path)
             .get_base64()
             .then(value => {
-                dataParts.push({
+                index = project.get_by_path(path).z_index;
+                if (project.get_by_path(path).name.includes("Background") ||
+                    project.get_by_path(path).name.includes("background")) {
+                    index = 0;
+                }
+                if (project.get_by_path(path).name.includes("Head") ||
+                    project.get_by_path(path).name.includes("head")) {
+                    index = 9;
+                }
+                if (project.get_by_path(path).name.includes("Bottom") ||
+                    project.get_by_path(path).name.includes("bottom")) {
+                    index = 10;
+                }
+                let currentObj =   {
                     name: project.get_by_path(path).name,
                     value: value,
-                    zIndex: project.get_by_path(path).name.includes("Background") || project.get_by_path(path).name.includes("background") ? 0 : project.get_by_path(path).z_index,
-                });
+                    zIndex: index,
+                    color: "Loading..."
+                };
+                dataParts.push(currentObj);
+                //console.log("Name: " + project.get_by_path(path).name, "zIndex: " + index);
             });
 
-        console.log("Name: " + project.get_by_path(path).name, "zIndex: " + project.get_by_path(path).z_index);
+
 
         var totalOptions = layer.children.length;
 
@@ -526,7 +610,6 @@ const useAvatar = (props) => {
                 child.hidden = false;
                 return;
             }
-
         }
 
         // don't show a part if hideAll is true, unless layer is UNIVERSAL
@@ -536,13 +619,11 @@ const useAvatar = (props) => {
 
         // unhide one part (with accessory check)
         if (randomPartIndex != layer.children.length) {
-
             // console.log( layer.children[randomPartIndex].name)
             layer.children[randomPartIndex].hidden = false;
 
             // check if the part requires other parts unhidden
             checkRequiredParts(layer.children[randomPartIndex].name);
-
         }
     }
 
@@ -551,12 +632,10 @@ const useAvatar = (props) => {
 
         for (var i = 0; i < splitStringArray.length; i++) {
             if (splitStringArray[i] === "REQUIRES") {
-
                 var requiredPart = splitStringArray[i + 1];
 
                 // save required parts parent so they can be overridden
                 requiredPartsList.push(requiredPart);
-
 
                 i++;
             }
@@ -570,20 +649,17 @@ const useAvatar = (props) => {
     function recursivelyFindPart(obj, parent, partName) {
         var node = undefined;
 
-
         for (let child of obj.children) {
-
             if (child.name === partName) {
                 return child;
             }
 
             if (child.children != undefined) {
-                node = recursivelyFindPart(child, parent + "." + child.name, partName)
+                node = recursivelyFindPart(child, parent + "." + child.name, partName);
 
                 if (node != undefined) {
                     return node;
                 }
-
             } else {
                 if (child.name === partName) {
                     return child;
@@ -593,7 +669,6 @@ const useAvatar = (props) => {
     }
 
     async function getAvatarConfiguration(project) {
-
         // randomize over classes
         getRandomClasses();
 
@@ -602,7 +677,6 @@ const useAvatar = (props) => {
     }
 
     function getRandomClasses() {
-
         var tempClassArray = [];
         var classNode = project;
 
@@ -619,8 +693,7 @@ const useAvatar = (props) => {
                 var selectedClass = classArray[Math.floor(Math.random() * classArray.length)];
                 tempClassArray.push(selectedClass.name);
                 classNode = selectedClass;
-            }
-            else {
+            } else {
                 classNode = null;
             }
         }
@@ -638,9 +711,8 @@ const useAvatar = (props) => {
                 continue;
             }
 
-
             if (child.children != undefined) {
-                recurseOverChildren(child, parent + "." + child.name)
+                recurseOverChildren(child, parent + "." + child.name);
             } else {
                 addToConfig(parent + "." + child.name);
             }
@@ -654,14 +726,12 @@ const useAvatar = (props) => {
         currentRandomConfig = _.merge(currentRandomConfig, objectToAdd);
 
         // setRandomConfig(_.merge(randomConfig, objectToAdd));
-
     }
 
     function recursivelyCreateNodes(partArray) {
         if (partArray.length <= 1) {
             return partArray[0];
-        }
-        else {
+        } else {
             var node = {};
             var nodeName = partArray.pop();
             node[nodeName] = recursivelyCreateNodes(partArray);
@@ -669,17 +739,29 @@ const useAvatar = (props) => {
         }
     }
 
-
-
     async function renderAvatar() {
-
         return await rend.make_merged_image(); // returns canvas
-
     }
 
-    return [canvasRef, canvasDraw, canvasWidth, canvasHeight,
-        setNewAvatar, getMintingConfig, generateMetadataJson,
-        setMintingConfig, metadataJson, uploadedTokenURI, startIPFSUpload, ipfsHash]
+    return [
+        canvasRef,
+        /* canvasDraw,
+        canvasDraw1, */
+        dataParts,
+        infoDataParts,
+        setInfoDataParts,
+        changeAvatarColor,
+        canvasWidth,
+        canvasHeight,
+        setNewAvatar,
+        getMintingConfig,
+        generateMetadataJson,
+        setMintingConfig,
+        metadataJson,
+        uploadedTokenURI,
+        startIPFSUpload,
+        ipfsHash,
+    ];
 };
 
 export default useAvatar;
