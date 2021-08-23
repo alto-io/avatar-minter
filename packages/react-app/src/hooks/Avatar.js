@@ -64,6 +64,7 @@ const useAvatar = props => {
 
     useEffect(() => {
         getAvatar();
+        console.log("called this");
     }, [props]);
 
     const loadProject = async () => {
@@ -190,6 +191,7 @@ const useAvatar = props => {
 
         ctx1.clearRect(0, 0, newCanvas.width, newCanvas.height);
         paramArray.sort((a, b) => a.zIndex - b.zIndex);
+        setInfoDataParts([...paramArray]);
         for (let i = 0; i < paramArray.length; i++) {
             let currentImg = new Image(newCanvas.width, newCanvas.height);
             currentImg.src = paramArray[i].value;
@@ -203,6 +205,7 @@ const useAvatar = props => {
                 currentContext.drawImage(currentImg, 0, 0);
                 currentContext.globalCompositeOperation = "source-atop";
                 currentContext.fillStyle =  paramArray[i].color;
+                
                 //console.log(paramArray[i].name, paramArray[i].zIndex, currentContext.fillStyle);
                 currentContext.fillRect(0, 0, newCanvas.width, newCanvas.height);
                 currentContext.globalCompositeOperation = "source-over";
@@ -215,8 +218,6 @@ const useAvatar = props => {
                 currentCanvas.remove();
             }
         }
-
-        setInfoDataParts(paramArray);
     }
 
 
@@ -242,6 +243,7 @@ const useAvatar = props => {
                 currentContext.globalCompositeOperation = "source-atop";
                 currentContext.fillStyle = colors[Math.floor(Math.random() * colors.length)];
                 dataParts[i].color = currentContext.fillStyle;
+                setInfoDataParts([...dataParts]);
                 //console.log(dataParts[i].name, dataParts[i].zIndex, currentContext.fillStyle);
                 currentContext.fillRect(0, 0, newCanvas.width, newCanvas.height);
                 currentContext.globalCompositeOperation = "source-over";
@@ -254,8 +256,6 @@ const useAvatar = props => {
                 currentCanvas.remove();
             }
         }
-
-        setInfoDataParts(dataParts);
 
         //ctx1.clearRect(0, 0, newCanvas.width, newCanvas.height);
         //ctx1.drawImage(newCanvas, 0, 0);
