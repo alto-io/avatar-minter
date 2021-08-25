@@ -24,8 +24,6 @@ const all = require("it-all");
 
 var dataParts = [];
 var colors = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#00FFFF", "#FF00FF", "#FFA500", "#FF69B4", "#DAA520", "#B22222", "#F0FFF0", "#C0C0C0", "#00FF00", "#808000", "#FF6347"];
-var currentColor = "#FF00FF";
-var currentColor1 = "#0000FF";
 
 const useAvatar = props => {
     // load jsora and lodash
@@ -51,8 +49,6 @@ const useAvatar = props => {
     const [ipfsHash, setIpfsHash] = useState();
 
     const canvasRef = useRef(null);
-    /* const canvasDraw = useRef(null);
-    const canvasDraw1 = useRef(null); */
 
     const [infoDataParts, setInfoDataParts] = useState([]);
 
@@ -206,7 +202,6 @@ const useAvatar = props => {
                 currentContext.globalCompositeOperation = "source-atop";
                 currentContext.fillStyle =  paramArray[i].color;
                 
-                //console.log(paramArray[i].name, paramArray[i].zIndex, currentContext.fillStyle);
                 currentContext.fillRect(0, 0, newCanvas.width, newCanvas.height);
                 currentContext.globalCompositeOperation = "source-over";
 
@@ -226,7 +221,6 @@ const useAvatar = props => {
         const ctx1 = canvas1.getContext("2d");
         var newCanvas = await renderAvatar();
 
-
         ctx1.clearRect(0, 0, newCanvas.width, newCanvas.height);
         dataParts.sort((a, b) => a.zIndex - b.zIndex);
         for (let i = 0; i < dataParts.length; i++) {
@@ -244,7 +238,7 @@ const useAvatar = props => {
                 currentContext.fillStyle = colors[Math.floor(Math.random() * colors.length)];
                 dataParts[i].color = currentContext.fillStyle;
                 setInfoDataParts([...dataParts]);
-                //console.log(dataParts[i].name, dataParts[i].zIndex, currentContext.fillStyle);
+
                 currentContext.fillRect(0, 0, newCanvas.width, newCanvas.height);
                 currentContext.globalCompositeOperation = "source-over";
 
@@ -256,90 +250,6 @@ const useAvatar = props => {
                 currentCanvas.remove();
             }
         }
-
-        //ctx1.clearRect(0, 0, newCanvas.width, newCanvas.height);
-        //ctx1.drawImage(newCanvas, 0, 0);
-
-       /*  var bottom = new Image(newCanvas.width, newCanvas.height);
-        bottom.src = getBottomValue();
-
-        var head = new Image(newCanvas.width, newCanvas.height);
-        head.src = getHeadValue();
-        function getHeadValue() {
-            for (let i = 0; i < dataParts.length; i++) {
-                if (dataParts[i].name.includes("Head") || dataParts[i].name.includes("head")) {
-                    return dataParts[i].value;
-                }
-            }
-        }
-        function getBottomValue() {
-            for (let i = 0; i < dataParts.length; i++) {
-                if (dataParts[i].name.includes("Bottom") || dataParts[i].name.includes("bottom")) {
-                    return dataParts[i].value;
-                }
-            }
-        }
-        head.onload = function () {
-            ctx1.clearRect(0, 0, newCanvas.width, newCanvas.height);
-
-            const canvas2 = document.createElement('canvas');
-            const ctx2 = canvas2.getContext("2d");
-            canvas2.width = newCanvas.width;
-            canvas2.height = newCanvas.height;
-            ctx2.clearRect(0, 0, newCanvas.width, newCanvas.height);
-            ctx2.drawImage(head, 0, 0);
-            ctx2.globalCompositeOperation = "source-atop";
-            ctx2.fillStyle = currentColor;
-            ctx2.fillRect(0, 0, newCanvas.width, newCanvas.height);
-            ctx2.globalCompositeOperation = "source-over";
-
-            const canvas3 = document.createElement('canvas');
-            const ctx3 = canvas3.getContext("2d");
-            canvas3.width = newCanvas.width;
-            canvas3.height = newCanvas.height;
-            ctx3.clearRect(0, 0, newCanvas.width, newCanvas.height);
-            ctx3.drawImage(bottom, 0, 0);
-            ctx3.globalCompositeOperation = "source-atop";
-            ctx3.fillStyle = currentColor1;
-            ctx3.fillRect(0, 0, newCanvas.width, newCanvas.height);
-            ctx3.globalCompositeOperation = "source-over";
-
-            dataParts.sort((a, b) => a.zIndex - b.zIndex);
-            for (let i = 0; i < dataParts.length; i++) {
-                let currentImg = new Image(newCanvas.width, newCanvas.height);
-                currentImg.src = dataParts[i].value;
-                currentImg.onload = function () {
-                    if (
-                        !(dataParts[i].name.includes("Head") || dataParts[i].name.includes("head")) &&
-                        !(dataParts[i].name.includes("Background") || dataParts[i].name.includes("background")) &&
-                        !(dataParts[i].name.includes("Bottom") || dataParts[i].name.includes("bottom"))
-                    ) {
-                        ctx1.globalCompositeOperation = "source-over";
-                        ctx1.drawImage(currentImg, 0, 0);
-                    }
-
-                    if (dataParts[i].name.includes("Background") || dataParts[i].name.includes("background")) {
-                        ctx1.globalCompositeOperation = "destination-over";
-                        ctx1.drawImage(currentImg, 0, 0);
-                        ctx1.globalCompositeOperation = "source-over";
-                    }
-
-                    if (dataParts[i].name.includes("Head") || dataParts[i].name.includes("head")) {
-                        ctx1.globalCompositeOperation = "source-over";
-                        ctx1.drawImage(currentImg, 0, 0);
-                        ctx1.globalCompositeOperation = "color";
-                        ctx1.drawImage(canvas2, 0, 0);
-                    }
-
-                    if (dataParts[i].name.includes("Bottom") || dataParts[i].name.includes("bottom")) {
-                        ctx1.globalCompositeOperation = "source-over";
-                        ctx1.drawImage(currentImg, 0, 0);
-                        ctx1.globalCompositeOperation = "color";
-                        ctx1.drawImage(canvas3, 0, 0);
-                    }
-                };
-            }
-        } */;
     }
 
     async function setNewAvatar() {
@@ -745,8 +655,6 @@ const useAvatar = props => {
 
     return [
         canvasRef,
-        /* canvasDraw,
-        canvasDraw1, */
         dataParts,
         infoDataParts,
         setInfoDataParts,

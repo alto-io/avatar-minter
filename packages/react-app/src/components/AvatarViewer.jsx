@@ -41,7 +41,21 @@ const STARTING_CONFIG_JSON = {
 
 export default function AvatarViewer() {
     const [configJSON, setConfigJSON] = useState(STARTING_CONFIG_JSON);
-    const [canvasRef, dataParts, infoDataParts, setInfoDataParts, changeAvatarColor,/*  canvasDraw,  canvasDraw1, */ canvasWidth, canvasHeight, setNewAvatar] = useAvatar();
+    const [canvasRef,
+        dataParts,
+        infoDataParts,
+        setInfoDataParts,
+        changeAvatarColor,
+        canvasWidth,
+        canvasHeight,
+        setNewAvatar,
+        getMintingConfig,
+        generateMetadataJson,
+        setMintingConfig,
+        metadataJson,
+        uploadedTokenURI,
+        startIPFSUpload,
+        ipfsHash,] = useAvatar();
 
     console.log("your parts", dataParts);
 
