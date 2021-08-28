@@ -5,6 +5,9 @@ import { useAvatar } from "../hooks";
 
 import ReactJson from "react-json-view";
 
+import { Cascader } from 'antd';
+import { Row, Col } from 'antd';
+
 /*
   ~ What it does? ~
 
@@ -55,7 +58,11 @@ export default function AvatarViewer() {
         metadataJson,
         uploadedTokenURI,
         startIPFSUpload,
-        ipfsHash,] = useAvatar();
+        ipfsHash,
+        classOptions,
+        setSelectedClass,
+        selectedClass
+    ] = useAvatar();
 
     console.log("your parts", dataParts);
 
@@ -71,17 +78,35 @@ export default function AvatarViewer() {
         changeAvatarColor(dataParts);
     }
 
+    function handleChange(value) {
+        setSelectedClass(value);
+    }
     return (
         <div style={{ paddingTop: 32, width: 740, margin: "auto", textAlign: "left" }}>
             <div>
-                <Button onClick={handleClickNewAvatarButton} size="large" shape="round">
-                    <span style={{ marginRight: 8 }}>
-                        <span role="img" aria-label="fuelpump">
-                            😀
+            <Row style={{ margin: 8 }}>
+                <Col span={6}>
+                <Cascader 
+                    style={{ width: 120 }} 
+                    options={classOptions} 
+                    onChange={handleChange}
+                    placeholder="Select Class"
+                    >                
+                </Cascader>
+                </Col>
+                <Col span={6}>
+                    <Button onClick={handleClickNewAvatarButton} 
+                            disabled={selectedClass.length == 0}>
+                        <span style={{ marginRight: 8 }}>
+                            <span role="img" aria-label="fuelpump">
+                                😀
+                            </span>
                         </span>
-                    </span>
-                    New Avatar
-                </Button>
+                        New Avatar
+                    </Button>
+                </Col>
+            </Row>                
+
             </div>
 
             <div style={{ display: "flex", "flex-direction": "row" }}>

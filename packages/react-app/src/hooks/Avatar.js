@@ -1,5 +1,4 @@
 import { useRef, useEffect, useState } from "react";
-
 /*
   ~ What it does? ~
 
@@ -25,6 +24,7 @@ const all = require("it-all");
 var dataParts = [];
 var colors = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#00FFFF", "#FF00FF", "#FFA500", "#FF69B4", "#DAA520", "#B22222", "#F0FFF0", "#C0C0C0", "#00FF00", "#808000", "#FF6347"];
 
+
 const useAvatar = props => {
     // load jsora and lodash
     const jsora = window.jsora;
@@ -32,7 +32,6 @@ const useAvatar = props => {
     const project = new jsora.JSOra();
     var rend;
 
-    const [baseClassArray, setBaseClassArray] = useState([]);
     const [randomConfig, setRandomConfig] = useState({ Root: {} });
     const [mintingConfig, setMintingConfig] = useState({
         amountToCreate: 2,
@@ -56,11 +55,18 @@ const useAvatar = props => {
 
     var requiredPartsList = [];
     var selectedClasses = [];
+
+    const [classOptions, setClassOptions] = useState([]);
+    const [selectedClass, setSelectedClass] = useState([]);
+
+
     var currentRandomConfig = { Root: {} };
 
     useEffect(() => {
+
+        initializeBaseClasses();
         getAvatar();
-        console.log("called this");
+        // console.log("called this");
     }, [props]);
 
     const loadProject = async () => {
@@ -151,15 +157,20 @@ const useAvatar = props => {
         setIpfsHash(cid);
     };
 
+    const initializeBaseClasses = async () => {
+        await loadProject();
+        await getBaseClasses(project);
+    }
+
     const getAvatar = async () => {
         currentRandomConfig = { Root: {} };
-
+        // get base classes
         // setRandomConfig({ "Root": {} });
 
         await loadProject();
+        await getBaseClasses(project);
 
         rend = new jsora.Renderer(project);
-
         await getAvatarConfiguration(project);
         await hideLayersRecursively(project, "Root");
         await randomizeHiddenParts();
@@ -168,6 +179,16 @@ const useAvatar = props => {
 
         await drawAvatar();
     };
+
+    function getBaseClasses(obj) {
+        var tempBaseClassArray = [];
+        for (let child of obj.children) {
+            if (child.name.includes("CLASS")) {
+                tempBaseClassArray.push(child.name);
+            }
+        }
+        refreshClassOptions(tempBaseClassArray);
+    }    
 
     function hideLayersRecursively(obj, parent) {
         for (let child of obj.children) {
@@ -220,8 +241,11 @@ const useAvatar = props => {
         const canvas1 = canvasRef.current;
         const ctx1 = canvas1.getContext("2d");
         var newCanvas = await renderAvatar();
-
         ctx1.clearRect(0, 0, newCanvas.width, newCanvas.height);
+
+        ctx1.drawImage(newCanvas, 0, 0);
+
+        /*
         dataParts.sort((a, b) => a.zIndex - b.zIndex);
         for (let i = 0; i < dataParts.length; i++) {
             let currentImg = new Image(newCanvas.width, newCanvas.height);
@@ -250,6 +274,7 @@ const useAvatar = props => {
                 currentCanvas.remove();
             }
         }
+        */
     }
 
     async function setNewAvatar() {
@@ -611,6 +636,18 @@ const useAvatar = props => {
         selectedClasses = tempClassArray;
     }
 
+    function refreshClassOptions(classArray) {
+        var returnArray = [];
+        for (var i = 0; i < classArray.length; i++) {
+            returnArray.push(
+                {
+                    value: classArray[i],
+                    label: classArray[i]
+                })
+        }
+        setClassOptions(returnArray);
+    }
+
     function recurseOverChildren(obj, parent) {
         for (let child of obj.children) {
             if (child.name === "IGNORE") {
@@ -669,6 +706,9 @@ const useAvatar = props => {
         uploadedTokenURI,
         startIPFSUpload,
         ipfsHash,
+        classOptions,
+        setSelectedClass,
+        selectedClass
     ];
 };
 
