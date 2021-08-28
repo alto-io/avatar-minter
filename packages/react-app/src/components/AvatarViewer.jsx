@@ -85,9 +85,9 @@ export default function AvatarViewer() {
         <div style={{ paddingTop: 32, width: 740, margin: "auto", textAlign: "left" }}>
             <div>
             <Row style={{ margin: 8 }}>
-                <Col span={6}>
+                <Col span={12}>
                 <Cascader 
-                    style={{ width: 120 }} 
+                    style={{ width: 300 }} 
                     options={classOptions} 
                     onChange={handleChange}
                     placeholder="Select Class"

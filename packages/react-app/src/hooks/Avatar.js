@@ -173,7 +173,7 @@ const useAvatar = props => {
         // setRandomConfig({ "Root": {} });
 
         await loadProject();
-        await getBaseClasses(project);
+        await getBaseClasses(); 
 
         rend = new jsora.Renderer(project);
 
@@ -187,14 +187,36 @@ const useAvatar = props => {
         await drawAvatar();
     };
 
-    function getBaseClasses(obj) {
+    function getBaseClasses() {
         var tempBaseClassArray = [];
-        for (let child of obj.children) {
+
+        for (let child of project.children) {
             if (child.name.includes("CLASS")) {
-                tempBaseClassArray.push(child.name);
+                var classOption = {
+                    name: child.name,
+                    children: getBaseClassesRecursively(child)
+                }
+                tempBaseClassArray.push(classOption);
             }
         }
+
         refreshClassOptions(tempBaseClassArray);
+    }
+
+    function getBaseClassesRecursively(obj) {
+        var tempBaseClassArray = [];
+
+        for (let child of obj.children) {
+            if (child.name.includes("CLASS")) {
+                var classOption = {
+                    name: child.name,
+                    children: getBaseClassesRecursively(child)
+                }
+                tempBaseClassArray.push(classOption);
+            }
+        }
+
+        return tempBaseClassArray;
     }    
 
     function hideLayersRecursively(obj, parent) {
@@ -648,11 +670,28 @@ const useAvatar = props => {
         for (var i = 0; i < classArray.length; i++) {
             returnArray.push(
                 {
-                    value: classArray[i],
-                    label: classArray[i]
+                    value: classArray[i].name,
+                    label: classArray[i].name,
+                    children: refreshClassOptionsRecursively(classArray[i].children)
                 })
         }
+
         setClassOptions(returnArray);
+    }
+
+    function refreshClassOptionsRecursively(childArray) {
+        var returnArray = []
+
+        for (var i = 0; i < childArray.length; i++) {
+            returnArray.push(
+                {
+                    value: childArray[i].name,
+                    label: childArray[i].name,
+                    children: refreshClassOptionsRecursively(childArray[i].children)
+                })
+        }        
+
+        return returnArray;
     }
 
     function recurseOverChildren(obj, parent) {
