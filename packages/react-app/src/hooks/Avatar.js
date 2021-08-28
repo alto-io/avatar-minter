@@ -62,9 +62,15 @@ const useAvatar = props => {
     var currentRandomConfig = { Root: {} };
 
     useEffect(() => {
-        getAvatar();
-        // console.log("called this");
-    }, [props]);
+        if (selectedClass.length <= 0) {
+            getAvatar();
+        }
+
+        else {
+            reloadConfig();
+        }
+
+    }, [selectedClass]);
 
     const loadProject = async () => {
         let loaded_file = await fetch(`avatars/AvatarImages.ora`).then(r => r.blob());
@@ -153,6 +159,13 @@ const useAvatar = props => {
 
         setIpfsHash(cid);
     };
+
+    const reloadConfig = async () => {
+        await loadProject();
+        await getAvatarConfiguration(project);
+        await randomizeHiddenParts();
+        setRandomConfig(currentRandomConfig);
+    }
 
     const getAvatar = async () => {
         currentRandomConfig = { Root: {} };
@@ -598,9 +611,6 @@ const useAvatar = props => {
     }
 
     async function getAvatarConfiguration(project) {
-        // randomize over classes
-        getRandomClasses();
-
         // extract avatar format from layers
         recurseOverChildren(project, "Root");
     }
@@ -629,9 +639,8 @@ const useAvatar = props => {
                 }
             }
         
-            selectedClass = tempClassArray;
+            setSelectedClass(tempClassArray);
         }
-
     }
 
     function refreshClassOptions(classArray) {
