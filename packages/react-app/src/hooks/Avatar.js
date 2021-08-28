@@ -54,7 +54,6 @@ const useAvatar = props => {
     var tempPartsList = { PartsList: {} };
 
     var requiredPartsList = [];
-    var selectedClasses = [];
 
     const [classOptions, setClassOptions] = useState([]);
     const [selectedClass, setSelectedClass] = useState([]);
@@ -63,8 +62,6 @@ const useAvatar = props => {
     var currentRandomConfig = { Root: {} };
 
     useEffect(() => {
-
-        initializeBaseClasses();
         getAvatar();
         // console.log("called this");
     }, [props]);
@@ -157,11 +154,6 @@ const useAvatar = props => {
         setIpfsHash(cid);
     };
 
-    const initializeBaseClasses = async () => {
-        await loadProject();
-        await getBaseClasses(project);
-    }
-
     const getAvatar = async () => {
         currentRandomConfig = { Root: {} };
         // get base classes
@@ -171,6 +163,8 @@ const useAvatar = props => {
         await getBaseClasses(project);
 
         rend = new jsora.Renderer(project);
+
+
         await getAvatarConfiguration(project);
         await hideLayersRecursively(project, "Root");
         await randomizeHiddenParts();
@@ -612,28 +606,32 @@ const useAvatar = props => {
     }
 
     function getRandomClasses() {
-        var tempClassArray = [];
-        var classNode = project;
 
-        while (classNode != null && classNode.children != undefined) {
-            var classArray = [];
+        if (selectedClass != undefined && selectedClass.length <= 0) {
+            var tempClassArray = [];
+            var classNode = project;
 
-            for (let child of classNode.children) {
-                if (child.name.includes("CLASS")) {
-                    classArray.push(child);
+            while (classNode != null && classNode.children != undefined) {
+                var classArray = [];
+
+                for (let child of classNode.children) {
+                    if (child.name.includes("CLASS")) {
+                        classArray.push(child);
+                    }
+                }
+
+                if (classArray.length > 0) {
+                    var selectedClass = classArray[Math.floor(Math.random() * classArray.length)];
+                    tempClassArray.push(selectedClass.name);
+                    classNode = selectedClass;
+                } else {
+                    classNode = null;
                 }
             }
-
-            if (classArray.length > 0) {
-                var selectedClass = classArray[Math.floor(Math.random() * classArray.length)];
-                tempClassArray.push(selectedClass.name);
-                classNode = selectedClass;
-            } else {
-                classNode = null;
-            }
+        
+            selectedClass = tempClassArray;
         }
 
-        selectedClasses = tempClassArray;
     }
 
     function refreshClassOptions(classArray) {
@@ -654,7 +652,7 @@ const useAvatar = props => {
                 continue;
             }
 
-            if (child.name.includes("CLASS") && !selectedClasses.includes(child.name)) {
+            if (child.name.includes("CLASS") && !selectedClass.includes(child.name)) {
                 continue;
             }
 
