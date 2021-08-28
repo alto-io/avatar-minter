@@ -691,6 +691,8 @@ const useAvatar = props => {
                 })
         }        
 
+        if (returnArray.length == 0) return null
+
         return returnArray;
     }
 
