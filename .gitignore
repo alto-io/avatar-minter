@@ -38,4 +38,3 @@ yarn-debug.log*
 yarn-error.log*
 
 .idea
-packages/react-app/public/avatars/avatarimages.ora
