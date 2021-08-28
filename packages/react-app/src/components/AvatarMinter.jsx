@@ -50,7 +50,8 @@ export default function AvatarMinter(props) {
     const callSetURI = props.callSetURI;
     const callMintMultiple = props.callMintMultiple;
 
-    const [canvasRef,
+    const [
+        canvasRef,
         dataParts,
         infoDataParts,
         setInfoDataParts,
@@ -64,7 +65,11 @@ export default function AvatarMinter(props) {
         metadataJson,
         uploadedTokenURI,
         startIPFSUpload,
-        ipfsHash,] = useAvatar();
+        ipfsHash,
+        classOptions,
+        setSelectedClass,
+        selectedClass
+        ] = useAvatar();
     const [mintingConfigJSON, setMintingConfigJSON] = useState(STARTING_CONFIG_JSON);
 
     const [sending, setSending] = useState();

@@ -362,9 +362,19 @@ const useAvatar = props => {
     }
 
     async function getNewAvatarMetadata() {
+        // await randomizeHiddenParts();
+        // await getAvatarConfiguration(project);
+
+        var randomClass = getRandomClasses();
+
         setRandomConfig({ Root: {} });
-        await randomizeHiddenParts();
-        await getAvatarConfiguration(project);
+        // setRandomConfig({ Root: {} });
+        await getAvatarConfiguration(project, randomClass);
+        await hideLayersRecursively(project, "Root");
+        await randomizeHiddenParts(selectedClass);
+
+        setRandomConfig(currentRandomConfig);
+
     }
 
     async function generateMetadataJson(mintingConfigJSON) {
@@ -373,6 +383,7 @@ const useAvatar = props => {
             var mintArray = [];
 
             await loadProject();
+            await getBaseClasses(); 
             await getAvatarConfiguration(project);
             rend = new jsora.Renderer(project);
 
@@ -382,7 +393,7 @@ const useAvatar = props => {
 
             for (var i = 1; i <= amountToCreate; i++) {
                 await getNewAvatarMetadata();
-                mintArray.push(JSON.parse(JSON.stringify(randomConfig)));
+                mintArray.push(JSON.parse(JSON.stringify(currentRandomConfig)));
                 await drawMiniAvatar(i, amountToCreate, false);
 
                 var tempMetadataJson = {
@@ -632,37 +643,28 @@ const useAvatar = props => {
         }
     }
 
-    async function getAvatarConfiguration(project) {
+    async function getAvatarConfiguration(project, forcedClass) {
         // extract avatar format from layers
-        recurseOverChildren(project, "Root");
+        recurseOverChildren(project, "Root", forcedClass);
     }
 
     function getRandomClasses() {
+        var returnArray = []
 
-        if (selectedClass != undefined && selectedClass.length <= 0) {
-            var tempClassArray = [];
-            var classNode = project;
+        if (classOptions.length > 0) {
+            var index = Math.floor(Math.random() * classOptions.length);
+            var selectedClass = classOptions[index];
+            returnArray.push(selectedClass.value);
 
-            while (classNode != null && classNode.children != undefined) {
-                var classArray = [];
-
-                for (let child of classNode.children) {
-                    if (child.name.includes("CLASS")) {
-                        classArray.push(child);
-                    }
-                }
-
-                if (classArray.length > 0) {
-                    var selectedClass = classArray[Math.floor(Math.random() * classArray.length)];
-                    tempClassArray.push(selectedClass.name);
-                    classNode = selectedClass;
-                } else {
-                    classNode = null;
-                }
+            while (selectedClass.children != null) {
+                index = Math.floor(Math.random() * selectedClass.children.length);
+                returnArray.push(selectedClass.children[index].value);
+                selectedClass = selectedClass.children[index];
             }
-        
-            setSelectedClass(tempClassArray);
+
         }
+
+        return returnArray;
     }
 
     function refreshClassOptions(classArray) {
@@ -696,18 +698,25 @@ const useAvatar = props => {
         return returnArray;
     }
 
-    function recurseOverChildren(obj, parent) {
+    function recurseOverChildren(obj, parent, forcedClass) {
+
         for (let child of obj.children) {
             if (child.name === "IGNORE") {
                 continue;
             }
 
-            if (child.name.includes("CLASS") && !selectedClass.includes(child.name)) {
+            if (forcedClass != null) {
+                if (child.name.includes("CLASS") && !forcedClass.includes(child.name)) {
+                    continue;
+                }
+            }
+
+            else if (child.name.includes("CLASS") && !selectedClass.includes(child.name)) {
                 continue;
             }
 
             if (child.children != undefined) {
-                recurseOverChildren(child, parent + "." + child.name);
+                recurseOverChildren(child, parent + "." + child.name, forcedClass);
             } else {
                 addToConfig(parent + "." + child.name);
             }
@@ -719,7 +728,6 @@ const useAvatar = props => {
         // setRandomConfig(_.merge(randomConfig, objectToAdd));
 
         currentRandomConfig = _.merge(currentRandomConfig, objectToAdd);
-
         // setRandomConfig(_.merge(randomConfig, objectToAdd));
     }
 
