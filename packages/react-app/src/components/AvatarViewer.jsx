@@ -8,6 +8,16 @@ import ReactJson from "react-json-view";
 import { Cascader } from 'antd';
 import { Row, Col } from 'antd';
 
+
+import { Tree } from 'antd';
+import {
+  DownOutlined,
+  FrownOutlined,
+  SmileOutlined,
+  MehOutlined,
+  FrownFilled,
+} from '@ant-design/icons';
+
 /*
   ~ What it does? ~
 
@@ -39,7 +49,7 @@ import { Row, Col } from 'antd';
 
 const STARTING_CONFIG_JSON = {
     "Getting Started":
-        "Press ( 😀 New Avatar ), this JSON view will contain the avatar's config.json once it's been loaded.",
+        "Select a class then Press ( 😀 New Avatar )! this JSON view will contain the avatar's parts options.",
 };
 
 export default function AvatarViewer() {
@@ -61,13 +71,15 @@ export default function AvatarViewer() {
         ipfsHash,
         classOptions,
         setSelectedClass,
-        selectedClass
+        selectedClass,
+        configTree,
+        setConfigTree
     ] = useAvatar();
 
-    console.log("your parts", dataParts);
 
     const handleClickNewAvatarButton = async event => {
         setConfigJSON(await setNewAvatar());
+        setConfigTree([]);
         //console.log(infoDataParts, "-------------------------------------");
     };
 
@@ -125,6 +137,7 @@ export default function AvatarViewer() {
                         ))}
                     </ul>
                 </div>
+                {
                 <ReactJson
                     style={{ padding: 8 }}
                     src={configJSON}
@@ -140,6 +153,15 @@ export default function AvatarViewer() {
                         setConfigJSON(del.updated_src);
                     }}
                 />
+                }
+
+                <Tree
+                   style={{ padding: 8, border: "2px solid #888888" }}
+                    showIcon
+                    defaultSelectedKeys={['0-0-0']}
+                    switcherIcon={<DownOutlined />}
+                    treeData={configTree}
+                />                
             </div>
         </div>
     );

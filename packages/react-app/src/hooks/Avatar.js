@@ -24,13 +24,14 @@ const all = require("it-all");
 var dataParts = [];
 var colors = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#00FFFF", "#FF00FF", "#FFA500", "#FF69B4", "#DAA520", "#B22222", "#F0FFF0", "#C0C0C0", "#00FF00", "#808000", "#FF6347"];
 
-
 const useAvatar = props => {
     // load jsora and lodash
     const jsora = window.jsora;
     const _ = window._;
     const project = new jsora.JSOra();
     var rend;
+
+    console.log("FDF")
 
     const [randomConfig, setRandomConfig] = useState({ Root: {} });
     const [mintingConfig, setMintingConfig] = useState({
@@ -57,7 +58,7 @@ const useAvatar = props => {
 
     const [classOptions, setClassOptions] = useState([]);
     const [selectedClass, setSelectedClass] = useState([]);
-
+    const [configTree, setConfigTree] = useState([]);
 
     var currentRandomConfig = { Root: {} };
 
@@ -65,12 +66,37 @@ const useAvatar = props => {
         if (selectedClass.length <= 0) {
             getAvatar();
         }
-
         else {
             reloadConfig();
         }
-
     }, [selectedClass]);
+
+    useEffect(() => {
+        updateTreeData();
+    }, [randomConfig]);
+
+
+    const updateTreeData = async () => {
+        console.log(JSON.stringify(randomConfig));
+        setConfigTree(
+            [
+                {
+                  title: 'parent 1',
+                  key: '0-0',
+                  children: [
+                    {
+                      title: 'leaf',
+                      key: '0-0-0',
+                    },
+                    {
+                      title: 'leaf',
+                      key: '0-0-1',
+                    },
+                  ],
+                },
+              ]
+        );
+    }
 
     const loadProject = async () => {
         let loaded_file = await fetch(`avatars/AvatarImages.ora`).then(r => r.blob());
@@ -169,21 +195,15 @@ const useAvatar = props => {
 
     const getAvatar = async () => {
         currentRandomConfig = { Root: {} };
-        // get base classes
-        // setRandomConfig({ "Root": {} });
 
         await loadProject();
-        await getBaseClasses(); 
+        await getBaseClasses();  // reinits
 
         rend = new jsora.Renderer(project);
-
-
         await getAvatarConfiguration(project);
         await hideLayersRecursively(project, "Root");
         await randomizeHiddenParts();
-
         setRandomConfig(currentRandomConfig);
-
         await drawAvatar();
     };
 
@@ -764,7 +784,9 @@ const useAvatar = props => {
         ipfsHash,
         classOptions,
         setSelectedClass,
-        selectedClass
+        selectedClass,
+        configTree,
+        setConfigTree
     ];
 };
 
