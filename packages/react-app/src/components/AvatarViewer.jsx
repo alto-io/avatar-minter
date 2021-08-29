@@ -138,6 +138,7 @@ export default function AvatarViewer() {
                     </ul>
                 </div>
                 {
+                    /*
                 <ReactJson
                     style={{ padding: 8 }}
                     src={configJSON}
@@ -153,6 +154,7 @@ export default function AvatarViewer() {
                         setConfigJSON(del.updated_src);
                     }}
                 />
+                */
                 }
 
                 <Tree

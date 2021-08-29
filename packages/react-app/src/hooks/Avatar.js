@@ -60,7 +60,8 @@ const useAvatar = props => {
     const [selectedClass, setSelectedClass] = useState([]);
     const [configTree, setConfigTree] = useState([]);
 
-    var currentRandomConfig = { Root: {} };
+    var currentRandomConfig = { };
+    var currentTreeConfig = [];
 
     useEffect(() => {
         if (selectedClass.length <= 0) {
@@ -77,25 +78,34 @@ const useAvatar = props => {
 
 
     const updateTreeData = async () => {
-        console.log(JSON.stringify(randomConfig));
-        setConfigTree(
-            [
-                {
-                  title: 'parent 1',
-                  key: '0-0',
-                  children: [
-                    {
-                      title: 'leaf',
-                      key: '0-0-0',
-                    },
-                    {
-                      title: 'leaf',
-                      key: '0-0-1',
-                    },
-                  ],
-                },
-              ]
-        );
+        if (randomConfig.children !== undefined) {
+            console.log(randomConfig)
+            var children = Array.from(randomConfig);
+            console.log(children)
+            setConfigTree(children)
+        }
+        // setConfigTree(randomConfig);
+        // JSON.parse(randomConfig).map( (i) => {
+        //     console.log(i);
+        // })
+        // setConfigTree(
+        //     [
+        //         {
+        //           title: 'parent 1',
+        //           key: '0-0',
+        //           children: [
+        //             {
+        //               title: 'leaf',
+        //               key: '0-0-0',
+        //             },
+        //             {
+        //               title: 'leaf',
+        //               key: '0-0-1',
+        //             },
+        //           ],
+        //         },
+        //       ]
+        // );
     }
 
     const loadProject = async () => {
@@ -189,7 +199,6 @@ const useAvatar = props => {
     const reloadConfig = async () => {
         await loadProject();
         await getAvatarConfiguration(project);
-        await randomizeHiddenParts();
         setRandomConfig(currentRandomConfig);
     }
 
@@ -664,8 +673,10 @@ const useAvatar = props => {
     }
 
     async function getAvatarConfiguration(project, forcedClass) {
-        // extract avatar format from layers
         recurseOverChildren(project, "Root", forcedClass);
+        console.log(currentRandomConfig)
+        console.log(currentTreeConfig)
+        setConfigTree(currentTreeConfig);
     }
 
     function getRandomClasses() {
@@ -719,7 +730,6 @@ const useAvatar = props => {
     }
 
     function recurseOverChildren(obj, parent, forcedClass) {
-
         for (let child of obj.children) {
             if (child.name === "IGNORE") {
                 continue;
@@ -739,16 +749,85 @@ const useAvatar = props => {
                 recurseOverChildren(child, parent + "." + child.name, forcedClass);
             } else {
                 addToConfig(parent + "." + child.name);
+                addToTreeConfig(parent + "." + child.name);
             }
         }
     }
 
     function addToConfig(partString) {
         var objectToAdd = recursivelyCreateNodes(partString.split(".").reverse());
-        // setRandomConfig(_.merge(randomConfig, objectToAdd));
-
         currentRandomConfig = _.merge(currentRandomConfig, objectToAdd);
-        // setRandomConfig(_.merge(randomConfig, objectToAdd));
+    }
+
+    function addToTreeConfig(partString) {
+        var nodeArray = partString.split(".").reverse();
+        nodeArray.pop();
+
+        var objectToAdd = recursivelyCreateTreeNode([...nodeArray]);
+        addObjectToTree(objectToAdd);
+    }
+
+    function recursivelyCreateTreeNode(nodeArray) {
+        if (nodeArray.length <= 1) {
+            return {
+                key: nodeArray[0],
+                title: nodeArray[0]
+            }
+        } else {
+            var node = {};
+            var nodeName = nodeArray.pop();
+            node.key = nodeName;
+            node.title = nodeName;
+            node.children = [];
+            node.children.push(recursivelyCreateTreeNode(nodeArray));
+            return node;
+        }
+    }
+
+    function addObjectToTree(objectToAdd) {
+        var depth = 0;
+        var childArray = currentTreeConfig;
+        var nodeToAdd = objectToAdd;
+        var selectedNode = null;
+        var finished = false;
+
+        while (!finished)
+        {
+            var nodeName = nodeToAdd.key;
+
+            // check if node already exists
+            for (const node of childArray) {
+                if (node.key === nodeName) {
+                    selectedNode = node;
+                    break;
+                }
+            }
+
+            // if node was not found, create a new one
+            if (selectedNode == undefined) {
+                var node = {};
+                node.key = nodeName;
+                node.title = nodeName;
+                node.children = [];
+                childArray.push(node);
+                childArray = node.children;
+            }
+
+            // if node was found
+            else {
+                childArray = selectedNode.children;
+            }
+
+            // move one layer deeper
+            depth++;
+
+            if (nodeToAdd.children === undefined) {
+                finished = true;
+            }
+            else {
+                nodeToAdd = nodeToAdd.children[0];
+            }
+        }
     }
 
     function recursivelyCreateNodes(partArray) {
@@ -760,7 +839,7 @@ const useAvatar = props => {
             node[nodeName] = recursivelyCreateNodes(partArray);
             return node;
         }
-    }
+    }    
 
     async function renderAvatar() {
         return await rend.make_merged_image(); // returns canvas
