@@ -31,7 +31,7 @@ const useAvatar = props => {
     const project = new jsora.JSOra();
     var rend;
 
-    console.log("FDF")
+    // console.log("FDF")
 
     const [randomConfig, setRandomConfig] = useState({ Root: {} });
     const [mintingConfig, setMintingConfig] = useState({
@@ -79,33 +79,9 @@ const useAvatar = props => {
 
     const updateTreeData = async () => {
         if (randomConfig.children !== undefined) {
-            console.log(randomConfig)
             var children = Array.from(randomConfig);
-            console.log(children)
             setConfigTree(children)
         }
-        // setConfigTree(randomConfig);
-        // JSON.parse(randomConfig).map( (i) => {
-        //     console.log(i);
-        // })
-        // setConfigTree(
-        //     [
-        //         {
-        //           title: 'parent 1',
-        //           key: '0-0',
-        //           children: [
-        //             {
-        //               title: 'leaf',
-        //               key: '0-0-0',
-        //             },
-        //             {
-        //               title: 'leaf',
-        //               key: '0-0-1',
-        //             },
-        //           ],
-        //         },
-        //       ]
-        // );
     }
 
     const loadProject = async () => {
@@ -674,8 +650,8 @@ const useAvatar = props => {
 
     async function getAvatarConfiguration(project, forcedClass) {
         recurseOverChildren(project, "Root", forcedClass);
-        console.log(currentRandomConfig)
-        console.log(currentTreeConfig)
+        // console.log(currentRandomConfig)
+        // console.log(currentTreeConfig)
         setConfigTree(currentTreeConfig);
     }
 
@@ -785,7 +761,8 @@ const useAvatar = props => {
     }
 
     function addObjectToTree(objectToAdd) {
-        var depth = 0;
+        // console.log(objectToAdd);
+        // console.log(JSON.stringify(currentTreeConfig));
         var childArray = currentTreeConfig;
         var nodeToAdd = objectToAdd;
         var selectedNode = null;
@@ -793,18 +770,26 @@ const useAvatar = props => {
 
         while (!finished)
         {
+            selectedNode = null;
             var nodeName = nodeToAdd.key;
+            // console.log(nodeName);
 
             // check if node already exists
             for (const node of childArray) {
+
+                // console.log(node.key);
+
                 if (node.key === nodeName) {
                     selectedNode = node;
                     break;
                 }
             }
 
+            // console.log(selectedNode);
+
             // if node was not found, create a new one
-            if (selectedNode == undefined) {
+            if (selectedNode == null) {
+                // console.log(childArray);
                 var node = {};
                 node.key = nodeName;
                 node.title = nodeName;
@@ -818,11 +803,9 @@ const useAvatar = props => {
                 childArray = selectedNode.children;
             }
 
-            // move one layer deeper
-            depth++;
-
             if (nodeToAdd.children === undefined) {
                 finished = true;
+
             }
             else {
                 nodeToAdd = nodeToAdd.children[0];

@@ -78,8 +78,9 @@ export default function AvatarViewer() {
 
 
     const handleClickNewAvatarButton = async event => {
-        setConfigJSON(await setNewAvatar());
-        setConfigTree([]);
+        setNewAvatar();
+        // setConfigJSON(await setNewAvatar());
+        // setConfigTree([]);
         //console.log(infoDataParts, "-------------------------------------");
     };
 
