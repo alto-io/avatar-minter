@@ -80,7 +80,7 @@ const useAvatar = props => {
     const updateTreeData = async () => {
         if (randomConfig.children !== undefined) {
             var children = Array.from(randomConfig);
-            setConfigTree(children)
+            setConfigTree(children);
         }
     }
 
@@ -277,9 +277,9 @@ const useAvatar = props => {
         var newCanvas = await renderAvatar();
         ctx1.clearRect(0, 0, newCanvas.width, newCanvas.height);
 
-        ctx1.drawImage(newCanvas, 0, 0);
+        //ctx1.drawImage(newCanvas, 0, 0);
 
-        /*
+        
         dataParts.sort((a, b) => a.zIndex - b.zIndex);
         for (let i = 0; i < dataParts.length; i++) {
             let currentImg = new Image(newCanvas.width, newCanvas.height);
@@ -308,7 +308,7 @@ const useAvatar = props => {
                 currentCanvas.remove();
             }
         }
-        */
+    
     }
 
     async function setNewAvatar() {
@@ -566,7 +566,9 @@ const useAvatar = props => {
                     name: project.get_by_path(path).name,
                     value: value,
                     zIndex: index,
-                    color: "Loading..."
+                    color: "Loading...",
+                    key: project.get_by_path(path).name,
+                    title: project.get_by_path(path).name,
                 };
                 dataParts.push(currentObj);
                 //console.log("Name: " + project.get_by_path(path).name, "zIndex: " + index);
