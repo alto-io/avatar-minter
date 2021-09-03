@@ -5,18 +5,13 @@ import { useAvatar } from "../hooks";
 
 import ReactJson from "react-json-view";
 
-import { Cascader } from 'antd';
-import { Row, Col } from 'antd';
+import { Cascader } from "antd";
+import { Row, Col } from "antd";
 
+import { Tree } from "antd";
+import { DownOutlined, FrownOutlined, SmileOutlined, MehOutlined, FrownFilled } from "@ant-design/icons";
 
-import { Tree } from 'antd';
-import {
-  DownOutlined,
-  FrownOutlined,
-  SmileOutlined,
-  MehOutlined,
-  FrownFilled,
-} from '@ant-design/icons';
+const TreeNode = Tree.TreeNode;
 
 /*
   ~ What it does? ~
@@ -54,7 +49,8 @@ const STARTING_CONFIG_JSON = {
 
 export default function AvatarViewer() {
     const [configJSON, setConfigJSON] = useState(STARTING_CONFIG_JSON);
-    const [canvasRef,
+    const [
+        canvasRef,
         dataParts,
         infoDataParts,
         setInfoDataParts,
@@ -73,15 +69,15 @@ export default function AvatarViewer() {
         setSelectedClass,
         selectedClass,
         configTree,
-        setConfigTree
+        setConfigTree,
     ] = useAvatar();
-
 
     const handleClickNewAvatarButton = async event => {
         setNewAvatar();
         // setConfigJSON(await setNewAvatar());
         // setConfigTree([]);
-        //console.log(infoDataParts, "-------------------------------------");
+        console.log(infoDataParts, "-------------------------------------");
+        console.log(configTree, "-------------------------------------");
     };
 
     function changeItemColor(i, color, e) {
@@ -97,49 +93,33 @@ export default function AvatarViewer() {
     return (
         <div style={{ paddingTop: 32, width: 740, margin: "auto", textAlign: "left" }}>
             <div>
-            <Row style={{ margin: 8 }}>
-                <Col span={12}>
-                <Cascader 
-                    style={{ width: 300 }} 
-                    options={classOptions} 
-                    onChange={handleChange}
-                    placeholder="Select Class"
-                    >                
-                </Cascader>
-                </Col>
-                <Col span={6}>
-                    <Button onClick={handleClickNewAvatarButton} 
-                            disabled={selectedClass.length == 0}>
-                        <span style={{ marginRight: 8 }}>
-                            <span role="img" aria-label="fuelpump">
-                                😀
+                <Row style={{ margin: 8 }}>
+                    <Col span={12}>
+                        <Cascader
+                            style={{ width: 300 }}
+                            options={classOptions}
+                            onChange={handleChange}
+                            placeholder="Select Class"
+                        ></Cascader>
+                    </Col>
+                    <Col span={6}>
+                        <Button onClick={handleClickNewAvatarButton} disabled={selectedClass.length == 0}>
+                            <span style={{ marginRight: 8 }}>
+                                <span role="img" aria-label="fuelpump">
+                                    😀
+                                </span>
                             </span>
-                        </span>
-                        New Avatar
-                    </Button>
-                </Col>
-            </Row>                
-
+                            New Avatar
+                        </Button>
+                    </Col>
+                </Row>
             </div>
 
             <div style={{ display: "flex", "flex-direction": "row" }}>
                 <div>
                     <canvas className="Avatar-canvas" ref={canvasRef} width={canvasWidth} height={canvasHeight} />
-                    <ul>
-                        {infoDataParts.map((item, index) => (
-                            <ul>
-                            <li>{item.name}</li>
-                            <li >{item.color}</li>
-                            <input type="color" value={item.color} onChange={e => changeItemColor(index, e.target.value, item)} />
-                            <p></p>
-                            <p></p>
-                            <p></p>
-                            </ul>
-                        ))}
-                    </ul>
                 </div>
-                {
-                    /*
+                {/*
                 <ReactJson
                     style={{ padding: 8 }}
                     src={configJSON}
@@ -155,16 +135,91 @@ export default function AvatarViewer() {
                         setConfigJSON(del.updated_src);
                     }}
                 />
-                */
-                }
+                */}
 
-                <Tree
-                   style={{ padding: 8, border: "2px solid #888888" }}
+                {/*  <Tree
+                    style={{ padding: 8, border: "2px solid #888888" }}
                     showIcon
                     defaultSelectedKeys={['0-0-0']}
                     switcherIcon={<DownOutlined />}
                     treeData={configTree}
-                />                
+                >
+                </Tree> */}
+                {/*                 <Tree
+                    style={{ padding: 8, border: "2px solid #888888" }}
+                    showIcon
+                    defaultSelectedKeys={['0-0-0']}
+                    switcherIcon={<DownOutlined />}
+                    treeData={infoDataParts}
+                >
+                    
+                </Tree> */}
+                <div>
+                    {infoDataParts.map((item, index) => (
+                        <div
+                            style={{
+                                width: "350px",
+                                height: "50px",
+                                display: "flex",
+                                justifyContent: "space-around",
+                                alignItems: "stretch",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    width: "60%",
+                                    height: "80%",
+                                    border: "rgb(217, 217, 217) 1px solid",
+                                    borderRadius: "4px",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    margin: "4px",
+                                }}
+                            >
+                                <div>{item.name}</div>
+                            </div>
+                            <div
+                                style={{
+                                    width: "20%",
+                                    height: "80%",
+                                    border: "rgb(217, 217, 217) 1px solid",
+                                    borderRadius: "4px",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    margin: "4px",
+                                }}
+                            >
+                                <div>{item.color}</div>
+                            </div>
+                            <div
+                                style={{
+                                    width: "20%",
+                                    height: "80%",
+                                    border: "rgb(217, 217, 217) 1px solid",
+                                    borderRadius: "4px",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    margin: "4px",
+                                }}
+                            >
+                                <div>
+                                    <input
+                                        type="color"
+                                        value={item.color}
+                                        onChange={e => changeItemColor(index, e.target.value, item)}
+                                        style={{
+                                            width: "50px",
+                                            height: "25px",
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );
