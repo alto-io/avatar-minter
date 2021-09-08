@@ -47,11 +47,16 @@ const STARTING_CONFIG_JSON = {
         "Select a class then Press ( 😀 New Avatar )! this JSON view will contain the avatar's parts options.",
 };
 
+var currentFile = {};
+
 export default function AvatarViewer() {
     const [configJSON, setConfigJSON] = useState(STARTING_CONFIG_JSON);
-    const [
+    var [
         canvasRef,
         dataParts,
+        loadProject,
+        reloadConfig,
+        getAvatar,
         infoDataParts,
         setInfoDataParts,
         changeAvatarColor,
@@ -69,11 +74,13 @@ export default function AvatarViewer() {
         setSelectedClass,
         selectedClass,
         configTree,
-        setConfigTree,
+        setConfigTree
     ] = useAvatar();
 
+
     const handleClickNewAvatarButton = async event => {
-        setNewAvatar();
+        console.log(currentFile);
+        setNewAvatar(currentFile);
         // setConfigJSON(await setNewAvatar());
         // setConfigTree([]);
         console.log(infoDataParts, "-------------------------------------");
@@ -85,6 +92,19 @@ export default function AvatarViewer() {
         dataParts[i].color = color;
         //setInfoDataParts(dataParts);
         changeAvatarColor(dataParts);
+    }
+
+    function handleAvatarUpload(uploadEvent) {
+        let file = uploadEvent.target.files[0];
+         if (file) {
+            const reader = new FileReader();
+            reader.readAsArrayBuffer(file);
+            reader.onload = (loadEvent) => {
+                currentFile = new Blob([loadEvent.target.result], { type: 'application/octet-stream' });
+                //reloadConfig(currentFile);
+                getAvatar(currentFile);
+            }
+        } 
     }
 
     function handleChange(value) {
@@ -111,11 +131,14 @@ export default function AvatarViewer() {
                             </span>
                             New Avatar
                         </Button>
+                        <div>
+                            <input type="file" onChange={handleAvatarUpload} multiple={false} />
+                        </div>
                     </Col>
                 </Row>
             </div>
 
-            <div style={{ display: "flex", "flex-direction": "row" }}>
+            <div style={{ display: "flex", flexDirection: "row" }}>
                 <div>
                     <canvas className="Avatar-canvas" ref={canvasRef} width={canvasWidth} height={canvasHeight} />
                 </div>
@@ -156,7 +179,7 @@ export default function AvatarViewer() {
                 </Tree> */}
                 <div>
                     {infoDataParts.map((item, index) => (
-                        <div
+                        <div key={index.toString()}
                             style={{
                                 width: "350px",
                                 height: "50px",

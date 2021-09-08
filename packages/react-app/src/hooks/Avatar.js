@@ -60,7 +60,7 @@ const useAvatar = props => {
     const [selectedClass, setSelectedClass] = useState([]);
     const [configTree, setConfigTree] = useState([]);
 
-    var currentRandomConfig = { };
+    var currentRandomConfig = {};
     var currentTreeConfig = [];
 
     useEffect(() => {
@@ -84,9 +84,16 @@ const useAvatar = props => {
         }
     }
 
-    const loadProject = async () => {
-        let loaded_file = await fetch(`avatars/AvatarImages.ora`).then(r => r.blob());
-        await project.load(loaded_file);
+    const loadProject = async (fileLocation) => {
+        if (fileLocation instanceof Blob === false) {
+            console.log("Loading default file");
+            let loaded_file = await fetch(`avatars/AvatarImages.ora`).then(r => r.blob());
+            await project.load(loaded_file);
+        }
+        else {
+            console.log("Loading specified file");
+            await project.load(fileLocation);
+        }
     };
 
     async function drawAvatarFromMetadata(metadata, index, amountToCreate) {
@@ -122,6 +129,7 @@ const useAvatar = props => {
     }
 
     const startIPFSUpload = async () => {
+        console.log("startIPFS");
         await loadProject();
         rend = new jsora.Renderer(project);
 
@@ -172,16 +180,18 @@ const useAvatar = props => {
         setIpfsHash(cid);
     };
 
-    const reloadConfig = async () => {
-        await loadProject();
+    const reloadConfig = async (reloadParam) => {
+        console.log("reloadConfig", reloadParam);
+        await loadProject(reloadParam);
         await getAvatarConfiguration(project);
         setRandomConfig(currentRandomConfig);
     }
 
-    const getAvatar = async () => {
+    const getAvatar = async (getParam) => {
         currentRandomConfig = { Root: {} };
 
-        await loadProject();
+        console.log("getAvatar", getParam);
+        await loadProject(getParam);
         await getBaseClasses();  // reinits
 
         rend = new jsora.Renderer(project);
@@ -222,7 +232,7 @@ const useAvatar = props => {
         }
 
         return tempBaseClassArray;
-    }    
+    }
 
     function hideLayersRecursively(obj, parent) {
         for (let child of obj.children) {
@@ -238,7 +248,7 @@ const useAvatar = props => {
     function changeAvatarColor(paramArray) {
         const canvas1 = canvasRef.current;
         const ctx1 = canvas1.getContext("2d");
-        var newCanvas = {width: 400, height: 400};
+        var newCanvas = { width: 400, height: 400 };
 
         ctx1.clearRect(0, 0, newCanvas.width, newCanvas.height);
         paramArray.sort((a, b) => a.zIndex - b.zIndex);
@@ -255,8 +265,8 @@ const useAvatar = props => {
                 currentContext.clearRect(0, 0, newCanvas.width, newCanvas.height);
                 currentContext.drawImage(currentImg, 0, 0);
                 currentContext.globalCompositeOperation = "source-atop";
-                currentContext.fillStyle =  paramArray[i].color;
-                
+                currentContext.fillStyle = paramArray[i].color;
+
                 currentContext.fillRect(0, 0, newCanvas.width, newCanvas.height);
                 currentContext.globalCompositeOperation = "source-over";
 
@@ -279,7 +289,7 @@ const useAvatar = props => {
 
         //ctx1.drawImage(newCanvas, 0, 0);
 
-        
+
         dataParts.sort((a, b) => a.zIndex - b.zIndex);
         for (let i = 0; i < dataParts.length; i++) {
             let currentImg = new Image(newCanvas.width, newCanvas.height);
@@ -308,12 +318,12 @@ const useAvatar = props => {
                 currentCanvas.remove();
             }
         }
-    
+
     }
 
-    async function setNewAvatar() {
+    async function setNewAvatar(newParam) {
         dataParts.length = 0;
-        await getAvatar();
+        await getAvatar(newParam);
         return randomConfig;
     }
 
@@ -387,8 +397,9 @@ const useAvatar = props => {
             var amountToCreate = mintingConfigJSON.amountToCreate;
             var mintArray = [];
 
+            console.log("generateMetadaJson");
             await loadProject();
-            await getBaseClasses(); 
+            await getBaseClasses();
             await getAvatarConfiguration(project);
             rend = new jsora.Renderer(project);
 
@@ -419,6 +430,7 @@ const useAvatar = props => {
     }
 
     async function getMintingConfig() {
+        console.log("getMintingConfig");
         await loadProject();
 
         await getAllPartsJson(project);
@@ -562,7 +574,7 @@ const useAvatar = props => {
                     project.get_by_path(path).name.includes("bottom")) {
                     index = 10;
                 }
-                let currentObj =   {
+                let currentObj = {
                     name: project.get_by_path(path).name,
                     value: value,
                     zIndex: index,
@@ -700,7 +712,7 @@ const useAvatar = props => {
                     label: childArray[i].name,
                     children: refreshClassOptionsRecursively(childArray[i].children)
                 })
-        }        
+        }
 
         if (returnArray.length == 0) return null
 
@@ -770,8 +782,7 @@ const useAvatar = props => {
         var selectedNode = null;
         var finished = false;
 
-        while (!finished)
-        {
+        while (!finished) {
             selectedNode = null;
             var nodeName = nodeToAdd.key;
             // console.log(nodeName);
@@ -824,7 +835,7 @@ const useAvatar = props => {
             node[nodeName] = recursivelyCreateNodes(partArray);
             return node;
         }
-    }    
+    }
 
     async function renderAvatar() {
         return await rend.make_merged_image(); // returns canvas
@@ -833,6 +844,9 @@ const useAvatar = props => {
     return [
         canvasRef,
         dataParts,
+        loadProject,
+        reloadConfig,
+        getAvatar,
         infoDataParts,
         setInfoDataParts,
         changeAvatarColor,

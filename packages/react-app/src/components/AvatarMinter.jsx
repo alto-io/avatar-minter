@@ -53,6 +53,7 @@ export default function AvatarMinter(props) {
     const [
         canvasRef,
         dataParts,
+        loadProject,
         infoDataParts,
         setInfoDataParts,
         changeAvatarColor,
@@ -68,7 +69,9 @@ export default function AvatarMinter(props) {
         ipfsHash,
         classOptions,
         setSelectedClass,
-        selectedClass
+        selectedClass,
+        configTree,
+        setConfigTree
         ] = useAvatar();
     const [mintingConfigJSON, setMintingConfigJSON] = useState(STARTING_CONFIG_JSON);
 
@@ -136,7 +139,7 @@ export default function AvatarMinter(props) {
             </div>
 
             <div
-                    style={{ padding: 8, height: "400px", "overflow-y": "auto" }}>
+                    style={{ padding: 8, height: "400px", overflowY: "auto" }}>
                 <ReactJson
                     style={{ padding: 8 }}
                     src={mintingConfigJSON}
@@ -192,10 +195,10 @@ export default function AvatarMinter(props) {
             </div>
 
             <div
-                style= {{"display":"flex", "flex-direction": "row"}}>
+                style= {{display:"flex", flexDirection: "row"}}>
 
                 <ReactJson
-                    style={{ padding: 8, height: "400px", "overflow-y": "auto"  }}
+                    style={{ padding: 8, height: "400px", overflowY: "auto"  }}
                     src={metadataJson}
                     theme="pop"
                     enableClipboard={false}
@@ -246,7 +249,7 @@ export default function AvatarMinter(props) {
             </div>      
 
             <div
-                    style={{ padding: 8, height: "400px", "overflow-y": "auto" }}>
+                    style={{ padding: 8, height: "400px", overflowY: "auto" }}>
                 <ReactJson
                     style={{ padding: 8 }}
                     src={uploadedTokenURI}
