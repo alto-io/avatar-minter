@@ -1,8 +1,4 @@
 import { useRef, useEffect, useState } from "react";
-<<<<<<< HEAD
-
-=======
->>>>>>> b8e79ffd08b8383dfa53fae88b56aa47cda85d5b
 /*
   ~ What it does? ~
 
