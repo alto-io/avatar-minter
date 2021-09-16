@@ -9074,7 +9074,7 @@ eventemitter3@4.0.4:
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.4.tgz#b5463ace635a083d018bdc7c917b4c5f10a85384"
   integrity sha512-rlaVLnVxtxvoyLsQQFBx53YmXHDxRIzzTLbdfxqi4yocpSjAxXwkU0cScM5JgSKMqEhrZpnvQ2D9gjylR0AimQ==
 
-eventemitter3@^4.0.0:
+eventemitter3@^4.0.0, eventemitter3@^4.0.7:
   version "4.0.7"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.7.tgz#2de9b68f6528d5644ef5c59526a1b4a07306169f"
   integrity sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==
@@ -10387,7 +10387,11 @@ gpu-mock.js@^1.3.0:
   resolved "https://registry.yarnpkg.com/gpu-mock.js/-/gpu-mock.js-1.3.1.tgz#f7deaa09da3f672762eda944ecf948fd2c4b1490"
   integrity sha512-+lbp8rQ0p1nTa6Gk6HoLiw4yM6JTpql82U+nCF3sZbX4FJWP9PzzF1018dW8K+pbmqRmhLHbn6Bjc6i6tgUpbA==
 
+<<<<<<< HEAD
 gpu.js@^2.11.3, gpu.js@^2.6.9:
+=======
+gpu.js@^2.11.3:
+>>>>>>> b8e79ffd08b8383dfa53fae88b56aa47cda85d5b
   version "2.11.3"
   resolved "https://registry.yarnpkg.com/gpu.js/-/gpu.js-2.11.3.tgz#60f8d15c434367eea8954304c3d5e833b48f65c1"
   integrity sha512-yRfPXrOpm8ZrlSqPvzClOGS3bYdTvuMyXSdN58jLgAyixxd4Q16wzbAUL9xV9m1xwRDjHCu37ErYDtgGQh2TRA==
@@ -12295,6 +12299,11 @@ it-all@^1.0.1:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/it-all/-/it-all-1.0.4.tgz#5a1aac996e2516c0d030911a631190b330afdb6d"
   integrity sha512-7K+gjHHzZ7t+bCkrtulYiow35k3UgqH7miC+iUa9RGiyDRXJ6hVDeFsDrnWrlscjrkLFOJRKHxNOke4FNoQnhw==
+
+it-all@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/it-all/-/it-all-1.0.5.tgz#e880510d7e73ebb79063a76296a2eb3cb77bbbdb"
+  integrity sha512-ygD4kA4vp8fi+Y+NBgEKt6W06xSbv6Ub/0V8d1r3uCyJ9Izwa1UspkIOlqY9fOee0Z1w3WRo1+VWyAU4DgtufA==
 
 it-concat@^1.0.0:
   version "1.0.2"
@@ -15974,6 +15983,14 @@ performance-now@^2.1.0:
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
+phaser@^3.55.2:
+  version "3.55.2"
+  resolved "https://registry.yarnpkg.com/phaser/-/phaser-3.55.2.tgz#c1e2e9e70de7085502885e06f46b7eb4bd95e29a"
+  integrity sha512-amKXsbb2Ht29dGPKvt1edq3yGGYKtq8373GpJYGKPNPnneYY6MtVTOgjHDuZwtmUyK4v86FugkT3hzW/N4tjxQ==
+  dependencies:
+    eventemitter3 "^4.0.7"
+    path "^0.12.7"
+
 picomatch@^2.0.4, picomatch@^2.0.5, picomatch@^2.2.1:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.2.2.tgz#21f333e9b6b8eaff02468f5146ea406d345f4dad"
@@ -17802,6 +17819,11 @@ react-blockies@^1.4.1:
   integrity sha512-4N015X5oPNnD3xQPsiqolOFzPZSSWyc5mJhJUZShUCHtiGUxVN+1qsWTcglkHMNySux9hUofaispqcw9QkWP5Q==
   dependencies:
     prop-types "^15.5.10"
+
+react-color-palette@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/react-color-palette/-/react-color-palette-6.1.0.tgz#1b3ba6212b54bacaed4f82c972576656bfd14406"
+  integrity sha512-Bj3qcKg5jLwpFmNYDsV6x+ZpUmBrkOAvxMFktGsaHr36qMUA2Wq6R5ltrjGlvp+iAw2+MMcI6PnEmUhE0gmrMA==
 
 react-css-theme-switcher@^0.2.2:
   version "0.2.2"

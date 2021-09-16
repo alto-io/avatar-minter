@@ -5,6 +5,14 @@ import { useAvatar } from "../hooks";
 
 import ReactJson from "react-json-view";
 
+import { Cascader } from "antd";
+import { Row, Col } from "antd";
+
+import { Tree } from "antd";
+import { DownOutlined, FrownOutlined, SmileOutlined, MehOutlined, FrownFilled } from "@ant-design/icons";
+
+const TreeNode = Tree.TreeNode;
+
 /*
   ~ What it does? ~
 
@@ -35,44 +43,106 @@ import ReactJson from "react-json-view";
 */
 
 const STARTING_CONFIG_JSON = {
-    "Getting Started": "Press ( 😀 New Avatar ), this JSON view will contain the avatar's config.json once it's been loaded."
-  };
-  
+    "Getting Started":
+        "Select a class then Press ( 😀 New Avatar )! this JSON view will contain the avatar's parts options.",
+};
+
+var currentFile = {};
+
 export default function AvatarViewer() {
-
     const [configJSON, setConfigJSON] = useState(STARTING_CONFIG_JSON);
-    const [canvasRef, canvasWidth, canvasHeight, setNewAvatar] = useAvatar();
+    var [
+        canvasRef,
+        dataParts,
+        loadProject,
+        reloadConfig,
+        getAvatar,
+        infoDataParts,
+        setInfoDataParts,
+        changeAvatarColor,
+        canvasWidth,
+        canvasHeight,
+        setNewAvatar,
+        getMintingConfig,
+        generateMetadataJson,
+        setMintingConfig,
+        metadataJson,
+        uploadedTokenURI,
+        startIPFSUpload,
+        ipfsHash,
+        classOptions,
+        setSelectedClass,
+        selectedClass,
+        configTree,
+        setConfigTree
+    ] = useAvatar();
 
-    const handleClickNewAvatarButton = async (event) => {
-        setConfigJSON(await setNewAvatar()); 
+
+    const handleClickNewAvatarButton = async event => {
+        console.log(currentFile);
+        setNewAvatar(currentFile);
+        // setConfigJSON(await setNewAvatar());
+        // setConfigTree([]);
+        console.log(infoDataParts, "-------------------------------------");
+        console.log(configTree, "-------------------------------------");
+    };
+
+    function changeItemColor(i, color, e) {
+        //console.log(e);
+        dataParts[i].color = color;
+        //setInfoDataParts(dataParts);
+        changeAvatarColor(dataParts);
     }
 
+    function handleAvatarUpload(uploadEvent) {
+        let file = uploadEvent.target.files[0];
+         if (file) {
+            const reader = new FileReader();
+            reader.readAsArrayBuffer(file);
+            reader.onload = (loadEvent) => {
+                currentFile = new Blob([loadEvent.target.result], { type: 'application/octet-stream' });
+                //reloadConfig(currentFile);
+                getAvatar(currentFile);
+            }
+        } 
+    }
+
+    function handleChange(value) {
+        setSelectedClass(value);
+    }
     return (
         <div style={{ paddingTop: 32, width: 740, margin: "auto", textAlign: "left" }}>
             <div>
-                <Button
-                    onClick={handleClickNewAvatarButton}
-                    size="large"
-                    shape="round"
-                >
-                    <span style={{ marginRight: 8 }}>
-                        <span role="img" aria-label="fuelpump">
-                            😀
-                        </span>
-                    </span>
-                    New Avatar
-                </Button>
+                <Row style={{ margin: 8 }}>
+                    <Col span={12}>
+                        <Cascader
+                            style={{ width: 300 }}
+                            options={classOptions}
+                            onChange={handleChange}
+                            placeholder="Select Class"
+                        ></Cascader>
+                    </Col>
+                    <Col span={6}>
+                        <Button onClick={handleClickNewAvatarButton} disabled={selectedClass.length == 0}>
+                            <span style={{ marginRight: 8 }}>
+                                <span role="img" aria-label="fuelpump">
+                                    😀
+                                </span>
+                            </span>
+                            New Avatar
+                        </Button>
+                        <div>
+                            <input type="file" onChange={handleAvatarUpload} multiple={false} />
+                        </div>
+                    </Col>
+                </Row>
             </div>
 
-            <div>
-                <canvas
-                    className="Avatar-canvas"
-                    ref={canvasRef}
-                    width={canvasWidth}
-                    height={canvasHeight}
-                />
-            </div>
-            <div>
+            <div style={{ display: "flex", flexDirection: "row" }}>
+                <div>
+                    <canvas className="Avatar-canvas" ref={canvasRef} width={canvasWidth} height={canvasHeight} />
+                </div>
+                {/*
                 <ReactJson
                     style={{ padding: 8 }}
                     src={configJSON}
@@ -88,9 +158,92 @@ export default function AvatarViewer() {
                         setConfigJSON(del.updated_src);
                     }}
                 />
+                */}
+
+                {/*  <Tree
+                    style={{ padding: 8, border: "2px solid #888888" }}
+                    showIcon
+                    defaultSelectedKeys={['0-0-0']}
+                    switcherIcon={<DownOutlined />}
+                    treeData={configTree}
+                >
+                </Tree> */}
+                {/*                 <Tree
+                    style={{ padding: 8, border: "2px solid #888888" }}
+                    showIcon
+                    defaultSelectedKeys={['0-0-0']}
+                    switcherIcon={<DownOutlined />}
+                    treeData={infoDataParts}
+                >
+                    
+                </Tree> */}
+                <div>
+                    {infoDataParts.map((item, index) => (
+                        <div key={index.toString()}
+                            style={{
+                                width: "350px",
+                                height: "50px",
+                                display: "flex",
+                                justifyContent: "space-around",
+                                alignItems: "stretch",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    width: "60%",
+                                    height: "80%",
+                                    border: "rgb(217, 217, 217) 1px solid",
+                                    borderRadius: "4px",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    margin: "4px",
+                                }}
+                            >
+                                <div>{item.name}</div>
+                            </div>
+                            <div
+                                style={{
+                                    width: "20%",
+                                    height: "80%",
+                                    border: "rgb(217, 217, 217) 1px solid",
+                                    borderRadius: "4px",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    margin: "4px",
+                                }}
+                            >
+                                <div>{item.color}</div>
+                            </div>
+                            <div
+                                style={{
+                                    width: "20%",
+                                    height: "80%",
+                                    border: "rgb(217, 217, 217) 1px solid",
+                                    borderRadius: "4px",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    margin: "4px",
+                                }}
+                            >
+                                <div>
+                                    <input
+                                        type="color"
+                                        value={item.color}
+                                        onChange={e => changeItemColor(index, e.target.value, item)}
+                                        style={{
+                                            width: "50px",
+                                            height: "25px",
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
-
         </div>
-
     );
 }

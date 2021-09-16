@@ -21,6 +21,7 @@ import {
 } from "./hooks";
 
 import { AvatarViewer, AvatarMinter } from "./components";
+import { ClawGame } from "./components/ClawGame";
 
 const { BufferList } = require("bl");
 // https://www.npmjs.com/package/ipfs-http-client
@@ -52,7 +53,7 @@ const { ethers } = require("ethers");
 const targetNetwork = NETWORKS.localhost; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
 
 // 😬 Sorry for all the console logging
-const DEBUG = true;
+const DEBUG = false;
 const NETWORKCHECK = false;
 
 // EXAMPLE STARTING JSON:
@@ -187,7 +188,7 @@ function App(props) {
 
   // If you want to call a function on a new block
   useOnBlock(mainnetProvider, () => {
-    console.log(`⛓ A new mainnet block is here: ${mainnetProvider._lastBlockNumber}`);
+    //console.log(`⛓ A new mainnet block is here: ${mainnetProvider._lastBlockNumber}`);
   });
 
   // Then read your DAI balance like:
@@ -197,11 +198,11 @@ function App(props) {
 
   // keep track of a variable from the contract in the local React state:
   const balance = useContractReader(readContracts, "YourCollectible", "balanceOf", [address]);
-  console.log("🤗 balance:", balance);
+  //console.log("🤗 balance:", balance);
 
   // 📟 Listen for broadcast events
   const transferEvents = useEventListener(readContracts, "YourCollectible", "Transfer", localProvider, 1);
-  console.log("📟 Transfer events:", transferEvents);
+  //console.log("📟 Transfer events:", transferEvents);
 
   //
   // 🧠 This effect will update yourCollectibles by polling when your balance changes
@@ -402,6 +403,15 @@ function App(props) {
 
   const [transferToAddresses, setTransferToAddresses] = useState({});
 
+  const callSetURI = async (newURI) => {
+    tx(writeContracts.YourCollectible.setURI(newURI));
+  }
+
+  const callMintMultiple = async (amount) => {
+    console.log(address, amount);
+    tx(writeContracts.YourCollectible.mintMultiple(address, amount));
+  }
+
   return (
     <div className="App">
       {/* ✏️ Edit the header and change the title to your project name */}
@@ -449,6 +459,7 @@ function App(props) {
               Avatar Minter
             </Link>
           </Menu.Item>
+{/*
           <Menu.Item key="/ipfsup">
             <Link
               onClick={() => {
@@ -469,6 +480,18 @@ function App(props) {
               IPFS Download
             </Link>
           </Menu.Item>
+*/}
+          <Menu.Item key="/clawgame">
+            <Link
+              onClick={() => {
+                setRoute("/clawgame");
+              }}
+              to="/clawgame"
+            >
+              Claw Game
+            </Link>
+          </Menu.Item>
+
           <Menu.Item key="/debugcontracts">
             <Link
               onClick={() => {
@@ -479,6 +502,7 @@ function App(props) {
               Debug Contracts
             </Link>
           </Menu.Item>
+
         </Menu>
 
         <Switch>
@@ -566,7 +590,7 @@ function App(props) {
           </Route>
 
           <Route path="/avatarminter">
-            <AvatarMinter />
+            <AvatarMinter callSetURI={callSetURI} callMintMultiple={callMintMultiple}/>
           </Route>
 
           <Route path="/ipfsup">
@@ -651,6 +675,9 @@ function App(props) {
               address={address}
               blockExplorer={blockExplorer}
             />
+          </Route>
+          <Route path="/clawgame">
+            <ClawGame></ClawGame>
           </Route>
         </Switch>
       </BrowserRouter>
