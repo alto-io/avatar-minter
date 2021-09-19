@@ -74,7 +74,8 @@ export default function AvatarViewer() {
         setSelectedClass,
         selectedClass,
         configTree,
-        setConfigTree
+        setConfigTree,
+        lootText
     ] = useAvatar();
 
 
@@ -84,7 +85,7 @@ export default function AvatarViewer() {
         // setConfigJSON(await setNewAvatar());
         // setConfigTree([]);
         console.log(infoDataParts, "-------------------------------------");
-        console.log(configTree, "-------------------------------------");
+        console.log(configTree[0].children[0].children[0], "-------------------------------------");
     };
 
     function changeItemColor(i, color, e) {
@@ -159,15 +160,40 @@ export default function AvatarViewer() {
                     }}
                 />
                 */}
+      <svg  xmlns="http://www.w3.org/2000/svg"
+            preserveAspectRatio="xMinYMin meet" 
+            viewBox="0 0 350 350">
+        <style>
+            {`.Common { fill: white; font-family: serif; font-size: 14px; }
+              .Rare { fill: deepskyblue; font-family: serif; font-size: 14px; }
+              .Legendary { fill: orange; font-family: serif; font-size: 14px; }
+            `}
+        </style>
+        <rect width="100%" height="100%" fill="black" />
+        {
+            lootText.map( (x, index) => {
+                return (
+                <text x={10} y={(index + 1) * 20} class={x.rarity}>{x.name}</text>
+                )
+            })
+        }
 
-                {/*  <Tree
+    </svg>
+
+
+
+                {
+                /*
+                <Tree
                     style={{ padding: 8, border: "2px solid #888888" }}
                     showIcon
                     defaultSelectedKeys={['0-0-0']}
                     switcherIcon={<DownOutlined />}
                     treeData={configTree}
                 >
-                </Tree> */}
+                </Tree>
+                */
+                }
                 {/*                 <Tree
                     style={{ padding: 8, border: "2px solid #888888" }}
                     showIcon

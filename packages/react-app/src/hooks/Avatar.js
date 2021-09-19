@@ -22,6 +22,7 @@ const ipfs = ipfsAPI({ host: "ipfs.infura.io", port: "5001", protocol: "https" }
 const all = require("it-all");
 
 var dataParts = [];
+var tempLootText = [];
 var colors = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#00FFFF", "#FF00FF", "#FFA500", "#FF69B4", "#DAA520", "#B22222", "#F0FFF0", "#C0C0C0", "#00FF00", "#808000", "#FF6347"];
 
 const useAvatar = props => {
@@ -41,6 +42,8 @@ const useAvatar = props => {
         initialized: false,
     });
     const [partsList, setPartsList] = useState({ PartsList: {} });
+
+    const [lootText, setLootText] = useState([])
 
     const [metadataJson, setMetadataJson] = useState({ tokenMetadata: {} });
 
@@ -200,6 +203,8 @@ const useAvatar = props => {
         await randomizeHiddenParts();
         setRandomConfig(currentRandomConfig);
         await drawAvatar();
+
+        setLootText(tempLootText);
     };
 
     function getBaseClasses() {
@@ -287,9 +292,9 @@ const useAvatar = props => {
         var newCanvas = await renderAvatar();
         ctx1.clearRect(0, 0, newCanvas.width, newCanvas.height);
 
-        //ctx1.drawImage(newCanvas, 0, 0);
+        ctx1.drawImage(newCanvas, 0, 0);
 
-
+/*
         dataParts.sort((a, b) => a.zIndex - b.zIndex);
         for (let i = 0; i < dataParts.length; i++) {
             let currentImg = new Image(newCanvas.width, newCanvas.height);
@@ -318,7 +323,7 @@ const useAvatar = props => {
                 currentCanvas.remove();
             }
         }
-
+*/
     }
 
     async function setNewAvatar(newParam) {
@@ -498,6 +503,7 @@ const useAvatar = props => {
 
     async function randomizeHiddenParts() {
         requiredPartsList = [];
+        tempLootText = [];
 
         function traverse(jsonObj, parent, hideAll) {
             if (jsonObj !== null && typeof jsonObj == "object") {
@@ -549,7 +555,7 @@ const useAvatar = props => {
     }
 
     function randomizePart(partString, hideAll) {
-        // var currentPart = partString.split("//")[1];
+        var currentPart = partString.split("//")[1];
         var path = partString.split("Root/Root")[1].split("//")[0];
         var partType = path.split("/")[1];
 
@@ -618,6 +624,28 @@ const useAvatar = props => {
 
             // check if the part requires other parts unhidden
             checkRequiredParts(layer.children[randomPartIndex].name);
+
+            if (tempLootText.length < 5)
+            {
+                var modifier = "";
+                var rarity = "Common";
+                if (Math.random() < 0.3) {
+                    rarity = "Rare";
+                    modifier = "Shiny ";
+                    if (Math.random() < 0.3) {
+                        rarity = "Legendary";
+                        modifier = "Mythical "
+                    }
+    
+                }
+
+                var lootObj = {
+                    name: modifier + layer.children[randomPartIndex].name,
+                    rarity
+                }
+
+                tempLootText.push(lootObj)
+            }
         }
     }
 
@@ -864,7 +892,8 @@ const useAvatar = props => {
         setSelectedClass,
         selectedClass,
         configTree,
-        setConfigTree
+        setConfigTree,
+        lootText
     ];
 };
 
