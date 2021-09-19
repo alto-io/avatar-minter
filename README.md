@@ -7,48 +7,26 @@ Required: [Node](https://nodejs.org/dist/latest-v12.x/) plus [Yarn](https://clas
 
 ```
 git clone https://github.com/alto-io/game-legos.git avatar
-```
-```
 cd avatar
 git checkout avatar
-# 🏗 Scaffold-ETH
-
-> everything you need to build on Ethereum! 🚀
-
-🧪 Quickly experiment with Solidity using a frontend that adapts to your smart contract:
-
-![image](https://user-images.githubusercontent.com/2653167/124158108-c14ca380-da56-11eb-967e-69cde37ca8eb.png)
-
-
-# 🏄‍♂️ Quick Start
-
-Prerequisites: [Node](https://nodejs.org/en/download/) plus [Yarn](https://classic.yarnpkg.com/en/docs/install/) and [Git](https://git-scm.com/downloads)
-
-> clone/fork 🏗 scaffold-eth:
-
-```bash
-git clone https://github.com/austintgriffith/scaffold-eth.git
+yarn install
 ```
 
 > install and start your 👷‍ Hardhat chain:
 
-```bash
-cd scaffold-eth
-yarn install
-yarn start
+```
+yarn chain
 ```
 
 > in a second terminal window, start your 📱 frontend:
 
-```
-cd avatar
-yarn chain
+```bash
+yarn start
 ```
 
 > in a third terminal window, 🛰 deploy your contract:
 
 ```
-cd avatar
 yarn deploy
 ```
 
@@ -242,6 +220,5 @@ Check out all the [active branches](https://github.com/austintgriffith/scaffold-
 
 Join the telegram [support chat 💬](https://t.me/joinchat/KByvmRe5wkR-8F_zz6AjpA) to ask questions and find others building with 🏗 scaffold-eth!
 
--->
-
 🙏 Please check out our [Gitcoin grant](https://gitcoin.co/grants/2851/scaffold-eth) too!
+-->
