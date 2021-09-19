@@ -52,7 +52,6 @@ cd avatar
 yarn deploy
 ```
 
-<<<<<<< HEAD
 📱 Open http://localhost:3000 to see the app
 
 👤 The best way to test game-legos locally is by creating a separate test account with its own test wallet on Chrome. Create an account by clicking here:
@@ -243,10 +242,6 @@ Check out all the [active branches](https://github.com/austintgriffith/scaffold-
 
 Join the telegram [support chat 💬](https://t.me/joinchat/KByvmRe5wkR-8F_zz6AjpA) to ask questions and find others building with 🏗 scaffold-eth!
 
-<<<<<<< HEAD
 -->
-=======
----
 
 🙏 Please check out our [Gitcoin grant](https://gitcoin.co/grants/2851/scaffold-eth) too!
->>>>>>> upstream/master
