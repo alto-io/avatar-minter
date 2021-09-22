@@ -717,14 +717,6 @@ function App(props) {
                 }}
               />
             </div>
-            <Contract
-              name="YourContract"
-              signer={userSigner}
-              provider={localProvider}
-              address={address}
-              blockExplorer={blockExplorer}
-              contractConfig={contractConfig}
-            />
           </Route>
 
           <Route path="/avatarviewer">
@@ -816,7 +808,9 @@ function App(props) {
               provider={localProvider}
               address={address}
               blockExplorer={blockExplorer}
+              contractConfig={contractConfig}
             />
+
           </Route>
           <Route path="/clawgame">
             <ClawGame></ClawGame>
