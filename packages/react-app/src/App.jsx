@@ -553,14 +553,55 @@ function App(props) {
       {networkDisplay}
       <BrowserRouter>
         <Menu style={{ textAlign: "center" }} selectedKeys={[route]} mode="horizontal">
-          <Menu.Item key="/">
+        <Menu.Item key="/">
             <Link
               onClick={() => {
                 setRoute("/");
               }}
               to="/"
             >
-              YourCollectibles
+              Overview
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="/avatarviewer">
+            <Link
+              onClick={() => {
+                setRoute("/avatarviewer");
+              }}
+              to="/avatarviewer"
+            >
+              Viewer
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="/randomizer">
+            <Link
+              onClick={() => {
+                setRoute("/randomizer");
+              }}
+              to="/randomizer"
+            >
+              Randomizer
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="/avatarminter">
+            <Link
+              onClick={() => {
+                setRoute("/avatarminter");
+              }}
+              to="/avatarminter"
+            >
+              Minter
+            </Link>
+          </Menu.Item>
+          
+          <Menu.Item key="/youravatars">
+            <Link
+              onClick={() => {
+                setRoute("/youravatars");
+              }}
+              to="/youravatars"
+            >
+              Your Avatars
             </Link>
           </Menu.Item>
           <Menu.Item key="/transfers">
@@ -573,26 +614,7 @@ function App(props) {
               Transfers
             </Link>
           </Menu.Item>
-          <Menu.Item key="/avatarviewer">
-            <Link
-              onClick={() => {
-                setRoute("/avatarviewer");
-              }}
-              to="/avatarviewer"
-            >
-              Avatar Viewer
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="/avatarminter">
-            <Link
-              onClick={() => {
-                setRoute("/avatarminter");
-              }}
-              to="/avatarminter"
-            >
-              Avatar Minter
-            </Link>
-          </Menu.Item>
+
 {/*
           <Menu.Item key="/ipfsup">
             <Link
@@ -614,7 +636,6 @@ function App(props) {
               IPFS Download
             </Link>
           </Menu.Item>
-*/}
           <Menu.Item key="/clawgame">
             <Link
               onClick={() => {
@@ -625,6 +646,7 @@ function App(props) {
               Claw Game
             </Link>
           </Menu.Item>
+*/}
 
           <Menu.Item key="/debugcontracts">
             <Link
@@ -640,7 +662,7 @@ function App(props) {
         </Menu>
 
         <Switch>
-          <Route exact path="/">
+          <Route exact path="/youravatars">
             {/*
                 🎛 this scaffolding is full of commonly used components
                 this <Contract/> component will automatically parse your ABI
@@ -722,6 +744,11 @@ function App(props) {
           <Route path="/avatarviewer">
             <AvatarViewer />
           </Route>
+
+          <Route path="/randomizer">
+            <AvatarMinter callSetURI={callSetURI} callMintMultiple={callMintMultiple}/>
+          </Route>
+
 
           <Route path="/avatarminter">
             <AvatarMinter callSetURI={callSetURI} callMintMultiple={callMintMultiple}/>
