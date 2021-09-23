@@ -1,0 +1,30 @@
+name: Deploy to surge
+
+on:
+  push:
+    branches:
+      - time-garden
+
+jobs:
+       build:                           
+           runs-on: ubuntu-latest 
+           name: Deploying to surge 
+           steps:
+           - uses: actions/checkout@v2
+           - name: Install Node.js
+             uses: actions/setup-node@v2-beta
+             with:
+               node-version: 12 
+
+           - uses: borales/actions-yarn@v2.0.0 # `yarn install`
+             with:
+               cmd: install 
+
+           - name: Build React App                              
+             run: yarn build 
+
+           - name: Install Surge
+             run: npm install --global surge  
+
+           - name: Run surge
+             run: surge --project ./build --domain time-garden.surge.sh --token ${{ secrets.SURGE_TOKEN }}
