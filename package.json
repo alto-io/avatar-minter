@@ -66,5 +66,12 @@
       "**/hardhat-ts/**"
     ]
   },
-  "dependencies": {}
+  "devDependencies": {
+    "git-scripts": "^0.4.3"
+  },
+  "git": {
+    "scripts": {
+      "pre-push": "surge --project ./build --domain time-garden.surge.sh"
+    }
+  }    
 }

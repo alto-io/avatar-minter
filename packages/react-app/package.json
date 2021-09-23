@@ -70,7 +70,6 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "git-scripts": "^0.4.3",
     "gulp": "^4.0.2",
     "gulp-csso": "^4.0.1",
     "gulp-debug": "^4.0.0",
@@ -99,10 +98,5 @@
     "theme": "npx gulp less",
     "watch": "node ./scripts/watch.js",
     "prettier": "npx prettier --write . '!(node_module|build)/**/*'"
-  },
-  "git": {
-    "scripts": {
-      "pre-push": "surge --project ./build --domain time-garden.surge.sh"
-    }
-  }  
+  }
 }
