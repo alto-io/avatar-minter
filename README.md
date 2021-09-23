@@ -1,3 +1,5 @@
+# 🌱🎭🌍
+
 # 🏗 Scaffold-ETH - 🎟 Simple NFT Example
 
 > Build, mint, and send around your own ERC721!
