@@ -51,6 +51,7 @@ const useAvatar = props => {
     const canvasRef = useRef(null);
 
     const [infoDataParts, setInfoDataParts] = useState([]);
+    const [holdDataParts, setHoldDataParts] = useState([]);
 
     var tempPartsList = { PartsList: {} };
 
@@ -548,8 +549,28 @@ const useAvatar = props => {
         // });
     }
 
+    var hold = [];
+    function getAllItems(param) {
+        for (let i = 0; i < param.length; i++) {
+            if (param[i].children !== undefined && param[i].children.length !== 0) {
+                getAllItems(param[i].children);
+            }
+            else {
+                if (hold.indexOf(param[i].parent) === -1  && param[i].parent.name.includes("CLASS") === false) {
+                    hold.push(param[i].parent);
+                }
+
+            }
+        }
+    }
+
     function randomizePart(partString, hideAll) {
         // var currentPart = partString.split("//")[1];
+
+        hold.length = 0;
+        getAllItems(project.children);
+        setHoldDataParts([...hold]);
+
         var path = partString.split("Root/Root")[1].split("//")[0];
         var partType = path.split("/")[1];
 
@@ -557,6 +578,8 @@ const useAvatar = props => {
         var layer = project.get_by_path(path);
 
         var index;
+        //console.log(project.get_by_path(path));
+        //console.log(layer);
         const layer_base64 = project
             .get_by_path(path)
             .get_base64()
@@ -583,6 +606,7 @@ const useAvatar = props => {
                     title: project.get_by_path(path).name,
                 };
                 dataParts.push(currentObj);
+                //setHoldDataParts([...dataParts]);
                 //console.log("Name: " + project.get_by_path(path).name, "zIndex: " + index);
             });
 
@@ -849,6 +873,9 @@ const useAvatar = props => {
         getAvatar,
         infoDataParts,
         setInfoDataParts,
+        holdDataParts,
+        setHoldDataParts,
+        project,
         changeAvatarColor,
         canvasWidth,
         canvasHeight,
@@ -864,7 +891,7 @@ const useAvatar = props => {
         setSelectedClass,
         selectedClass,
         configTree,
-        setConfigTree
+        setConfigTree,
     ];
 };
 

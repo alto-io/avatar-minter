@@ -1,5 +1,5 @@
 import { Button } from "antd";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { useAvatar } from "../hooks";
 
@@ -10,6 +10,7 @@ import { Row, Col } from "antd";
 
 import { Tree } from "antd";
 import { DownOutlined, FrownOutlined, SmileOutlined, MehOutlined, FrownFilled } from "@ant-design/icons";
+import { data } from "autoprefixer";
 
 const TreeNode = Tree.TreeNode;
 
@@ -59,6 +60,9 @@ export default function AvatarViewer() {
         getAvatar,
         infoDataParts,
         setInfoDataParts,
+        holdDataParts,
+        setHoldDataParts,
+        project,
         changeAvatarColor,
         canvasWidth,
         canvasHeight,
@@ -74,17 +78,122 @@ export default function AvatarViewer() {
         setSelectedClass,
         selectedClass,
         configTree,
-        setConfigTree
+        setConfigTree,
     ] = useAvatar();
 
+    function handleSelect(e) {
+        let currentDrop = JSON.parse(e.target.value);
+        let selectedItem = holdDataParts[currentDrop.main].children[currentDrop.child];
+        let clue = selectedItem.parent.name.split(" ")[0];
+
+        //console.log(selectedItem.parent);
+
+        for (let i = 0; i < dataParts.length; i++) {
+            if (dataParts[i].name.includes(clue)) {
+                selectedItem.get_base64().then(value => {
+                    let index = selectedItem.parent.z_index;
+                    if (selectedItem.parent.name.includes("Background") || selectedItem.parent.name.includes("background")) {
+                        index = 0;
+                    }
+                    if (selectedItem.parent.name.includes("Head") || selectedItem.parent.name.includes("head")) {
+                        index = 9;
+                    }
+                    if (selectedItem.parent.name.includes("Bottom") || selectedItem.parent.name.includes("bottom")) {
+                        index = 10;
+                    }
+                    let currentObj = {
+                        name: selectedItem.parent.name,
+                        value: value,
+                        zIndex: index,
+                        color: dataParts[i].color,
+                        key: selectedItem.parent.name,
+                        title: selectedItem.parent.name,
+                    };
+                    dataParts[i] = currentObj;
+                    //dataParts[i].value = value;
+                    changeAvatarColor(dataParts);
+                    return;
+                });
+            }
+        }
+
+        //dataParts[i].color = color;
+        //setInfoDataParts(dataParts);
+        //changeAvatarColor(dataParts);
+    }
+
+    function ConfigDiv(props) {
+        useEffect(() => {
+            //console.log(props.data);
+        }, [props.data]);
+        return (
+            <div>
+                {props.data.map((item, index) => (
+                    <div
+                        key={index.toString()}
+                        style={{
+                            paddingBottom: "25px",
+                        }}
+                    >
+                        <div
+                            style={{
+                                width: "350px",
+                                height: "50px",
+                                display: "flex",
+                                justifyContent: "space-around",
+                                alignItems: "stretch",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    width: "100%",
+                                    height: "80%",
+                                    border: "rgb(217, 217, 217) 1px solid",
+                                    borderRadius: "4px",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    margin: "4px",
+                                }}
+                            >
+                                <div>{item.name}</div>
+                            </div>
+                        </div>
+                        <div
+                            style={{
+                                textAlign: "center",
+                            }}
+                        >
+                            <select
+                                onChange={handleSelect}
+                                style={{
+                                    width: "330px",
+                                }}
+                            >
+                                {item.children.map((it, inx) => (
+                                    <option
+                                        value={"{" + '"main":' + index.toString() + ", " + '"child":' + inx.toString() + "}"}
+                                        key={inx.toString()}
+                                    >
+                                        {it.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        );
+    }
 
     const handleClickNewAvatarButton = async event => {
-        console.log(currentFile);
+        //console.log(currentFile);
         setNewAvatar(currentFile);
         // setConfigJSON(await setNewAvatar());
         // setConfigTree([]);
-        console.log(infoDataParts, "-------------------------------------");
-        console.log(configTree, "-------------------------------------");
+        //console.log(infoDataParts, "-------------------------------------");
+        //console.log(configTree, "-------------------------------------");
+        //console.log(configTree[0].children);
     };
 
     function changeItemColor(i, color, e) {
@@ -96,15 +205,15 @@ export default function AvatarViewer() {
 
     function handleAvatarUpload(uploadEvent) {
         let file = uploadEvent.target.files[0];
-         if (file) {
+        if (file) {
             const reader = new FileReader();
             reader.readAsArrayBuffer(file);
-            reader.onload = (loadEvent) => {
-                currentFile = new Blob([loadEvent.target.result], { type: 'application/octet-stream' });
+            reader.onload = loadEvent => {
+                currentFile = new Blob([loadEvent.target.result], { type: "application/octet-stream" });
                 //reloadConfig(currentFile);
                 getAvatar(currentFile);
-            }
-        } 
+            };
+        }
     }
 
     function handleChange(value) {
@@ -137,49 +246,14 @@ export default function AvatarViewer() {
                     </Col>
                 </Row>
             </div>
-
             <div style={{ display: "flex", flexDirection: "row" }}>
                 <div>
                     <canvas className="Avatar-canvas" ref={canvasRef} width={canvasWidth} height={canvasHeight} />
                 </div>
-                {/*
-                <ReactJson
-                    style={{ padding: 8 }}
-                    src={configJSON}
-                    theme="pop"
-                    enableClipboard={false}
-                    onEdit={(edit, a) => {
-                        setConfigJSON(edit.updated_src);
-                    }}
-                    onAdd={(add, a) => {
-                        setConfigJSON(add.updated_src);
-                    }}
-                    onDelete={(del, a) => {
-                        setConfigJSON(del.updated_src);
-                    }}
-                />
-                */}
-
-                {/*  <Tree
-                    style={{ padding: 8, border: "2px solid #888888" }}
-                    showIcon
-                    defaultSelectedKeys={['0-0-0']}
-                    switcherIcon={<DownOutlined />}
-                    treeData={configTree}
-                >
-                </Tree> */}
-                {/*                 <Tree
-                    style={{ padding: 8, border: "2px solid #888888" }}
-                    showIcon
-                    defaultSelectedKeys={['0-0-0']}
-                    switcherIcon={<DownOutlined />}
-                    treeData={infoDataParts}
-                >
-                    
-                </Tree> */}
                 <div>
                     {infoDataParts.map((item, index) => (
-                        <div key={index.toString()}
+                        <div
+                            key={index.toString()}
                             style={{
                                 width: "350px",
                                 height: "50px",
@@ -243,6 +317,8 @@ export default function AvatarViewer() {
                         </div>
                     ))}
                 </div>
+
+                <ConfigDiv data={holdDataParts}></ConfigDiv>
             </div>
         </div>
     );
