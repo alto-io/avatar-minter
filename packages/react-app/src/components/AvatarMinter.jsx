@@ -54,6 +54,8 @@ export default function AvatarMinter(props) {
         canvasRef,
         dataParts,
         loadProject,
+        reloadConfig,
+        getAvatar,
         infoDataParts,
         setInfoDataParts,
         changeAvatarColor,
@@ -71,7 +73,8 @@ export default function AvatarMinter(props) {
         setSelectedClass,
         selectedClass,
         configTree,
-        setConfigTree
+        setConfigTree,
+        lootText
         ] = useAvatar();
     const [mintingConfigJSON, setMintingConfigJSON] = useState(STARTING_CONFIG_JSON);
 
@@ -106,7 +109,7 @@ export default function AvatarMinter(props) {
                     <b>[1a]</b> Press
                     <span
                         className="highlight"
-                        style={{ margin: 4, /* backgroundColor: "#f9f9f9", */ padding: 4, borderRadius: 4, fontWeight: "bolder" }}
+                        style={{ margin: 4, backgroundColor: "#f9f9f9", padding: 4, borderRadius: 4, fontWeight: "bolder" }}
                     >
                         📝 Initialize
                     </span>{" "}
@@ -119,7 +122,6 @@ export default function AvatarMinter(props) {
                 </div>
 
             </div>
-
             <div style={{ paddingBottom: 16 }} >
                 <span style={{ width: "100%" }}>
                     <Button
@@ -167,7 +169,7 @@ export default function AvatarMinter(props) {
                     <b>[2]</b> Once config.json above is initialized, press
                     <span
                         className="highlight"
-                        style={{ margin: 4, /* backgroundColor: "#f9f9f9", */ padding: 4, borderRadius: 4, fontWeight: "bolder" }}
+                        style={{ margin: 4, backgroundColor: "#f9f9f9", padding: 4, borderRadius: 4, fontWeight: "bolder" }}
                     >
                         🎲 Generate
                     </span>{" "}
@@ -220,7 +222,7 @@ export default function AvatarMinter(props) {
                     <b>[3]</b> Press
                     <span
                         className="highlight"
-                        style={{ margin: 4, /* backgroundColor: "#f9f9f9", */ padding: 4, borderRadius: 4, fontWeight: "bolder" }}
+                        style={{ margin: 4, backgroundColor: "#f9f9f9", padding: 4, borderRadius: 4, fontWeight: "bolder" }}
                     >
                         ⬆ Upload
                     </span>{" "}
@@ -328,6 +330,5 @@ export default function AvatarMinter(props) {
                 </span>
             </div>                  
         </div>
-
     );
 }
