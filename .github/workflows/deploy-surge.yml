@@ -43,10 +43,12 @@ jobs:
              run: yarn deploy
 
            - name: Build React App                              
-             run: yarn build 
+             run: yarn build-no-ci
 
-           - name: Install Surge
-             run: npm install --global surge  
-
-           - name: Run surge
-             run: surge --project ./build --domain time-garden.surge.sh --token ${{ secrets.SURGE_TOKEN }}
+           - name: Deploy to fsurge
+             uses: dswistowski/surge-sh-action@v1
+             with:
+                domain: 'time-garden.surge.sh'
+                project: './packages/react-app/build'
+                login: ${{ secrets.SURGE_LOGIN }}
+                token: ${{ secrets.SURGE_TOKEN }}             
