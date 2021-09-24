@@ -25,7 +25,7 @@ const { isAddress, getAddress, formatUnits, parseUnits } = utils;
 //
 // Select the network you want to deploy to here:
 //
-const defaultNetwork = "localhost";
+const defaultNetwork = process.env.REACT_APP_NETWORK;
 
 const mainnetGwei = 21;
 
@@ -34,9 +34,9 @@ function mnemonic() {
     return fs.readFileSync("./mnemonic.txt").toString().trim();
   } catch (e) {
     if (defaultNetwork !== "localhost") {
-      console.log(
-        "☢️ WARNING: No mnemonic file created for a deploy account. Try `yarn run generate` and then `yarn run account`."
-      );
+      // console.log(
+      //   "☢️ WARNING: No mnemonic file created for a deploy account. Try `yarn run generate` and then `yarn run account`."
+      // );
     }
   }
   return "";
@@ -60,6 +60,12 @@ module.exports = {
         (you can put in a mnemonic here to set the deployer locally)
       
       */
+    },
+    rinkeby: {
+      url: process.env.REACT_APP_PROVIDER,
+      accounts: {
+        mnemonic: process.env.MNEMONIC,
+      } 
     },
 
     // rinkeby: {
@@ -88,15 +94,15 @@ module.exports = {
     //   accounts: [`${process.env.XDAI_DEPLOYER_PRIV_KEY}`],
     // },
 
-    rinkeby: {
-      url: "https://rinkeby.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad", // <---- YOUR INFURA ID! (or it won't work)
+    // rinkeby: {
+    //   url: "https://rinkeby.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad", // <---- YOUR INFURA ID! (or it won't work)
       
-       //    url: "https://speedy-nodes-nyc.moralis.io/XXXXXXXXXXXXXXXXXXXXXXX/eth/rinkeby", // <---- YOUR MORALIS ID! (not limited to infura)
+    //    //    url: "https://speedy-nodes-nyc.moralis.io/XXXXXXXXXXXXXXXXXXXXXXX/eth/rinkeby", // <---- YOUR MORALIS ID! (not limited to infura)
       
-      accounts: {
-        mnemonic: mnemonic(),
-      },
-    },
+    //   accounts: {
+    //     mnemonic: mnemonic(),
+    //   },
+    // },
     kovan: {
       url: "https://kovan.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad", // <---- YOUR INFURA ID! (or it won't work)
     

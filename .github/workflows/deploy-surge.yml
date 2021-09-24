@@ -18,8 +18,29 @@ jobs:
                node-version: 14
                registry-url: https://registry.npmjs.org
 
+            - name: Make hardhat envfile
+              uses: SpicyPizza/create-envfile@v1
+              with:
+                envkey_REACT_APP_NETWORK: ${{ secrets.REACT_APP_NETWORK }}
+                envkey_REACT_APP_PROVIDER: ${{ secrets.REACT_APP_PROVIDER }}
+                envkey_MNEMONIC: ${{ secrets.MNEMONIC }}
+
+                file_name: packages/hardhat/.env
+
+            - name: Make react envfile
+              uses: SpicyPizza/create-envfile@v1
+              with:
+                envkey_REACT_APP_NETWORK: ${{ secrets.REACT_APP_NETWORK }}
+                envkey_REACT_APP_PROVIDER: ${{ secrets.REACT_APP_PROVIDER }}
+                envkey_MNEMONIC: ${{ secrets.MNEMONIC }}
+
+                file_name: packages/react-app/.env                
+
            - name: Install dependencies
              run: yarn install --frozen-lockfile
+
+           - name: Deploy contract
+             run: yarn deploy
 
            - name: Build React App                              
              run: yarn build 
