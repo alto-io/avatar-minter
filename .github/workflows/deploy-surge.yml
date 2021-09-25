@@ -32,7 +32,6 @@ jobs:
              with:
                envkey_REACT_APP_NETWORK: ${{ secrets.REACT_APP_NETWORK }}
                envkey_REACT_APP_PROVIDER: ${{ secrets.REACT_APP_PROVIDER }}
-               envkey_MNEMONIC: ${{ secrets.MNEMONIC }}
 
                file_name: packages/react-app/.env                
 
