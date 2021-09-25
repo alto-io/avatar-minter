@@ -293,6 +293,10 @@ function App(props) {
   const transferEvents = useEventListener(readContracts, "TimeTraveller", "Transfer", localProvider, 1);
   console.log("📟 Transfer events:", transferEvents);
 
+  const ownershipTransferredEvents = useEventListener(readContracts, "TimeTraveller", "OwnershipTransferred", localProvider, 1);
+  console.log("📟 OwnershipTransferred events:", ownershipTransferredEvents);
+
+
   //
   // 🧠 This effect will update yourCollectibles by polling when your balance changes
   //
@@ -610,7 +614,20 @@ function App(props) {
         <Switch>
           <Route exact path="/">
           <div style={{ width: 600, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
-            
+              <h2>Time Garden Stewards</h2>
+              <List
+                bordered
+                dataSource={ownershipTransferredEvents}
+                renderItem={item => {
+                  return (
+                    <List.Item key={item[0] + "_" + item[1] + "_" + item.blockNumber}>
+                      <span style={{ fontSize: 16, marginRight: 8 }}>#{item.blockNumber} ss</span>
+                      <Address address={item.args[0]} ensProvider={mainnetProvider} fontSize={16} /> =&gt;
+                      <Address address={item.args[1]} ensProvider={mainnetProvider} fontSize={16} />
+                    </List.Item>
+                  );
+                }}
+              />
             </div>
 
             {/*
