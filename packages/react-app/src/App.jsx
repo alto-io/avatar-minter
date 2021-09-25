@@ -540,6 +540,19 @@ function App(props) {
       {networkDisplay}
       <BrowserRouter>
         <Menu style={{ textAlign: "center" }} selectedKeys={[route]} mode="horizontal">
+        <Menu.Item key="/">
+            <Link
+              onClick={() => {
+                setRoute("/");
+              }}
+              to="/"
+            >
+              Time Garden
+            </Link>
+        
+        </Menu.Item>
+
+        {/*
           <Menu.Item key="/">
             <Link
               onClick={() => {
@@ -549,6 +562,7 @@ function App(props) {
             >
               YourCollectibles
             </Link>
+        
           </Menu.Item>
           <Menu.Item key="/transfers">
             <Link
@@ -580,6 +594,7 @@ function App(props) {
               IPFS Download
             </Link>
           </Menu.Item>
+            */}
           <Menu.Item key="/debugcontracts">
             <Link
               onClick={() => {
@@ -594,11 +609,16 @@ function App(props) {
 
         <Switch>
           <Route exact path="/">
+          <div style={{ width: 600, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
+            
+            </div>
+
             {/*
                 🎛 this scaffolding is full of commonly used components
                 this <Contract/> component will automatically parse your ABI
                 and give you a form to interact with it locally
             */}
+            {/*
             <div style={{ width: 640, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
               <List
                 bordered
@@ -652,6 +672,8 @@ function App(props) {
                 }}
               />
             </div>
+            */}
+
           </Route>
 
           <Route path="/transfers">
