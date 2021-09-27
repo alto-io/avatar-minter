@@ -6,20 +6,13 @@ packages/hardhat/*.txt
 
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 **/node_modules
-
 packages/hardhat/artifacts*
 packages/hardhat/deployments
 packages/react-app/src/contracts/*
 !packages/react-app/src/contracts/external_contracts.js
 packages/hardhat/cache*
+
 packages/**/data
-!packages/react-app/src/contracts/contracts.js
-
-
-# ts
-packages/hardhat-ts/cache
-# secrets
-.secret
 
 packages/subgraph/config/config.json
 tenderly.yaml
@@ -34,20 +27,6 @@ coverage
 
 # production
 build
-# yarn / eslint
-.yarn/cache
-.yarn/install-state.gz
-.yarn/build-state.yml
-.eslintcache
-# testing
-coverage
-
-# production
-build
-
-#Hardhat files
-cache
-artifacts
 
 # misc
 .DS_Store
@@ -59,12 +38,4 @@ yarn-debug.log*
 yarn-error.log*
 
 .idea
-<<<<<<< HEAD
 packages/react-app/public/avatars/*.ora
-=======
-
-# Local Netlify folder
-.netlify
-*.tsbuildinfo
-*.stackdump
->>>>>>> upstream/master

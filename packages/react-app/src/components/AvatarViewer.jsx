@@ -195,8 +195,8 @@ export default function AvatarViewer() {
         //console.log(infoDataParts, "-------------------------------------");
         //console.log(configTree, "-------------------------------------");
         //console.log(configTree[0].children);
-        console.log(infoDataParts, "-------------------------------------");
-        console.log(configTree[0].children[0].children[0], "-------------------------------------");
+        //console.log(infoDataParts, "-------------------------------------");
+        //console.log(configTree[0].children[0].children[0], "-------------------------------------");
     };
 
     function changeItemColor(i, color, e) {
@@ -253,66 +253,22 @@ export default function AvatarViewer() {
                 <div>
                     <canvas className="Avatar-canvas" ref={canvasRef} width={canvasWidth} height={canvasHeight} />
                 </div>
-                {/*
-                <ReactJson
-                    style={{ padding: 8 }}
-                    src={configJSON}
-                    theme="pop"
-                    enableClipboard={false}
-                    onEdit={(edit, a) => {
-                        setConfigJSON(edit.updated_src);
-                    }}
-                    onAdd={(add, a) => {
-                        setConfigJSON(add.updated_src);
-                    }}
-                    onDelete={(del, a) => {
-                        setConfigJSON(del.updated_src);
-                    }}
-                />
-                */}
-      <svg  xmlns="http://www.w3.org/2000/svg"
-            preserveAspectRatio="xMinYMin meet" 
-            viewBox="0 0 350 350">
-        <style>
-            {`.Common { fill: white; font-family: serif; font-size: 14px; }
+                <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 350 350">
+                    <style>
+                        {`.Common { fill: white; font-family: serif; font-size: 14px; }
               .Rare { fill: deepskyblue; font-family: serif; font-size: 14px; }
               .Legendary { fill: orange; font-family: serif; font-size: 14px; }
             `}
-        </style>
-        <rect width="100%" height="100%" fill="black" />
-        {
-            lootText.map( (x, index) => {
-                return (
-                <text x={10} y={(index + 1) * 20} class={x.rarity}>{x.name}</text>
-                )
-            })
-        }
-
-    </svg>
-
-
-
-                {
-                /*
-                <Tree
-                    style={{ padding: 8, border: "2px solid #888888" }}
-                    showIcon
-                    defaultSelectedKeys={['0-0-0']}
-                    switcherIcon={<DownOutlined />}
-                    treeData={configTree}
-                >
-                </Tree>
-                */
-                }
-                {/*                 <Tree
-                    style={{ padding: 8, border: "2px solid #888888" }}
-                    showIcon
-                    defaultSelectedKeys={['0-0-0']}
-                    switcherIcon={<DownOutlined />}
-                    treeData={infoDataParts}
-                >
-                    
-                </Tree> */}
+                    </style>
+                    <rect width="100%" height="100%" fill="black" />
+                    {lootText.map((x, index) => {
+                        return (
+                            <text x={10} y={(index + 1) * 20} className={x.rarity} key={index.toString()}>
+                                {x.name}
+                            </text>
+                        );
+                    })}
+                </svg>
                 <div>
                     {infoDataParts.map((item, index) => (
                         <div
@@ -380,7 +336,6 @@ export default function AvatarViewer() {
                         </div>
                     ))}
                 </div>
-
                 <ConfigDiv data={holdDataParts}></ConfigDiv>
             </div>
         </div>

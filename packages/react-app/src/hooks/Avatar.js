@@ -293,9 +293,9 @@ const useAvatar = props => {
         var newCanvas = await renderAvatar();
         ctx1.clearRect(0, 0, newCanvas.width, newCanvas.height);
 
-        ctx1.drawImage(newCanvas, 0, 0);
+        //ctx1.drawImage(newCanvas, 0, 0);
 
-/*
+
         dataParts.sort((a, b) => a.zIndex - b.zIndex);
         for (let i = 0; i < dataParts.length; i++) {
             let currentImg = new Image(newCanvas.width, newCanvas.height);
@@ -324,7 +324,7 @@ const useAvatar = props => {
                 currentCanvas.remove();
             }
         }
-*/
+
     }
 
     async function setNewAvatar(newParam) {
