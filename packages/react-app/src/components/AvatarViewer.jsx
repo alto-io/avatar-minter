@@ -108,7 +108,7 @@ export default function AvatarViewer() {
                     let currentObj = {
                         name: selectedItem.parent.name,
                         value: value,
-                        zIndex: selectedItem.parent.zIndex,
+                        zIndex: index,
                         color: dataParts[i].color,
                         key: selectedItem.parent.name,
                         title: selectedItem.parent.name,
