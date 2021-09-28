@@ -32,8 +32,6 @@ const useAvatar = props => {
     const project = new jsora.JSOra();
     var rend;
 
-    // console.log("FDF")
-
     const [randomConfig, setRandomConfig] = useState({ Root: {} });
     const [mintingConfig, setMintingConfig] = useState({
         amountToCreate: 2,
@@ -269,7 +267,13 @@ const useAvatar = props => {
                 currentCanvas.width = newCanvas.width;
                 currentCanvas.height = newCanvas.height;
                 currentContext.clearRect(0, 0, newCanvas.width, newCanvas.height);
-                currentContext.drawImage(currentImg, 0, 0);
+                if (paramArray[i].type === "selected") {
+                    currentContext.drawImage(currentImg, paramArray[i].offsetX, paramArray[i].offsetY);
+                }
+                else {
+                    currentContext.drawImage(currentImg, 0, 0);
+                }
+
                 currentContext.globalCompositeOperation = "source-atop";
                 currentContext.fillStyle = paramArray[i].color;
 
@@ -277,7 +281,13 @@ const useAvatar = props => {
                 currentContext.globalCompositeOperation = "source-over";
 
                 ctx1.globalCompositeOperation = "source-over";
-                ctx1.drawImage(currentImg, 0, 0);
+                if (paramArray[i].type === "selected") {
+                    ctx1.drawImage(currentImg, paramArray[i].offsetX, paramArray[i].offsetY);
+                }
+                else {
+                    ctx1.drawImage(currentImg, 0, 0);
+                }
+
                 ctx1.globalCompositeOperation = "color";
                 ctx1.drawImage(currentCanvas, 0, 0);
 
@@ -529,7 +539,6 @@ const useAvatar = props => {
                 }
 
                 if (Math.random() >= optional_percent) {
-                    // console.log("hide: " + (parent + "/" + jsonObj));
                     project.get_by_path(parent.split("Root/Root")[1] + "/" + jsonObj).hidden = true;
                 } else {
                     randomizePart(parent + "//" + jsonObj, hideAll);
@@ -562,7 +571,7 @@ const useAvatar = props => {
                 getAllItems(param[i].children);
             }
             else {
-                if (hold.indexOf(param[i].parent) === -1  && param[i].parent.name.includes("CLASS") === false) {
+                if (hold.indexOf(param[i].parent) === -1 && param[i].parent.name.includes("CLASS") === false) {
                     hold.push(param[i].parent);
                 }
 
@@ -585,8 +594,7 @@ const useAvatar = props => {
         var layer = project.get_by_path(path);
 
         var index;
-        //console.log(project.get_by_path(path));
-        //console.log(layer);
+
         const layer_base64 = project
             .get_by_path(path)
             .get_base64()
@@ -611,10 +619,9 @@ const useAvatar = props => {
                     color: "Loading...",
                     key: project.get_by_path(path).name,
                     title: project.get_by_path(path).name,
+                    type: "default"
                 };
                 dataParts.push(currentObj);
-                //setHoldDataParts([...dataParts]);
-                //console.log("Name: " + project.get_by_path(path).name, "zIndex: " + index);
             });
 
 
@@ -650,8 +657,7 @@ const useAvatar = props => {
             // check if the part requires other parts unhidden
             checkRequiredParts(layer.children[randomPartIndex].name);
 
-            if (tempLootText.length < 5)
-            {
+            if (tempLootText.length < 5) {
                 var modifier = "";
                 var rarity = "Common";
                 if (Math.random() < 0.3) {
@@ -661,7 +667,7 @@ const useAvatar = props => {
                         rarity = "Legendary";
                         modifier = "Mythical "
                     }
-    
+
                 }
 
                 var lootObj = {
@@ -717,8 +723,6 @@ const useAvatar = props => {
 
     async function getAvatarConfiguration(project, forcedClass) {
         recurseOverChildren(project, "Root", forcedClass);
-        // console.log(currentRandomConfig)
-        // console.log(currentTreeConfig)
         setConfigTree(currentTreeConfig);
     }
 

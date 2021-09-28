@@ -82,12 +82,15 @@ export default function AvatarViewer() {
         lootText
     ] = useAvatar();
 
+    const [defaultText, setDefaultText] = useState({value: "Default"});
+
     function handleSelect(e) {
+
         let currentDrop = JSON.parse(e.target.value);
         let selectedItem = holdDataParts[currentDrop.main].children[currentDrop.child];
         let clue = selectedItem.parent.name.split(" ")[0];
 
-        //console.log(selectedItem.parent);
+        setDefaultText({value : e.target.value});
 
         for (let i = 0; i < dataParts.length; i++) {
             if (dataParts[i].name.includes(clue)) {
@@ -105,27 +108,24 @@ export default function AvatarViewer() {
                     let currentObj = {
                         name: selectedItem.parent.name,
                         value: value,
-                        zIndex: index,
+                        zIndex: selectedItem.parent.zIndex,
                         color: dataParts[i].color,
                         key: selectedItem.parent.name,
                         title: selectedItem.parent.name,
+                        type: "selected",
+                        offsetX: selectedItem.attribs.offsets[0],
+                        offsetY: selectedItem.attribs.offsets[1],
                     };
                     dataParts[i] = currentObj;
-                    //dataParts[i].value = value;
                     changeAvatarColor(dataParts);
                     return;
                 });
             }
         }
-
-        //dataParts[i].color = color;
-        //setInfoDataParts(dataParts);
-        //changeAvatarColor(dataParts);
     }
 
     function ConfigDiv(props) {
         useEffect(() => {
-            //console.log(props.data);
         }, [props.data]);
         return (
             <div>
@@ -170,6 +170,7 @@ export default function AvatarViewer() {
                                 style={{
                                     width: "330px",
                                 }}
+                                value={defaultText.value}
                             >
                                 {item.children.map((it, inx) => (
                                     <option
@@ -188,21 +189,11 @@ export default function AvatarViewer() {
     }
 
     const handleClickNewAvatarButton = async event => {
-        //console.log(currentFile);
         setNewAvatar(currentFile);
-        // setConfigJSON(await setNewAvatar());
-        // setConfigTree([]);
-        //console.log(infoDataParts, "-------------------------------------");
-        //console.log(configTree, "-------------------------------------");
-        //console.log(configTree[0].children);
-        //console.log(infoDataParts, "-------------------------------------");
-        //console.log(configTree[0].children[0].children[0], "-------------------------------------");
     };
 
     function changeItemColor(i, color, e) {
-        //console.log(e);
         dataParts[i].color = color;
-        //setInfoDataParts(dataParts);
         changeAvatarColor(dataParts);
     }
 
