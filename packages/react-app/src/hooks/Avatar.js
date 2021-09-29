@@ -466,6 +466,9 @@ const useAvatar = props => {
 
         setPartsList(tempPartsList);
         setMintingConfig(newConfig);
+
+        localStorage.setItem('newConfig', JSON.stringify(newConfig));
+
         return mintingConfig;
     }
 
