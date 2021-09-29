@@ -317,7 +317,12 @@ const useAvatar = props => {
                 currentCanvas.width = newCanvas.width;
                 currentCanvas.height = newCanvas.height;
                 currentContext.clearRect(0, 0, newCanvas.width, newCanvas.height);
-                currentContext.drawImage(currentImg, 0, 0);
+                if (dataParts[i].type === "selected") {
+                    currentContext.drawImage(currentImg, paramArray[i].offsetX, paramArray[i].offsetY);
+                }
+                else {
+                    currentContext.drawImage(currentImg, 0, 0);
+                }
                 currentContext.globalCompositeOperation = "source-atop";
                 currentContext.fillStyle = colors[Math.floor(Math.random() * colors.length)];
                 dataParts[i].color = currentContext.fillStyle;
@@ -327,7 +332,12 @@ const useAvatar = props => {
                 currentContext.globalCompositeOperation = "source-over";
 
                 ctx1.globalCompositeOperation = "source-over";
-                ctx1.drawImage(currentImg, 0, 0);
+                if (dataParts[i].type === "selected") {
+                    ctx1.drawImage(currentImg, paramArray[i].offsetX, paramArray[i].offsetY);
+                }
+                else {
+                    ctx1.drawImage(currentImg, 0, 0);
+                }
                 ctx1.globalCompositeOperation = "color";
                 ctx1.drawImage(currentCanvas, 0, 0);
 

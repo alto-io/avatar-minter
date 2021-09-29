@@ -58,6 +58,9 @@ export default function AvatarMinter(props) {
         getAvatar,
         infoDataParts,
         setInfoDataParts,
+        holdDataParts,
+        setHoldDataParts,
+        project,
         changeAvatarColor,
         canvasWidth,
         canvasHeight,
@@ -75,13 +78,12 @@ export default function AvatarMinter(props) {
         configTree,
         setConfigTree,
         lootText
-        ] = useAvatar();
+    ] = useAvatar();
     const [mintingConfigJSON, setMintingConfigJSON] = useState(STARTING_CONFIG_JSON);
 
     const [sending, setSending] = useState();
     const [mintAmount, setMintAmount] = useState();
 
-    
     const handleClickInitConfigButton = async (event) => {
         setMintingConfigJSON(await getMintingConfig());
     }
@@ -91,12 +93,12 @@ export default function AvatarMinter(props) {
     }
 
     const handleClickUploadButton = async (event) => {
-        setSending(true);        
-        startIPFSUpload().then( () => {
+        setSending(true);
+        startIPFSUpload().then(() => {
             setTimeout(() => {
-                setSending(false);        
+                setSending(false);
             }, 1);
-            
+
         });
     }
 
@@ -113,7 +115,7 @@ export default function AvatarMinter(props) {
                     >
                         📝 Initialize
                     </span>{" "}
-                    to retrieve the config parameters from the ORA file, then 
+                    to retrieve the config parameters from the ORA file, then
                     edit the <b>json file</b> below with the desired randomization parameters.
                 </div>
 
@@ -141,7 +143,7 @@ export default function AvatarMinter(props) {
             </div>
 
             <div
-                    style={{ padding: 8, height: "400px", overflowY: "auto" }}>
+                style={{ padding: 8, height: "400px", overflowY: "auto" }}>
                 <ReactJson
                     style={{ padding: 8 }}
                     src={mintingConfigJSON}
@@ -154,7 +156,7 @@ export default function AvatarMinter(props) {
                     }}
                     onAdd={(add, a) => {
                         setMintingConfigJSON(add.updated_src);
-                        setMintingConfig(add.updated_src);                        
+                        setMintingConfig(add.updated_src);
                     }}
                     onDelete={(del, a) => {
                         setMintingConfigJSON(del.updated_src);
@@ -197,10 +199,10 @@ export default function AvatarMinter(props) {
             </div>
 
             <div
-                style= {{display:"flex", flexDirection: "row"}}>
+                style={{ display: "flex", flexDirection: "row" }}>
 
                 <ReactJson
-                    style={{ padding: 8, height: "400px", overflowY: "auto"  }}
+                    style={{ padding: 8, height: "400px", overflowY: "auto" }}
                     src={metadataJson}
                     theme="pop"
                     enableClipboard={false}
@@ -226,7 +228,7 @@ export default function AvatarMinter(props) {
                     >
                         ⬆ Upload
                     </span>{" "}
-                    to upload the images and metadata to IPFS. The resulting tokenURI will be shown below. 
+                    to upload the images and metadata to IPFS. The resulting tokenURI will be shown below.
                 </div>
             </div>
 
@@ -236,7 +238,7 @@ export default function AvatarMinter(props) {
                     <Button
                         style={{ marginRight: 8 }}
                         onClick={handleClickUploadButton}
-                        loading={sending}          
+                        loading={sending}
                         size="large"
                         shape="round"
                     >
@@ -248,10 +250,10 @@ export default function AvatarMinter(props) {
                         Upload
                     </Button>
                 </span>
-            </div>      
+            </div>
 
             <div
-                    style={{ padding: 8, height: "400px", overflowY: "auto" }}>
+                style={{ padding: 8, height: "400px", overflowY: "auto" }}>
                 <ReactJson
                     style={{ padding: 8 }}
                     src={uploadedTokenURI}
@@ -263,18 +265,18 @@ export default function AvatarMinter(props) {
                 />
             </div>
 
-            
+
             <div style={{ padding: 16, paddingBottom: 30 }}>
                 <a href={"https://ipfs.io/ipfs/" + ipfsHash} target="_blank">
                     IPFS Hash: {ipfsHash}
                 </a>
             </div>
-            
+
 
             <div style={{ paddingBottom: 8 }}>
 
                 <div style={{ paddingBottom: 8 }}>
-                    <b>[4] </b> 
+                    <b>[4] </b>
                     Once Upload is completed, press 📜 Set Base URI to update the contract URI.
                 </div>
             </div>
@@ -285,7 +287,7 @@ export default function AvatarMinter(props) {
                     <Button
                         style={{ marginRight: 8 }}
                         onClick={() => callSetURI("https://ipfs.io/ipfs/" + ipfsHash + "/")}
-                        loading={sending}          
+                        loading={sending}
                         size="large"
                         shape="round"
                     >
@@ -297,13 +299,13 @@ export default function AvatarMinter(props) {
                         Set Base URI
                     </Button>
                 </span>
-            </div>   
+            </div>
 
             <div style={{ paddingBottom: 8 }}>
 
                 <div style={{ paddingBottom: 8 }}>
-                    <b>[5] </b> 
-                    Finally, input the amount to mint below and press <BankOutlined/>. Go to <b>MyCollectibles</b> to see your NFTs!
+                    <b>[5] </b>
+                    Finally, input the amount to mint below and press <BankOutlined />. Go to <b>MyCollectibles</b> to see your NFTs!
                 </div>
             </div>
 
@@ -318,7 +320,7 @@ export default function AvatarMinter(props) {
                         suffix={
                             <Tooltip title="Mint: Mint the specified quantity to current wallet.">
                                 <Button
-                                    onClick={() => 
+                                    onClick={() =>
                                         callMintMultiple(parseInt(mintAmount))
                                     }
                                     shape="circle"
@@ -328,7 +330,7 @@ export default function AvatarMinter(props) {
                         }
                     />
                 </span>
-            </div>                  
+            </div>
         </div>
     );
 }
