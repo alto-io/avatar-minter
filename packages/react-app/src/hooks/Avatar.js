@@ -429,14 +429,14 @@ const useAvatar = props => {
             await getAvatarConfiguration(project);
             rend = new jsora.Renderer(project);
 
-            const canvasObj = canvasRef.current;
+            /* const canvasObj = canvasRef.current;
             const ctx = canvasObj.getContext("2d");
-            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+            ctx.clearRect(0, 0, canvasWidth, canvasHeight); */
 
             for (var i = 1; i <= amountToCreate; i++) {
                 await getNewAvatarMetadata();
                 mintArray.push(JSON.parse(JSON.stringify(currentRandomConfig)));
-                await drawMiniAvatar(i, amountToCreate, false);
+                //await drawMiniAvatar(i, amountToCreate, false);
 
                 var tempMetadataJson = {
                     tokenMetadata: mintArray,
@@ -446,7 +446,7 @@ const useAvatar = props => {
             }
 
             // console.log(mintArray);
-
+            localStorage.setItem('generatedJson', JSON.stringify(tempMetadataJson));
             return tempMetadataJson;
         } else {
             return {
@@ -466,8 +466,6 @@ const useAvatar = props => {
 
         setPartsList(tempPartsList);
         setMintingConfig(newConfig);
-
-        localStorage.setItem('newConfig', JSON.stringify(newConfig));
 
         return mintingConfig;
     }
