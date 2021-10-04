@@ -446,7 +446,12 @@ const useAvatar = props => {
             }
 
             // console.log(mintArray);
-            localStorage.setItem('generatedJson', JSON.stringify(tempMetadataJson));
+            let myAvatars = JSON.parse(localStorage.getItem('myAvatars'));
+            myAvatars.push(tempMetadataJson);
+            localStorage.setItem('myAvatars', JSON.stringify(myAvatars));
+            let currentAvatars = JSON.parse(localStorage.getItem('myAvatars'));
+            console.log(`Now we have ${currentAvatars.length} avatars!`);
+
             return tempMetadataJson;
         } else {
             return {

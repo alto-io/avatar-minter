@@ -1,7 +1,7 @@
 import { Button, Input, Tooltip } from "antd";
 import { BankOutlined } from "@ant-design/icons";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { useAvatar } from "../hooks";
 
@@ -83,6 +83,18 @@ export default function AvatarMinter(props) {
 
     const [sending, setSending] = useState();
     const [mintAmount, setMintAmount] = useState();
+
+    useEffect(() => {
+
+        if (localStorage.getItem('myAvatars') === null) {
+            let myAvatars = [];
+            localStorage.setItem('myAvatars', JSON.stringify(myAvatars));
+        }
+        else {
+            let currentAvatars = JSON.parse(localStorage.getItem('myAvatars'));
+            console.log(`We already have ${currentAvatars.length} avatars!`);
+        }
+    }, []);
 
     const handleClickInitConfigButton = async (event) => {
         setMintingConfigJSON(await getMintingConfig());
