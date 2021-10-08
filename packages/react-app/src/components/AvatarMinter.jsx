@@ -85,6 +85,17 @@ export default function AvatarMinter(props) {
     const [mintAmount, setMintAmount] = useState();
 
     useEffect(() => {
+        async function load () {
+            await loadProject();
+        }
+        load();
+
+        //console.log(project);
+
+        if (localStorage.getItem('myParts') === null) {
+            let myParts = {};
+            localStorage.setItem('myParts', JSON.stringify(myParts));
+        }
 
         if (localStorage.getItem('myAvatars') === null) {
             let myAvatars = [];

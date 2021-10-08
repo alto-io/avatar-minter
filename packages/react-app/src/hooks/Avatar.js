@@ -301,6 +301,7 @@ const useAvatar = props => {
         const canvas1 = canvasRef.current;
         const ctx1 = canvas1.getContext("2d");
         var newCanvas = await renderAvatar();
+        //var newCanvas = { width: 400, height: 400 };
         ctx1.clearRect(0, 0, newCanvas.width, newCanvas.height);
 
         //ctx1.drawImage(newCanvas, 0, 0);
@@ -407,9 +408,11 @@ const useAvatar = props => {
         // await getAvatarConfiguration(project);
 
         var randomClass = getRandomClasses();
+        console.log(randomClass);
 
-        setRandomConfig({ Root: {} });
+        //setRandomConfig({ Root: {} });
         // setRandomConfig({ Root: {} });
+
         await getAvatarConfiguration(project, randomClass);
         await hideLayersRecursively(project, "Root");
         await randomizeHiddenParts(selectedClass);
@@ -424,18 +427,55 @@ const useAvatar = props => {
             var mintArray = [];
 
             console.log("generateMetadaJson");
-            await loadProject();
-            await getBaseClasses();
-            await getAvatarConfiguration(project);
-            rend = new jsora.Renderer(project);
 
-            /* const canvasObj = canvasRef.current;
+            //await loadProject();
+
+            /*
+            await getBaseClasses();
+            await getAvatarConfiguration(localStorage.getItem('myParts'));
+            rend = new jsora.Renderer(project);
+            const canvasObj = canvasRef.current;
             const ctx = canvasObj.getContext("2d");
             ctx.clearRect(0, 0, canvasWidth, canvasHeight); */
 
+
+            let currentParts = JSON.parse(localStorage.getItem('myParts'));
+            let backgrounds = currentParts["Background UNIVERSAL"];
+
+            let femaleParts = Object.keys(currentParts["CLASS female"]);
+            let femaleClasses = [];
+            let femaleBasics = [];
+
+            for (let i = 0; i < femaleParts.length; i++) {
+                if (femaleParts[i].includes("CLASS")) {
+                    let currentObj = currentParts["CLASS female"][femaleParts[i]];
+                    currentObj.name = femaleParts[i];
+                    femaleClasses.push(currentObj);
+                }
+                else {
+                    let currentObj = {};
+                    currentObj.parts = currentParts["CLASS female"][femaleParts[i]];
+                    currentObj.name = femaleParts[i];
+                    femaleBasics.push(currentObj);
+                }
+            }
+            //console.log(femaleClasses, femaleBasics);
+            //console.log(backgrounds);
+
             for (var i = 1; i <= amountToCreate; i++) {
-                await getNewAvatarMetadata();
-                mintArray.push(JSON.parse(JSON.stringify(currentRandomConfig)));
+                //await getNewAvatarMetadata();
+
+                let rBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+                let rClass = femaleClasses[Math.floor(Math.random() * femaleClasses.length)];
+
+                let allProps = Object.assign({}, rBackground, rClass, femaleBasics);
+
+
+                console.log(allProps)
+
+
+                mintArray.push(allProps);
+
                 //await drawMiniAvatar(i, amountToCreate, false);
 
                 var tempMetadataJson = {
@@ -471,6 +511,8 @@ const useAvatar = props => {
 
         setPartsList(tempPartsList);
         setMintingConfig(newConfig);
+
+        localStorage.setItem('myParts', JSON.stringify(newConfig.PartsList));
 
         return mintingConfig;
     }
