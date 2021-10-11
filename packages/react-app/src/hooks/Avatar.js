@@ -428,24 +428,12 @@ const useAvatar = props => {
 
             console.log("generateMetadaJson");
 
-            //await loadProject();
-
-            /*
-            await getBaseClasses();
-            await getAvatarConfiguration(localStorage.getItem('myParts'));
-            rend = new jsora.Renderer(project);
-            const canvasObj = canvasRef.current;
-            const ctx = canvasObj.getContext("2d");
-            ctx.clearRect(0, 0, canvasWidth, canvasHeight); */
-
-
             let currentParts = JSON.parse(localStorage.getItem('myParts'));
             let backgrounds = currentParts["Background UNIVERSAL"];
 
             let femaleParts = Object.keys(currentParts["CLASS female"]);
             let femaleClasses = [];
             let femaleBasics = [];
-
             for (let i = 0; i < femaleParts.length; i++) {
                 if (femaleParts[i].includes("CLASS")) {
                     let currentObj = currentParts["CLASS female"][femaleParts[i]];
@@ -459,24 +447,42 @@ const useAvatar = props => {
                     femaleBasics.push(currentObj);
                 }
             }
-            //console.log(femaleClasses, femaleBasics);
-            //console.log(backgrounds);
+
+            let maleParts = Object.keys(currentParts["CLASS male"]);
+            let maleClasses = [];
+            let maleBasics = [];
+            for (let i = 0; i < maleParts.length; i++) {
+                if (maleParts[i].includes("CLASS")) {
+                    let currentObj = currentParts["CLASS male"][maleParts[i]];
+                    currentObj.name = maleParts[i];
+                    maleClasses.push(currentObj);
+                }
+                else {
+                    let currentObj = {};
+                    currentObj.parts = currentParts["CLASS male"][maleParts[i]];
+                    currentObj.name = maleParts[i];
+                    maleBasics.push(currentObj);
+                }
+            }
 
             for (var i = 1; i <= amountToCreate; i++) {
-                //await getNewAvatarMetadata();
 
                 let rBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
-                let rClass = femaleClasses[Math.floor(Math.random() * femaleClasses.length)];
+                let rClass = Math.random() > 0.5 ? femaleClasses[Math.floor(Math.random() * femaleClasses.length)]
+                    : maleClasses[Math.floor(Math.random() * maleClasses.length)];
 
-                let allProps = Object.assign({}, rBackground, rClass, femaleBasics);
+                let fillParts = {};
+                fillParts.name = rClass.name;
+                fillParts.base = rClass.name.includes("female") ? femaleBasics[2].parts[0] : maleBasics[2].parts[0];
+                fillParts.background = rBackground;
+                for (let prop in rClass) {
+                    if (prop !== "name") {
+                        fillParts[prop] = rClass[prop][Math.floor(Math.random() * rClass[prop].length)];
+                    }
+                }
 
-
-                console.log(allProps)
-
-
+                let allProps = Object.assign({}, fillParts);
                 mintArray.push(allProps);
-
-                //await drawMiniAvatar(i, amountToCreate, false);
 
                 var tempMetadataJson = {
                     tokenMetadata: mintArray,
@@ -485,7 +491,6 @@ const useAvatar = props => {
                 setMetadataJson(tempMetadataJson);
             }
 
-            // console.log(mintArray);
             let myAvatars = JSON.parse(localStorage.getItem('myAvatars'));
             myAvatars.push(tempMetadataJson);
             localStorage.setItem('myAvatars', JSON.stringify(myAvatars));
