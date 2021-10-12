@@ -21,7 +21,7 @@ import {
 } from "./hooks";
 
 import { AvatarViewer, AvatarMinter } from "./components";
-import { ClawGame } from "./components/ClawGame";
+// import { ClawGame } from "./components/ClawGame";
 
 const { BufferList } = require("bl");
 // https://www.npmjs.com/package/ipfs-http-client`
@@ -839,9 +839,13 @@ function App(props) {
             />
 
           </Route>
+{
+  /*          
           <Route path="/clawgame">
             <ClawGame></ClawGame>
           </Route>
+  */
+}
         </Switch>
       </BrowserRouter>
 
