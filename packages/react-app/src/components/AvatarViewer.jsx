@@ -261,7 +261,9 @@ export default function AvatarViewer() {
                     })}
                 </svg>
                 <div>
-                    {infoDataParts.map((item, index) => (
+                    {
+                    /*
+                    infoDataParts.map((item, index) => (
                         <div
                             key={index.toString()}
                             style={{
@@ -325,9 +327,15 @@ export default function AvatarViewer() {
                                 </div>
                             </div>
                         </div>
-                    ))}
+                    ))
+                    */
+                    }
                 </div>
+                {
+                /*
                 <ConfigDiv data={holdDataParts}></ConfigDiv>
+                */
+                }
             </div>
         </div>
     );
