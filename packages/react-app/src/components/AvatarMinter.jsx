@@ -125,6 +125,10 @@ export default function AvatarMinter(props) {
         });
     }
 
+    const handleDrawAvatar = () => {
+       changeAvatarColor(dataParts);
+    }
+
     return (
         <div style={{ paddingTop: 32, width: 740, margin: "auto", textAlign: "left" }}>
             <h3>How to Mint</h3>
@@ -217,6 +221,24 @@ export default function AvatarMinter(props) {
                             </span>
                         </span>
                         Generate
+                    </Button>
+                </span>
+            </div>
+
+            <div style={{ paddingBottom: 16, paddingTop: 16 }} >
+                <span style={{ width: "100%" }}>
+                    <Button
+                        style={{ marginRight: 8 }}
+                        onClick={handleDrawAvatar}
+                        size="large"
+                        shape="round"
+                    >
+                        <span style={{ marginRight: 8 }}>
+                            <span role="img" aria-label="fuelpump">
+                            🎨
+                            </span>
+                        </span>
+                       Draw
                     </Button>
                 </span>
             </div>
