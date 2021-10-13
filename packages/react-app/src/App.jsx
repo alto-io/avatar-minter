@@ -590,7 +590,7 @@ function App(props) {
               }}
               to="/avatarminter"
             >
-              Minter
+              Contract Manager
             </Link>
           </Menu.Item>
           

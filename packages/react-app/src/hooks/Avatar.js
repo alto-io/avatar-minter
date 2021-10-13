@@ -89,7 +89,7 @@ const useAvatar = props => {
     const loadProject = async (fileLocation) => {
         if (fileLocation instanceof Blob === false) {
             console.log("Loading default file");
-            let loaded_file = await fetch(`avatars/AvatarImages.ora`).then(r => r.blob());
+            let loaded_file = await fetch(`avatars/avatarimages.ora`).then(r => r.blob());
             await project.load(loaded_file);
         }
         else {
@@ -301,11 +301,13 @@ const useAvatar = props => {
         const canvas1 = canvasRef.current;
         const ctx1 = canvas1.getContext("2d");
         var newCanvas = await renderAvatar();
-        //var newCanvas = { width: 400, height: 400 };
+
         ctx1.clearRect(0, 0, newCanvas.width, newCanvas.height);
 
-        //ctx1.drawImage(newCanvas, 0, 0);
-
+        ctx1.drawImage(newCanvas, 0, 0);
+        
+        /*
+        //var newCanvas = { width: 400, height: 400 };
 
         dataParts.sort((a, b) => a.zIndex - b.zIndex);
         for (let i = 0; i < dataParts.length; i++) {
@@ -344,7 +346,7 @@ const useAvatar = props => {
 
                 currentCanvas.remove();
             }
-        }
+        }*/
 
     }
 
