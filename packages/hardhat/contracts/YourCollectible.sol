@@ -15,8 +15,8 @@ contract YourCollectible is ERC721, Ownable {
   using Counters for Counters.Counter;
   Counters.Counter private _tokenIds;
 
-  constructor() public ERC721("YourCollectible", "YCB") {
-    _setBaseURI("https://ipfs.io/ipfs/");
+  constructor() public ERC721("Arcadians", "ARC") {
+    _setBaseURI("https://api.arcadians.io/");
   }
 
   function mintItem(address to, string memory tokenURI)
