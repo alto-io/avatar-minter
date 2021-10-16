@@ -1,14 +1,10 @@
 pragma solidity >=0.6.0 <0.7.0;
 //SPDX-License-Identifier: MIT
 
-//import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-//learn more: https://docs.openzeppelin.com/contracts/3.x/erc721
-
-// GET LISTED ON OPENSEA: https://testnets.opensea.io/get-listed/step-two
 
 contract YourCollectible is ERC721, Ownable {
 
@@ -19,10 +15,15 @@ contract YourCollectible is ERC721, Ownable {
   uint256 public price = 1 * 10**14; // 550 * 10**14; //0.055 ETH;
   bool public salePaused = false;
   uint public constant MAX_ENTRIES = 10000;
+  address promoAddress;
 
   constructor() public ERC721("Arcadians", "ARC") {
     _setBaseURI("https://api.arcadians.io/");
     _tokenIds.increment();
+
+    promoAddress = 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266;
+
+    mint(promoAddress, 200);
   }
 
     /**
