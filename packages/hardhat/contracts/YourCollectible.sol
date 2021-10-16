@@ -22,6 +22,7 @@ contract YourCollectible is ERC721, Ownable {
 
   constructor() public ERC721("Arcadians", "ARC") {
     _setBaseURI("https://api.arcadians.io/");
+    _tokenIds.increment();
   }
 
     /**
