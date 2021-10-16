@@ -15,6 +15,7 @@ contract YourCollectible is ERC721, Ownable {
   uint256 public price = 1 * 10**14; // 550 * 10**14; //0.055 ETH;
   bool public salePaused = true;
   bool public presalePaused = true;
+  uint public maxPresale = 3000;
 
   uint public constant MAX_ENTRIES = 10000;
   address promoAddress;
@@ -81,6 +82,7 @@ contract YourCollectible is ERC721, Ownable {
         require(!presalePaused, "Presale hasn't started");
         require(wl[_to], "You're not eligible for the presale");
         require(_num < (maxMint+1),"You can mint a maximum of 20 NFTPs at a time");
+        require(_tokenIds.current() + _num < maxPresale, "Exceeds maximum presale supply");
         require(msg.value == price * _num,"Ether amount sent is not correct");
         mint(_to, _num);
     }    
@@ -111,4 +113,14 @@ contract YourCollectible is ERC721, Ownable {
     {
         presalePaused = val;
     }  
+
+    /**
+     * @dev Function for the owner to start or pause the presale depending on {bool}.
+     */
+    function setMaxPresale(uint val)
+        public
+        onlyOwner
+    {
+        maxPresale = val;
+    }
 }

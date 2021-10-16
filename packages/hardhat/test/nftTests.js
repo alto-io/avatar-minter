@@ -133,6 +133,23 @@ describe("NFT Tests", function () {
 
         expect(balance).to.equal(29);
 
+
+       // set Max Presale to 29, purchases should fail
+         correctError = false;
+        await myContract.setMaxPresale(29);
+
+        try {
+          var overrides = {
+            value: 1 * 10**14
+          }
+          await myContract.connect(addr2).presale(whiteListedAddress, 1, overrides);
+        }
+        catch (e) {
+          correctError = e.toString().includes("Exceeds maximum presale supply");
+        }
+
+        expect(correctError).to.equal(true);
+
       });
 
 
