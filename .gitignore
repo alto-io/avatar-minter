@@ -39,4 +39,4 @@ yarn-error.log*
 
 .idea
 packages/react-app/public/avatars/*.ora
-packages/hardat/temp
+packages/hardhat/temp/*
