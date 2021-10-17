@@ -235,7 +235,8 @@ function App(props) {
   // Use your injected provider from 🦊 Metamask or if you don't have it then instantly generate a 🔥 burner wallet.
   // const userProviderAndSigner = useUserProviderAndSigner(injectedProvider, localProvider);
   // const userSigner = userProviderAndSigner.signer;
-  const userSigner = useUserSigner(injectedProvider, localProvider);
+  // const userSigner = useUserSigner(injectedProvider, localProvider);
+  const userSigner = useUserSigner(injectedProvider);
 
   useEffect(() => {
     async function getAddress() {
@@ -274,6 +275,11 @@ function App(props) {
   // If you want to make 🔐 write transactions to your contracts, use the userSigner:
   const writeContracts = useContractLoader(userSigner, contractConfig, localChainId);
 
+  const totalSupply = useContractReader(readContracts, "YourCollectible", "totalSupply");
+  const tokenPrice = useContractReader(readContracts, "YourCollectible", "price", 10000);
+  const ogTokenPrice = useContractReader(readContracts, "YourCollectible", "ogPrice", 10000);
+  const tokenLimit = useContractReader(readContracts, "YourCollectible", "MAX_ENTRIES", 10000);
+
   // EXTERNAL CONTRACT EXAMPLE:
   //
   // If you want to bring in the mainnet DAI contract it would look like:
@@ -301,7 +307,9 @@ function App(props) {
   // 🧠 This effect will update yourCollectibles by polling when your balance changes
   //
   const yourBalance = balance && balance.toNumber && balance.toNumber();
+  
   const [yourCollectibles, setYourCollectibles] = useState();
+  const [minting, setMinting] = useState(false);
 
   useEffect(() => {
     const updateYourCollectibles = async () => {
@@ -553,12 +561,12 @@ function App(props) {
       {networkDisplay}
       <BrowserRouter>
         <Menu style={{ textAlign: "center" }} selectedKeys={[route]} mode="horizontal">
-        <Menu.Item key="/">
+        <Menu.Item key="/overview">
             <Link
               onClick={() => {
-                setRoute("/");
+                setRoute("/overview");
               }}
-              to="/"
+              to="/overview"
             >
               Overview
             </Link>
@@ -662,6 +670,53 @@ function App(props) {
         </Menu>
 
         <Switch>
+          <Route exact path="/overview">
+
+          {address ? (
+              <Button
+                style={{ margin: 8, fontSize: 24, height: 50 }}
+                type="primary"
+                size="large"
+                loading={minting}
+                disabled={
+                  !address ||
+                  price > yourLocalBalance ||
+                  (tokenLimit && totalSupply && tokenLimit.toString() == totalSupply.toString())
+                }
+                onClick={async () => {
+                  try {
+                    setMinting(true);
+                    const result = tx(
+                      writeContracts.BurnNFT.mint({
+                        value: tokenPrice,
+                        gasLimit: "140000",
+                      }),
+                    );
+                    console.log("awaiting metamask/web3 confirm result...", result);
+                    console.log(await result);
+                    setMinting(false);
+                  } catch (e) {
+                    console.log(e);
+                    setMinting(false);
+                  }
+                }}
+              >
+                {`Mint for ${tokenPrice ? ethers.utils.formatEther(tokenPrice) : "..."} ETH`}
+              </Button>
+            ) : (
+              <Button
+                key="loginbutton"
+                type="primary"
+                style={{ verticalAlign: "top", margin: 8, fontSize: 24, height: 50 }}
+                shape="round"
+                size="large"
+                /* type={minimized ? "default" : "primary"}     too many people just defaulting to MM and having a bad time */
+                onClick={loadWeb3Modal}
+              >
+                connect to mint
+              </Button>   
+            )}         
+          </Route>
           <Route exact path="/youravatars">
             {/*
                 🎛 this scaffolding is full of commonly used components
@@ -723,7 +778,7 @@ function App(props) {
             </div>
           </Route>
 
-          <Route path="/transfers">
+          <Route exact path="/transfers">
             <div style={{ width: 600, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
               <List
                 bordered
