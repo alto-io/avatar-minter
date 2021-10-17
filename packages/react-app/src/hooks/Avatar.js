@@ -1,3 +1,4 @@
+import { ConsoleSqlOutlined } from "@ant-design/icons";
 import { useRef, useEffect, useState } from "react";
 /*
   ~ What it does? ~
@@ -89,7 +90,7 @@ const useAvatar = props => {
     const loadProject = async (fileLocation) => {
         if (fileLocation instanceof Blob === false) {
             console.log("Loading default file");
-            let loaded_file = await fetch(`avatars/avatarimages.ora`).then(r => r.blob());
+            let loaded_file = await fetch(`avatars/avatarnew.ora`).then(r => r.blob());
             await project.load(loaded_file);
         }
         else {
@@ -249,7 +250,7 @@ const useAvatar = props => {
     }
 
 
-    function changeAvatarColor(paramArray) {
+    function changeAvatarColor(paramArray, lastTime) {
         const canvas1 = canvasRef.current;
         const ctx1 = canvas1.getContext("2d");
         var newCanvas = { width: 400, height: 400 };
@@ -292,6 +293,10 @@ const useAvatar = props => {
                 ctx1.drawImage(currentCanvas, 0, 0);
 
                 currentCanvas.remove();
+
+                if(i ===paramArray.length - 1) {
+                    console.log(Date.now() - lastTime);
+                }
             }
         }
     }
@@ -305,7 +310,7 @@ const useAvatar = props => {
         ctx1.clearRect(0, 0, newCanvas.width, newCanvas.height);
 
         ctx1.drawImage(newCanvas, 0, 0);
-        
+
         /*
         //var newCanvas = { width: 400, height: 400 };
 
@@ -507,6 +512,28 @@ const useAvatar = props => {
         }
     }
 
+    function finalRender(paramArray) {
+        const canvas1 = canvasRef.current;
+        const ctx1 = canvas1.getContext("2d");
+        var newCanvas = { width: 400, height: 400 };
+        ctx1.clearRect(0, 0, newCanvas.width, newCanvas.height);
+
+        //paramArray.sort((a, b) => a.zIndex - b.zIndex);
+
+        for (let i = 0; i < paramArray.length; i++) {
+            let currentImg = new Image(newCanvas.width, newCanvas.height);
+            currentImg.src = paramArray[i].value;
+            currentImg.onload = function () {
+                if (paramArray[i].type === "selected") {
+                   ctx1.drawImage(currentImg, paramArray[i].offsetX, paramArray[i].offsetY);
+                }
+                else {
+                    ctx1.drawImage(currentImg, 0, 0);
+                }
+            }
+        }
+    }
+
     async function getMintingConfig() {
         console.log("getMintingConfig");
         await loadProject();
@@ -642,6 +669,40 @@ const useAvatar = props => {
 
             }
         }
+    }
+
+    function getClassImageData(param) {
+        //console.log(param);
+
+        let obj = {};
+        obj.class = [];
+        obj.base = [];
+        obj.background = [];
+        for (let i = 0; i < param.children[0].children.length; i++) {
+            if (param.children[0].children[i].name.includes("CLASS") === true) {
+                obj.class.push(param.children[0].children[i]);
+            }
+            if (param.children[0].children[i].name.includes("base") === true) {
+                obj.base.push(param.children[0].children[i]);
+            }
+        }
+        for (let i = 0; i < param.children[1].children.length; i++) {
+            if (param.children[1].children[i].name.includes("CLASS") === true) {
+                obj.class.push(param.children[1].children[i]);
+            }
+            if (param.children[1].children[i].name.includes("base") === true) {
+                obj.base.push(param.children[1].children[i]);
+            }
+        }
+        for (let i = 0; i < param.children[2].children.length; i++) {
+            obj.background.push(param.children[2].children[i]);
+        }
+        return obj;
+    }
+
+    const fillImageData = async () => {
+        await loadProject();
+        return getClassImageData(project);
     }
 
     function randomizePart(partString, hideAll) {
@@ -967,6 +1028,7 @@ const useAvatar = props => {
         canvasRef,
         dataParts,
         loadProject,
+        fillImageData,
         reloadConfig,
         getAvatar,
         infoDataParts,
@@ -975,6 +1037,7 @@ const useAvatar = props => {
         setHoldDataParts,
         project,
         changeAvatarColor,
+        finalRender,
         canvasWidth,
         canvasHeight,
         setNewAvatar,
