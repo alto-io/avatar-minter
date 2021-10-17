@@ -298,6 +298,15 @@ describe("NFT Tests", function () {
         await myContract.setURI(newTokenURI);
         expect(await myContract.baseURI()).to.equal(newTokenURI);
       });
+
+      it("new tokenURI should be correct", async function () {
+        const newTokenURI = "https://ipfs.io/ipfs/QmTBP8FvkTzZsezpccQxLTyFgMCL6BjjvSgLp12bKFK6ZV/";
+        const id = 201;
+        const tokenURI = newTokenURI + id.toString()
+        console.log("token URI: " + tokenURI);
+        expect(await myContract.tokenURI(id)).to.equal(tokenURI);        
+      });
+
     });
 
   });
