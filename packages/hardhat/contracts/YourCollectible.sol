@@ -24,6 +24,7 @@ contract YourCollectible is ERC721, Ownable {
 
   mapping (address => bool) og;
   mapping (address => bool) wl;
+  mapping (address => uint256) public prebuysPerAddress;
 
 
   constructor() public ERC721("Arcadians", "ARC") {
@@ -72,36 +73,34 @@ contract YourCollectible is ERC721, Ownable {
     /**
      * @dev Public function for purchasing {num} amount of tokens. Checks for current price. 
      * Calls mint() for minting processs
-     * @param _to recipient of the NFT minted
      * @param _num number of NFTs minted (Max is 20)
      */
-    function buy(address _to, uint256 _num) 
+    function buy(uint256 _num) 
         public 
         payable 
     {
         require(!salePaused, "Sale hasn't started");
         require(_num < (maxMint+1),"You can mint a maximum of 20 at a time");
         require(msg.value == price * _num,"Ether amount sent is not correct");
-        mint(_to, _num);
+        mint(msg.sender, _num);
     }    
 
     /**
      * @dev Public function for purchasing presale {num} amount of tokens. Requires whitelistEligible()
      * Calls mint() for minting processs
-     * @param _to recipient of the NFT minted
      * @param _num number of NFTs minted (Max is 20)
      */
-    function presale(address _to, uint256 _num)
+    function presale(uint256 _num)
         public
         payable
     {
         require(!presalePaused, "Presale hasn't started");
-        require(whitelistEligible(_to), "You're not eligible for the presale");
+        require(whitelistEligible(msg.sender), "You're not eligible for the presale");
         require(_num < (maxMint+1),"You can mint a maximum of 20 NFTPs at a time");
         require(_tokenIds.current() + _num < maxPresale, "Exceeds maximum presale supply");
 
         // check og status
-        if (ogEligible(_to)) {
+        if (ogEligible(msg.sender)) {
           require(msg.value == ogPrice * _num,"OG: Ether amount sent is not correct");
         }
 
@@ -109,7 +108,7 @@ contract YourCollectible is ERC721, Ownable {
           require(msg.value == price * _num,"Ether amount sent is not correct");
         }
 
-        mint(_to, _num);
+        mint(msg.sender, _num);
     }    
 
   function setURI(string memory baseURI) 

@@ -44,13 +44,8 @@ describe("NFT Tests", function () {
     describe("on presale", function () {
 
       it("user should not be able to buy if presale not started", async function () {
-
-        const [owner] = await ethers.getSigners();
-        const ownerAddress = owner.address;
-        let correctError = false;
-
         try {
-          await myContract.presale(ownerAddress, 1);
+          await myContract.presale(1);
         }
         catch (e) {
           correctError = e.toString().includes("Presale hasn't started");
@@ -61,17 +56,15 @@ describe("NFT Tests", function () {
 
       it("only whitelisted users sending correct eth amount can buy during presale", async function () {
 
-        const [owner, addr1, addr2] = await ethers.getSigners();
+        const [owner, notWhitelistedAddress, whiteListedAddress] = await ethers.getSigners();
         const price = 10 * 10**12;
-        const notWhitelistedAddress = addr1.address;
-        const whiteListedAddress = addr2.address;
         let correctError = false;
 
         // start presale
         await myContract.setPresalePauseStatus(false);
 
         try {
-          await myContract.connect(addr1).presale(notWhitelistedAddress, 1);
+          await myContract.connect(notWhitelistedAddress).presale(1);
         }
         catch (e) {
           correctError = e.toString().includes("You're not eligible for the presale");
@@ -86,7 +79,7 @@ describe("NFT Tests", function () {
           var overrides = {
             value: 2 * price
           }
-          await myContract.connect(addr2).presale(whiteListedAddress, 1, overrides);
+          await myContract.connect(whiteListedAddress).presale(1, overrides);
         }
         catch (e) {
           correctError = e.toString().includes("Ether amount sent is not correct");
@@ -102,7 +95,7 @@ describe("NFT Tests", function () {
           var overrides = {
             value: price
           }
-          await myContract.connect(addr2).presale(whiteListedAddress, 1, overrides);
+          await myContract.connect(whiteListedAddress).presale(1, overrides);
         }
         catch (e) {
           assert.fail("whitelisted account unable to purchase 1")
@@ -113,7 +106,7 @@ describe("NFT Tests", function () {
           var overrides = {
             value: 8 * price
           }
-          await myContract.connect(addr2).presale(whiteListedAddress, 8, overrides);
+          await myContract.connect(whiteListedAddress).presale(8, overrides);
         }
         catch (e) {
           assert.fail("whitelisted account unable to purchase 8")
@@ -124,13 +117,13 @@ describe("NFT Tests", function () {
           var overrides = {
             value: 20 * price
           }
-          await myContract.connect(addr2).presale(whiteListedAddress, 20, overrides);
+          await myContract.connect(whiteListedAddress).presale(20, overrides);
         }
         catch (e) {
           assert.fail("whitelisted account unable to purchase 20")
         }
 
-        const balance = await myContract.balanceOf(whiteListedAddress);
+        const balance = await myContract.balanceOf(whiteListedAddress.address);
 
         expect(balance).to.equal(29);
 
@@ -143,7 +136,7 @@ describe("NFT Tests", function () {
           var overrides = {
             value: price
           }
-          await myContract.connect(addr2).presale(whiteListedAddress, 1, overrides);
+          await myContract.connect(whiteListedAddress).presale(1, overrides);
         }
         catch (e) {
           correctError = e.toString().includes("Exceeds maximum presale supply");
@@ -158,7 +151,7 @@ describe("NFT Tests", function () {
 
     describe("OG Purchases", function () {
 
-      it("OG should be able to purchase at OG price", async function () {
+      it("OG should be able to prebuy at OG price", async function () {
 
         // start presale
         await myContract.setPresalePauseStatus(false);
@@ -166,16 +159,15 @@ describe("NFT Tests", function () {
        // set Max Presale to 3000
        await myContract.setMaxPresale(3000);
 
-        const [owner, addr1, addr2, addr3] = await ethers.getSigners();
+        const [owner, addr1, addr2, ogAddress] = await ethers.getSigners();
         const ogPrice = 5 * 10**12;
-        const ogAddress = addr3.address;
 
         // purchase 1
         try {
           var overrides = {
             value: ogPrice
           }
-          await myContract.connect(addr3).presale(ogAddress, 1, overrides);
+          await myContract.connect(ogAddress).presale(1, overrides);
         }
         catch (e) {
           assert.fail("og account unable to purchase 1")
