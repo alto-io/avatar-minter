@@ -62,6 +62,7 @@ describe("NFT Tests", function () {
       it("only whitelisted users sending correct eth amount can buy during presale", async function () {
 
         const [owner, addr1, addr2] = await ethers.getSigners();
+        const price = 10 * 10**12;
         const notWhitelistedAddress = addr1.address;
         const whiteListedAddress = addr2.address;
         let correctError = false;
@@ -83,7 +84,7 @@ describe("NFT Tests", function () {
         // check that error should occur if wrong amount is sent
         try {
           var overrides = {
-            value: 4 * 10**14
+            value: 2 * price
           }
           await myContract.connect(addr2).presale(whiteListedAddress, 1, overrides);
         }
@@ -99,7 +100,7 @@ describe("NFT Tests", function () {
         // purchase 1
         try {
           var overrides = {
-            value: 1 * 10**14
+            value: price
           }
           await myContract.connect(addr2).presale(whiteListedAddress, 1, overrides);
         }
@@ -110,7 +111,7 @@ describe("NFT Tests", function () {
         // purchase 8
         try {
           var overrides = {
-            value: 8 * 10**14
+            value: 8 * price
           }
           await myContract.connect(addr2).presale(whiteListedAddress, 8, overrides);
         }
@@ -121,7 +122,7 @@ describe("NFT Tests", function () {
         // purchase 20
         try {
           var overrides = {
-            value: 20 * 10**14
+            value: 20 * price
           }
           await myContract.connect(addr2).presale(whiteListedAddress, 20, overrides);
         }
@@ -140,7 +141,7 @@ describe("NFT Tests", function () {
 
         try {
           var overrides = {
-            value: 1 * 10**14
+            value: price
           }
           await myContract.connect(addr2).presale(whiteListedAddress, 1, overrides);
         }
@@ -155,6 +156,35 @@ describe("NFT Tests", function () {
 
     });
 
+    describe("OG Purchases", function () {
+
+      it("OG should be able to purchase at OG price", async function () {
+
+        // start presale
+        await myContract.setPresalePauseStatus(false);
+
+       // set Max Presale to 3000
+       await myContract.setMaxPresale(3000);
+
+        const [owner, addr1, addr2, addr3] = await ethers.getSigners();
+        const ogPrice = 5 * 10**12;
+        const ogAddress = addr3.address;
+
+        // purchase 1
+        try {
+          var overrides = {
+            value: ogPrice
+          }
+          await myContract.connect(addr3).presale(ogAddress, 1, overrides);
+        }
+        catch (e) {
+          assert.fail("og account unable to purchase 1")
+        }
+
+
+      });
+    });
+    
     describe("setURI()", function () {
       it("Should be able to set a new tokenURI", async function () {
         const newTokenURI = "https://ipfs.io/ipfs/QmTBP8FvkTzZsezpccQxLTyFgMCL6BjjvSgLp12bKFK6ZV/";

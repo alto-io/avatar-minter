@@ -12,14 +12,17 @@ contract YourCollectible is ERC721, Ownable {
   Counters.Counter private _tokenIds;
 
   uint256 public maxMint = 20;
-  uint256 public price = 1 * 10**14; // 550 * 10**14; //0.055 ETH;
+  uint256 public price = 10 * 10**12; //5500 * 10**13; //0.055 ETH;
+  uint256 public ogPrice = 5 * 10**12; //4675 * 10**13; //0.04675 ETH;
   bool public salePaused = true;
   bool public presalePaused = true;
   uint public maxPresale = 3000;
 
   uint public constant MAX_ENTRIES = 10000;
+  uint public constant MAX_PRESALE_PER_ADDRESS = 20;
   address promoAddress;
 
+  mapping (address => bool) og;
   mapping (address => bool) wl;
 
 
@@ -31,10 +34,23 @@ contract YourCollectible is ERC721, Ownable {
 
     mint(promoAddress, 200);
 
-    wl[0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266] = true; // owner
-    // wl[0x70997970C51812dc3A010C7d01b50e0d17dc79C8] = true; // addr1
+    // OG
+    og[0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266] = false;
+    og[0x70997970C51812dc3A010C7d01b50e0d17dc79C8] = false;
+    og[0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC] = false;
+    og[0x90F79bf6EB2c4f870365E785982E1f101E93b906] = true;
+    og[0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65] = false;
+    og[0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc] = false;
 
+
+    // WL 
+    wl[0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266] = true;
+    wl[0x70997970C51812dc3A010C7d01b50e0d17dc79C8] = false;
     wl[0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC] = true;
+    wl[0x90F79bf6EB2c4f870365E785982E1f101E93b906] = true;
+    wl[0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65] = false;
+    wl[0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc] = false;
+
   }
 
     /**
@@ -80,10 +96,19 @@ contract YourCollectible is ERC721, Ownable {
         payable
     {
         require(!presalePaused, "Presale hasn't started");
-        require(wl[_to], "You're not eligible for the presale");
+        require(whitelistEligible(_to), "You're not eligible for the presale");
         require(_num < (maxMint+1),"You can mint a maximum of 20 NFTPs at a time");
         require(_tokenIds.current() + _num < maxPresale, "Exceeds maximum presale supply");
-        require(msg.value == price * _num,"Ether amount sent is not correct");
+
+        // check og status
+        if (ogEligible(_to)) {
+          require(msg.value == ogPrice * _num,"OG: Ether amount sent is not correct");
+        }
+
+        else {
+          require(msg.value == price * _num,"Ether amount sent is not correct");
+        }
+
         mint(_to, _num);
     }    
 
@@ -123,4 +148,30 @@ contract YourCollectible is ERC721, Ownable {
     {
         maxPresale = val;
     }
+
+    /**
+     * @dev Public function for checking whitelist eligibility.
+     * @param _to verify address is eligible for presale
+     */
+    function whitelistEligible(address _to)
+        public
+        view
+        returns (bool)
+    {
+        return (og[_to] || wl[_to]);
+    }
+
+    /**
+     * @dev Public function for checking OG eligibility.
+     * @param _to verify address is OG
+     */
+    function ogEligible(address _to)
+        public
+        view
+        returns (bool)
+    {
+        return og[_to];
+    }    
+
+
 }
