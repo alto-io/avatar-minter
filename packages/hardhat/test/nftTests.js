@@ -190,7 +190,28 @@ describe("NFT Tests", function () {
 
       });
     });
-    
+
+    describe("Public Sale", function () {
+
+      it("Presale should be disabled if sale has already started", async function () {
+
+        let correctError = false;
+        // start sale
+        await myContract.setSalePauseStatus(false);
+
+        try {
+          await myContract.presale(1);
+        }
+        catch (e) {
+          correctError = e.toString().includes("Sale is already ongoing");
+        }
+
+        expect(correctError).to.equal(true);
+
+      });
+
+    });
+
     describe("setURI()", function () {
       it("Should be able to set a new tokenURI", async function () {
         const newTokenURI = "https://ipfs.io/ipfs/QmTBP8FvkTzZsezpccQxLTyFgMCL6BjjvSgLp12bKFK6ZV/";
