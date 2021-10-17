@@ -1,4 +1,4 @@
-const { ethers } = require("hardhat");
+const { ethers, waffle } = require("hardhat");
 const { use, expect, assert } = require("chai");
 const { solidity } = require("ethereum-waffle");
 
@@ -210,8 +210,87 @@ describe("NFT Tests", function () {
 
       });
 
+      it("og should be able to buy during public sale at og rate", async function () {
+        const [owner, addr1, addr2, og1, og2] = await ethers.getSigners();
+        const ogPrice = 5 * 10**12;
+
+        try {
+          var overrides = {
+            value: ogPrice
+          }
+          await myContract.connect(og1).buy(1, overrides);
+          await myContract.connect(og2).buy(1, overrides);
+        }
+        catch (e) {
+          assert.fail("og account unable to buy 1 during public sale")
+        }
+
+      });
+
+      it("non-og address should be able to buy during public sale at base rate", async function () {
+        const [owner, addr1, addr2, og1, og2, addr3, addr4, addr5] = await ethers.getSigners();
+        const price = 10 * 10**12;
+
+        try {
+          var overrides = {
+            value: price
+          }
+          await myContract.connect(owner).buy(1, overrides);
+          await myContract.connect(addr1).buy(1, overrides);
+          await myContract.connect(addr2).buy(1, overrides);
+          await myContract.connect(addr3).buy(1, overrides);
+          await myContract.connect(addr4).buy(1, overrides);
+          await myContract.connect(addr5).buy(1, overrides);
+        }
+        catch (e) {
+          assert.fail("one account failed to buy during public sale")
+        }
+
+      });
+
+      it("purchases still possible past max totalPresale", async function () {        
+        const [owner, addr1, addr2, og1, og2, addr3, addr4, addr5] = await ethers.getSigners();
+        const price = 10 * 10**12;
+
+        // set Max Presale to 5
+       await myContract.setMaxPresale(5);
+
+
+        try {
+          var overrides = {
+            value: 5 * price
+          }
+          await myContract.connect(owner).buy(5, overrides);
+          await myContract.connect(addr1).buy(5, overrides);
+          await myContract.connect(addr2).buy(5, overrides);
+        }
+        catch (e) {
+          assert.fail("one account failed to buy during public sale")
+        }
+
+      });
+
+
     });
 
+    describe("withdraw tests", function () {
+      it("Should be able withdraw eth to contract owner", async function () {
+        const provider = waffle.provider;
+        const [owner] = await ethers.getSigners();
+        
+        const ownerBalance = await provider.getBalance(owner.address);
+
+        await myContract.withdrawAll();
+
+        const newOwnerBalance = await provider.getBalance(owner.address);
+        const contractBalance = await provider.getBalance(myContract.address);
+
+        assert(newOwnerBalance.gt(ownerBalance));
+        expect(contractBalance.toNumber()).to.equal(0);
+      });
+
+    });
+    
     describe("setURI()", function () {
       it("Should be able to set a new tokenURI", async function () {
         const newTokenURI = "https://ipfs.io/ipfs/QmTBP8FvkTzZsezpccQxLTyFgMCL6BjjvSgLp12bKFK6ZV/";
