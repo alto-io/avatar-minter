@@ -142,6 +142,7 @@ describe("NFT Tests", function () {
         catch (e) {
           correctError = e.toString().includes("You can mint a maximum of 20 at a time");
         }
+        expect(correctError).to.equal(true);
 
 
         // purchase 20, should fail due to max prebuys
