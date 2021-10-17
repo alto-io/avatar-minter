@@ -54,6 +54,7 @@ export default function AvatarMinter(props) {
         canvasRef,
         dataParts,
         loadProject,
+        fillImageData,
         reloadConfig,
         getAvatar,
         infoDataParts,
@@ -62,6 +63,7 @@ export default function AvatarMinter(props) {
         setHoldDataParts,
         project,
         changeAvatarColor,
+        finalRender,
         canvasWidth,
         canvasHeight,
         setNewAvatar,
@@ -85,7 +87,7 @@ export default function AvatarMinter(props) {
     const [mintAmount, setMintAmount] = useState();
 
     useEffect(() => {
-        async function load () {
+        async function load() {
             await loadProject();
         }
         load();
@@ -125,8 +127,75 @@ export default function AvatarMinter(props) {
         });
     }
 
-    const handleDrawAvatar = () => {
-       changeAvatarColor(dataParts);
+    const handleDrawAvatar = async () => {
+
+        let myCurrentData = await fillImageData();
+        //console.log(myCurrentData);
+
+        let currentAvatars = JSON.parse(localStorage.getItem('myAvatars'));
+        let selectedAvatar = currentAvatars[0].tokenMetadata[Math.floor(Math.random() *  currentAvatars[0].tokenMetadata.length)];
+
+
+        let renderArray = [];
+
+        for (let a = 0; a < myCurrentData.background.length; a++) {
+            if (selectedAvatar.background.name === myCurrentData.background[a].name) {
+                renderArray.push(myCurrentData.background[a]);
+            }
+        }
+
+        if (selectedAvatar.base.name.includes("Female_base") === true) {
+            renderArray.push(myCurrentData.base[0]);
+        }
+        else {
+            renderArray.push(myCurrentData.base[1]);
+        }
+
+
+
+        for (let i = 0; i < myCurrentData.class.length; i++) {
+            if (selectedAvatar.name === myCurrentData.class[i].name) {
+                //console.log("IT'S A MATCH", myCurrentData.class[i].children);
+                let selectedParts = Object.keys(selectedAvatar);
+                let allItems = [];
+                for (let j = 0; j < selectedParts.length; j++) {
+                    for (let k = 0; k < myCurrentData.class[i].children.length; k++) {
+                        if (selectedParts[j] === myCurrentData.class[i].children[k].name) {
+                            for (let l = 0; l < myCurrentData.class[i].children[k].children.length; l++) {
+                                if (selectedAvatar[selectedParts[j]].name === myCurrentData.class[i].children[k].children[l].name) {
+                                    renderArray.push(myCurrentData.class[i].children[k].children[l]);
+                                }
+                            }
+                        }
+                    }
+                    if (selectedAvatar[selectedParts[j]].name !== undefined) {
+                        allItems.push(selectedAvatar[selectedParts[j]].name);
+                    }
+                }
+                console.log(allItems);
+            }
+        }
+
+        let stuffToRender = [];
+
+        for (let m = 0; m < renderArray.length; m++) {
+            let rawImageData = await renderArray[m].get_base64();
+            console.log(renderArray[m].parent.name);
+            let currentObj = {
+                name: renderArray[m].name,
+                value: rawImageData,
+                zIndex: renderArray[m].z_index,
+                type: "selected",
+                offsetX: renderArray[m].attribs.offsets[0],
+                offsetY: renderArray[m].attribs.offsets[1],
+            };
+           stuffToRender.push(currentObj);
+        }
+
+
+        //console.log(stuffToRender);
+
+        finalRender(stuffToRender);
     }
 
     return (
@@ -235,10 +304,10 @@ export default function AvatarMinter(props) {
                     >
                         <span style={{ marginRight: 8 }}>
                             <span role="img" aria-label="fuelpump">
-                            🎨
+                                🎨
                             </span>
                         </span>
-                       Draw
+                        Draw
                     </Button>
                 </span>
             </div>
