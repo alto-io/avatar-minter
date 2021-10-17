@@ -112,25 +112,9 @@ describe("NFT Tests", function () {
           assert.fail("whitelisted account unable to purchase 8")
         }
 
-        // purchase 20
-        try {
-          var overrides = {
-            value: 20 * price
-          }
-          await myContract.connect(whiteListedAddress).presale(20, overrides);
-        }
-        catch (e) {
-          assert.fail("whitelisted account unable to purchase 20")
-        }
-
-        const balance = await myContract.balanceOf(whiteListedAddress.address);
-
-        expect(balance).to.equal(29);
-
-
-       // set Max Presale to 29, purchases should fail
+       // set Max Presale to 9, purchases should fail
          correctError = false;
-        await myContract.setMaxPresale(29);
+        await myContract.setMaxPresale(9);
 
         try {
           var overrides = {
@@ -144,8 +128,38 @@ describe("NFT Tests", function () {
 
         expect(correctError).to.equal(true);
 
-      });
 
+      correctError = false;
+      await myContract.setMaxPresale(3000);
+
+        // purchase 25, should fail due to maxMint
+        try {
+          var overrides = {
+            value: 25 * price
+          }
+          await myContract.connect(whiteListedAddress).presale(25, overrides);
+        }
+        catch (e) {
+          correctError = e.toString().includes("You can mint a maximum of 20 at a time");
+        }
+
+
+        // purchase 20, should fail due to max prebuys
+        try {
+          var overrides = {
+            value: 20 * price
+          }
+          await myContract.connect(whiteListedAddress).presale(20, overrides);
+        }
+        catch (e) {
+          correctError = e.toString().includes("Max prebuys for address reached");
+        }
+
+        // make sure total is still 9
+        const balance = await myContract.balanceOf(whiteListedAddress.address);
+        expect(balance).to.equal(9);
+
+      });
 
     });
 

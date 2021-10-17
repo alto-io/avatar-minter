@@ -16,10 +16,10 @@ contract YourCollectible is ERC721, Ownable {
   uint256 public ogPrice = 5 * 10**12; //4675 * 10**13; //0.04675 ETH;
   bool public salePaused = true;
   bool public presalePaused = true;
-  uint public maxPresale = 3000;
+  uint public maxTotalPresale = 3000;
+  uint public maxPrebuysPerAddress = 20;
 
   uint public constant MAX_ENTRIES = 10000;
-  uint public constant MAX_PRESALE_PER_ADDRESS = 20;
   address promoAddress;
 
   mapping (address => bool) og;
@@ -96,8 +96,8 @@ contract YourCollectible is ERC721, Ownable {
     {
         require(!presalePaused, "Presale hasn't started");
         require(whitelistEligible(msg.sender), "You're not eligible for the presale");
-        require(_num < (maxMint+1),"You can mint a maximum of 20 NFTPs at a time");
-        require(_tokenIds.current() + _num < maxPresale, "Exceeds maximum presale supply");
+        require(_num < (maxMint+1),"You can mint a maximum of 20 at a time");
+        require(_tokenIds.current() + _num < maxTotalPresale, "Exceeds maximum presale supply");
 
         // check og status
         if (ogEligible(msg.sender)) {
@@ -108,6 +108,11 @@ contract YourCollectible is ERC721, Ownable {
           require(msg.value == price * _num,"Ether amount sent is not correct");
         }
 
+        // buyers can only buy a maximum amount
+        require(prebuysPerAddress[msg.sender] + _num <= maxPrebuysPerAddress,
+                "Max prebuys for address reached");
+  
+        prebuysPerAddress[msg.sender] += _num;
         mint(msg.sender, _num);
     }    
 
@@ -145,7 +150,27 @@ contract YourCollectible is ERC721, Ownable {
         public
         onlyOwner
     {
-        maxPresale = val;
+        maxTotalPresale = val;
+    }
+
+    /**
+     * @dev Function for the owner to start or pause the presale depending on {bool}.
+     */
+    function setMaxMint(uint val)
+        public
+        onlyOwner
+    {
+        maxMint = val;
+    }    
+
+    /**
+     * @dev Function for the owner to start or pause the presale depending on {bool}.
+     */
+    function setMaxPrebuysPerAddress(uint val)
+        public
+        onlyOwner
+    {
+        maxPrebuysPerAddress = val;
     }
 
     /**
