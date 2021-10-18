@@ -8,7 +8,7 @@ describe("NFT Tests", function () {
   let myContract;
   const promoAddress = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
   const startURI = "https://api.arcadians.io/";
-  const promoAmount = 200;
+  const promoAmount = 250;
 
   describe("YourCollectible", function () {
     it("Should deploy YourCollectible", async function () {
