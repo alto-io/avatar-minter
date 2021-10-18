@@ -11,7 +11,7 @@ contract YourCollectible is ERC721, Ownable {
   using Counters for Counters.Counter;
   Counters.Counter private _tokenIds;
 
-  uint256 public maxMint = 10;
+  uint256 public maxMint = 5;
   uint256 public maxPresaleMint = 5;
   uint256 public price = 10 * 10**12; //5500 * 10**13; //0.055 ETH;
   uint256 public ogPrice = 5 * 10**12; //4675 * 10**13; //0.04675 ETH;
@@ -36,7 +36,7 @@ contract YourCollectible is ERC721, Ownable {
 
     promoAddress = 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266;
 
-    mint(promoAddress, 200);
+    mint(promoAddress, 250);
 
     // OG
     og[0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266] = false;
