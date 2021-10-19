@@ -596,7 +596,11 @@ const useAvatar = props => {
         if (currentPartSet == undefined) {
             currentPartSet = [partToAdd];
         } else {
+          if (Array.isArray(currentPartSet)) {
             currentPartSet.push(partToAdd);
+          } else {
+            console.warn(`Incorrect partString: ${partString}, not an array`)
+          }
         }
 
         _.set(objectToAdd, partCategory, currentPartSet);
