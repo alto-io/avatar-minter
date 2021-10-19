@@ -45,6 +45,7 @@
     "node-watch": "^0.7.1",
     "postcss": "^8.2.6",
     "qrcode.react": "^1.0.0",
+    "random-weighted-choice": "^0.1.4",
     "react": "^17.0.2",
     "react-blockies": "^1.4.1",
     "react-color-palette": "^6.1.0",
