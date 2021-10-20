@@ -8,7 +8,7 @@ describe("NFT Tests", function () {
   let myContract;
   const promoAddress = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
   const startURI = "https://api.arcadians.io/";
-  const promoAmount = 200;
+  const promoAmount = 250;
 
   describe("YourCollectible", function () {
     it("Should deploy YourCollectible", async function () {
@@ -101,20 +101,20 @@ describe("NFT Tests", function () {
           assert.fail("whitelisted account unable to purchase 1")
         }
 
-        // purchase 8
+        // purchase 3
         try {
           var overrides = {
-            value: 8 * price
+            value: 3 * price
           }
-          await myContract.connect(whiteListedAddress).presale(8, overrides);
+          await myContract.connect(whiteListedAddress).presale(3, overrides);
         }
         catch (e) {
-          assert.fail("whitelisted account unable to purchase 8")
+          assert.fail("whitelisted account unable to purchase 3")
         }
 
        // set Max Presale to 9, purchases should fail
          correctError = false;
-        await myContract.setMaxPresale(9);
+        await myContract.setMaxPresale(4);
 
         try {
           var overrides = {
@@ -140,25 +140,27 @@ describe("NFT Tests", function () {
           await myContract.connect(whiteListedAddress).presale(25, overrides);
         }
         catch (e) {
-          correctError = e.toString().includes("You can mint a maximum of 20 at a time");
+          correctError = e.toString().includes("Amount to mint exceeds maximum per transaction");
         }
         expect(correctError).to.equal(true);
+        correctError = false;
 
 
-        // purchase 20, should fail due to max prebuys
+        // purchase 5, should fail due to max prebuys
         try {
           var overrides = {
-            value: 20 * price
+            value: 5 * price
           }
-          await myContract.connect(whiteListedAddress).presale(20, overrides);
+          await myContract.connect(whiteListedAddress).presale(5, overrides);
         }
         catch (e) {
           correctError = e.toString().includes("Max prebuys for address reached");
         }
+        expect(correctError).to.equal(true);
 
-        // make sure total is still 9
+        // make sure total is still 4
         const balance = await myContract.balanceOf(whiteListedAddress.address);
-        expect(balance).to.equal(9);
+        expect(balance).to.equal(4);
 
       });
 
@@ -211,13 +213,13 @@ describe("NFT Tests", function () {
 
       });
 
-      it("og should be able to buy during public sale at og rate", async function () {
+      it("og should be able to buy during public sale at same rate", async function () {
         const [owner, addr1, addr2, og1, og2] = await ethers.getSigners();
-        const ogPrice = 5 * 10**12;
+        const price = 10 * 10**12;
 
         try {
           var overrides = {
-            value: ogPrice
+            value: price
           }
           await myContract.connect(og1).buy(1, overrides);
           await myContract.connect(og2).buy(1, overrides);

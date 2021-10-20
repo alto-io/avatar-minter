@@ -2,6 +2,8 @@ import { ConsoleSqlOutlined } from "@ant-design/icons";
 import { load } from "dotenv";
 import { doc } from "prettier";
 import { useRef, useEffect, useState } from "react";
+import rwc from 'random-weighted-choice'
+
 /*
   ~ What it does? ~
 
@@ -514,6 +516,73 @@ const useAvatar = props => {
         }
     }
 
+  async function generateMetadataJsonNew(mintingConfigJSON) {
+    console.log("generateMetadataJsonNew");
+    if (!mintingConfigJSON.initialized) {
+      return;
+    }
+    const amountToCreate = mintingConfigJSON.amountToCreate;
+    const mintArray = [];
+
+    const currentParts = JSON.parse(localStorage.getItem("myParts"));
+    const backgrounds = [];
+
+    // YP: avatarsnew.ora has this nested background structure, flatten here
+    _.forOwn(currentParts["Background UNIVERSAL"], value => {
+      if (Array.isArray(value)) {
+        backgrounds.push(...value)
+      } else {
+        _.forOwn(value, valval => {
+          if (Array.isArray(valval)) {
+            backgrounds.push(...valval);
+          }
+        });
+      }
+    });
+    // rwc needs "id"
+    backgrounds.forEach(bg => (bg.id = bg.name))
+
+    const femaleParts = Object.keys(currentParts["CLASS female"]);
+    const femaleClasses = [];
+    const femaleBasics = [];
+    for (let i = 0; i < femaleParts.length; i++) {
+      if (femaleParts[i].includes("CLASS")) {
+        const currentObj = currentParts["CLASS female"][femaleParts[i]];
+        currentObj.name = femaleParts[i];
+        femaleClasses.push(currentObj);
+      } else {
+        const currentObj = {};
+        currentObj.parts = currentParts["CLASS female"][femaleParts[i]];
+        currentObj.name = femaleParts[i];
+        femaleBasics.push(currentObj);
+      }
+    }
+
+    const maleParts = Object.keys(currentParts["CLASS male"]);
+    const maleClasses = [];
+    const maleBasics = [];
+    for (let i = 0; i < maleParts.length; i++) {
+      if (maleParts[i].includes("CLASS")) {
+        const currentObj = currentParts["CLASS male"][maleParts[i]];
+        currentObj.name = maleParts[i];
+        maleClasses.push(currentObj);
+      } else {
+        const currentObj = {};
+        currentObj.parts = currentParts["CLASS male"][maleParts[i]];
+        currentObj.name = maleParts[i];
+        maleBasics.push(currentObj);
+      }
+    }
+    const femaleAvatarsCount = Math.ceil(amountToCreate / 2);
+    const maleAvatarsCount = amountToCreate - femaleAvatarsCount;
+
+    // TODO
+    for (let i = 0; i < femaleAvatarsCount; i++) {
+      const chosenBg = rwc(backgrounds);
+      const chosenClass = rwc(femaleClasses);
+    }
+  }
+
     function finalRender(paramArray, paramCount) {
         const canvas1 = canvasRef.current;
         const ctx1 = canvas1.getContext("2d");
@@ -623,7 +692,11 @@ const useAvatar = props => {
         if (currentPartSet == undefined) {
             currentPartSet = [partToAdd];
         } else {
+          if (Array.isArray(currentPartSet)) {
             currentPartSet.push(partToAdd);
+          } else {
+            console.warn(`Incorrect partString: ${partString}, not an array`)
+          }
         }
 
         _.set(objectToAdd, partCategory, currentPartSet);
@@ -1070,6 +1143,7 @@ const useAvatar = props => {
         setNewAvatar,
         getMintingConfig,
         generateMetadataJson,
+        generateMetadataJsonNew,
         setMintingConfig,
         metadataJson,
         uploadedTokenURI,

@@ -53,6 +53,9 @@ module.exports = {
   // Follow the directions, and uncomment the network you wish to deploy to.
 
   networks: {
+    hardhat: {
+      blockGasLimit: 8000000000
+    },
     localhost: {
       url: "http://localhost:8545",
       /*      
