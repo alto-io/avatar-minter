@@ -432,94 +432,48 @@ const useAvatar = props => {
 
     }
 
-    async function generateMetadataJson(mintingConfigJSON) {
-        if (mintingConfigJSON.initialized) {
-            var amountToCreate = mintingConfigJSON.amountToCreate;
-            var mintArray = [];
-
-            console.log("generateMetadaJson");
-
-            let currentParts = JSON.parse(localStorage.getItem('myParts'));
-            let backgrounds = currentParts["Background UNIVERSAL"];
-
-            let femaleParts = Object.keys(currentParts["CLASS female"]);
-            let femaleClasses = [];
-            let femaleBasics = [];
-            for (let i = 0; i < femaleParts.length; i++) {
-                if (femaleParts[i].includes("CLASS")) {
-                    let currentObj = currentParts["CLASS female"][femaleParts[i]];
-                    currentObj.name = femaleParts[i];
-                    femaleClasses.push(currentObj);
-                }
-                else {
-                    let currentObj = {};
-                    currentObj.parts = currentParts["CLASS female"][femaleParts[i]];
-                    currentObj.name = femaleParts[i];
-                    femaleBasics.push(currentObj);
-                }
-            }
-
-            let maleParts = Object.keys(currentParts["CLASS male"]);
-            let maleClasses = [];
-            let maleBasics = [];
-            for (let i = 0; i < maleParts.length; i++) {
-                if (maleParts[i].includes("CLASS")) {
-                    let currentObj = currentParts["CLASS male"][maleParts[i]];
-                    currentObj.name = maleParts[i];
-                    maleClasses.push(currentObj);
-                }
-                else {
-                    let currentObj = {};
-                    currentObj.parts = currentParts["CLASS male"][maleParts[i]];
-                    currentObj.name = maleParts[i];
-                    maleBasics.push(currentObj);
-                }
-            }
-
-            for (var i = 1; i <= amountToCreate; i++) {
-
-                let rBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
-                let rClass = Math.random() > 0.5 ? femaleClasses[Math.floor(Math.random() * femaleClasses.length)]
-                    : maleClasses[Math.floor(Math.random() * maleClasses.length)];
-
-                let fillParts = {};
-                fillParts.name = rClass.name;
-                fillParts.base = rClass.name.includes("female") ? femaleBasics[2].parts[0] : maleBasics[2].parts[0];
-                fillParts.background = rBackground;
-                for (let prop in rClass) {
-                    if (prop !== "name") {
-                        fillParts[prop] = rClass[prop][Math.floor(Math.random() * rClass[prop].length)];
-                    }
-                }
-
-                let allProps = Object.assign({}, fillParts);
-                mintArray.push(allProps);
-
-                var tempMetadataJson = {
-                    tokenMetadata: mintArray,
-                };
-
-                setMetadataJson(tempMetadataJson);
-            }
-
-            let myAvatars = JSON.parse(localStorage.getItem('myAvatars'));
-            myAvatars.push(tempMetadataJson);
-            localStorage.setItem('myAvatars', JSON.stringify(myAvatars));
-            let currentAvatars = JSON.parse(localStorage.getItem('myAvatars'));
-            console.log(`Now we have ${currentAvatars.length} avatars!`);
-
-            return tempMetadataJson;
-        } else {
-            return {
-                filename: "metadata.json",
-            };
-        }
+  const randomShuffle = arr => {
+    if (!Array.isArray(arr)) {
+      return;
     }
+    let currentIndex = arr.length;
+    let randomIndex = 0;
 
-  async function generateMetadataJsonNew(mintingConfigJSON) {
+    while (currentIndex != 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+      [arr[currentIndex], arr[randomIndex]] = [arr[randomIndex], arr[currentIndex]];
+    }
+  };
+
+  // weightdChoices must be an array of objects with 'weight' property,
+  // if 'weight' missing, randomizes as if all objects have equal weight
+  const prepareWeightedArray = (weightdChoices, neededLength) => {
+    const totalWeight = weightdChoices.reduce((accum, curr) => accum + (curr.weight || 1));
+    const adjustedBgWeight = Math.floor(neededLength / totalWeight);
+    const ret = [];
+    for (let i = 0; i < weightdChoices.length; i++) {
+      const object = weightdChoices[i];
+      const count = object.weight * adjustedBgWeight;
+      for (let ii = 0; ii < count; ii++) {
+        ret.push(object);
+      }
+    }
+    // fill up with simple randoms, because flooring adjustedBgWeight,
+    // total length may be lesser than needed
+    while (ret.length < neededLength) {
+      ret.push(weightdChoices[Math.floor(Math.random() * weightdChoices.length)]);
+    }
+    randomShuffle(ret);
+    return ret;
+  };
+
+  async function generateMetadataJson(mintingConfigJSON) {
     console.log("generateMetadataJsonNew");
     if (!mintingConfigJSON.initialized) {
-      return;
+      return {
+        filename: "metadata.json",
+      };
     }
     const amountToCreate = mintingConfigJSON.amountToCreate;
     const mintArray = [];
@@ -543,8 +497,8 @@ const useAvatar = props => {
     backgrounds.forEach(bg => (bg.id = bg.name))
 
     const femaleParts = Object.keys(currentParts["CLASS female"]);
-    const femaleClasses = [];
-    const femaleBasics = [];
+    let femaleClasses = [];
+    let femaleBasics = [];
     for (let i = 0; i < femaleParts.length; i++) {
       if (femaleParts[i].includes("CLASS")) {
         const currentObj = currentParts["CLASS female"][femaleParts[i]];
@@ -557,10 +511,13 @@ const useAvatar = props => {
         femaleBasics.push(currentObj);
       }
     }
+    // filter out incorrect ora values
+    femaleClasses = femaleClasses.filter(obj => !Array.isArray(obj) && !!obj.name);
+    femaleBasics = femaleBasics.filter(obj => !Array.isArray(obj) && Array.isArray(obj.parts) && !!obj.name);
 
     const maleParts = Object.keys(currentParts["CLASS male"]);
-    const maleClasses = [];
-    const maleBasics = [];
+    let maleClasses = [];
+    let maleBasics = [];
     for (let i = 0; i < maleParts.length; i++) {
       if (maleParts[i].includes("CLASS")) {
         const currentObj = currentParts["CLASS male"][maleParts[i]];
@@ -573,14 +530,93 @@ const useAvatar = props => {
         maleBasics.push(currentObj);
       }
     }
+    // filter out incorrect ora values
+    maleClasses = maleClasses.filter(obj => !Array.isArray(obj) && !!obj.name);
+    maleBasics = maleBasics.filter(obj => !Array.isArray(obj) && Array.isArray(obj.parts) && !!obj.name);
+
     const femaleAvatarsCount = Math.ceil(amountToCreate / 2);
     const maleAvatarsCount = amountToCreate - femaleAvatarsCount;
 
-    // TODO
+    // Female:
+    const randomFemaleBackgrounds = prepareWeightedArray(backgrounds, femaleAvatarsCount);
+    const randomFemaleClasses = prepareWeightedArray(femaleClasses, femaleAvatarsCount);
+    // assuming here that classes are not weighted:
+    const eachFemaleClassCount = Math.ceil(femaleAvatarsCount / femaleClasses.length)
+    femaleClasses.forEach(cls => {
+      _.forOwn(cls, (value, key) => {
+        if (key === "name") {
+          return;
+        }
+        cls[key] = prepareWeightedArray(cls[key], eachFemaleClassCount);
+      });
+      cls.generatedCount = 0;
+    });
+
     for (let i = 0; i < femaleAvatarsCount; i++) {
-      const chosenBg = rwc(backgrounds);
-      const chosenClass = rwc(femaleClasses);
+      const chosenBg = randomFemaleBackgrounds[i];
+      const chosenClass = randomFemaleClasses[i];
+
+      const avatar = {
+        name: chosenClass.name,
+        base: femaleBasics[2].parts[0], // ?
+        background: chosenBg,
+      };
+      _.forOwn(chosenClass, (value, key) => {
+        if (key === "name" || key === "generatedCount") {
+          return;
+        }
+        avatar[key] = chosenClass[key][chosenClass.generatedCount];
+      });
+      chosenClass.generatedCount += 1;
+      mintArray.push(avatar);
     }
+
+    // Male:
+    const randomMaleBackgrounds = prepareWeightedArray(backgrounds, maleAvatarsCount);
+    const randomMaleClasses = prepareWeightedArray(maleClasses, maleAvatarsCount);
+    // assuming here that classes are not weighted:
+    const eachMaleClassCount = Math.ceil(maleAvatarsCount / maleClasses.length)
+    maleClasses.forEach(cls => {
+      _.forOwn(cls, (value, key) => {
+        if (key === "name") {
+          return;
+        }
+        cls[key] = prepareWeightedArray(cls[key], eachMaleClassCount);
+      });
+      cls.generatedCount = 0;
+    });
+
+    for (let i = 0; i < maleAvatarsCount; i++) {
+      const chosenBg = randomMaleBackgrounds[i];
+      const chosenClass = randomMaleClasses[i];
+
+      const avatar = {
+        name: chosenClass.name,
+        base: maleBasics[2].parts[0], // ?
+        background: chosenBg,
+      };
+      _.forOwn(chosenClass, (value, key) => {
+        if (key === "name" || key === "generatedCount") {
+          return;
+        }
+        avatar[key] = chosenClass[key][chosenClass.generatedCount];
+      });
+      chosenClass.generatedCount += 1;
+      mintArray.push(avatar);
+    }
+
+    const ret = {
+      tokenMetadata: mintArray,
+    }
+
+    const myAvatars = JSON.parse(localStorage.getItem('myAvatars'));
+    myAvatars.push(ret);
+    localStorage.setItem('myAvatars', JSON.stringify(myAvatars));
+    const currentAvatars = JSON.parse(localStorage.getItem('myAvatars'));
+    console.log(`Now we have ${currentAvatars.length} avatars!`);
+
+    setMetadataJson(ret);
+    return ret;
   }
 
     function finalRender(paramArray, paramCount) {
@@ -1143,7 +1179,6 @@ const useAvatar = props => {
         setNewAvatar,
         getMintingConfig,
         generateMetadataJson,
-        generateMetadataJsonNew,
         setMintingConfig,
         metadataJson,
         uploadedTokenURI,
