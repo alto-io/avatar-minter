@@ -87,12 +87,14 @@ export default function AvatarMinter(props) {
     const [mintAmount, setMintAmount] = useState();
 
     useEffect(() => {
-        async function load() {
-            await loadProject();
-        }
-        load();
+        /*  async function load() {
+             await loadProject();
+         }
+         load(); */
 
         //console.log(project);
+
+        window.nextRender = true;
 
         if (localStorage.getItem('myParts') === null) {
             let myParts = {};
@@ -107,6 +109,7 @@ export default function AvatarMinter(props) {
             let currentAvatars = JSON.parse(localStorage.getItem('myAvatars'));
             console.log(`We already have ${currentAvatars.length} avatars!`);
         }
+
     }, []);
 
     const handleClickInitConfigButton = async (event) => {
@@ -127,13 +130,12 @@ export default function AvatarMinter(props) {
         });
     }
 
-    const handleDrawAvatar = async () => {
+    const handleDrawAvatar = async (paramCount) => {
 
         let myCurrentData = await fillImageData();
         //console.log(myCurrentData);
-
         let currentAvatars = JSON.parse(localStorage.getItem('myAvatars'));
-        let selectedAvatar = currentAvatars[0].tokenMetadata[Math.floor(Math.random() *  currentAvatars[0].tokenMetadata.length)];
+        let selectedAvatar = currentAvatars[0].tokenMetadata[Math.floor(Math.random() * currentAvatars[0].tokenMetadata.length)];
 
 
         let renderArray = [];
@@ -157,7 +159,7 @@ export default function AvatarMinter(props) {
             if (selectedAvatar.name === myCurrentData.class[i].name) {
                 //console.log("IT'S A MATCH", myCurrentData.class[i].children);
                 let selectedParts = Object.keys(selectedAvatar);
-                let allItems = [];
+                //let allItems = [];
                 for (let j = 0; j < selectedParts.length; j++) {
                     for (let k = 0; k < myCurrentData.class[i].children.length; k++) {
                         if (selectedParts[j] === myCurrentData.class[i].children[k].name) {
@@ -168,11 +170,11 @@ export default function AvatarMinter(props) {
                             }
                         }
                     }
-                    if (selectedAvatar[selectedParts[j]].name !== undefined) {
+                    /* if (selectedAvatar[selectedParts[j]].name !== undefined) {
                         allItems.push(selectedAvatar[selectedParts[j]].name);
-                    }
+                    } */
                 }
-                console.log(allItems);
+                //console.log(allItems);
             }
         }
 
@@ -180,22 +182,74 @@ export default function AvatarMinter(props) {
 
         for (let m = 0; m < renderArray.length; m++) {
             let rawImageData = await renderArray[m].get_base64();
-            console.log(renderArray[m].parent.name);
+            //console.log(renderArray[m].parent.name);
+            let customIndex = 9;
+            if (renderArray[m].parent.name.includes("Background") || renderArray[m].parent.name.includes("background")) {
+                customIndex = 0;
+            }
+            if (renderArray[m].name.includes("Base") || renderArray[m].name.includes("base")) {
+                customIndex = 1;
+            }
+            if ((renderArray[m].parent.name.includes("Top") || renderArray[m].parent.name.includes("top")) ||
+                renderArray[m].name.includes("Top") || renderArray[m].name.includes("top")) {
+                customIndex = 2;
+            }
+            if ((renderArray[m].parent.name.includes("Bottom") || renderArray[m].parent.name.includes("bottom")) ||
+                renderArray[m].name.includes("Bottom") || renderArray[m].name.includes("bottom")) {
+                customIndex = 3;
+            }
+            if (renderArray[m].parent.name.includes("Eyes") || renderArray[m].parent.name.includes("eyes")) {
+                customIndex = 4;
+            }
+            if (renderArray[m].parent.name.includes("Mouth") || renderArray[m].parent.name.includes("mouth")) {
+                customIndex = 5;
+            }
+            if (renderArray[m].parent.name.includes("Head") || renderArray[m].parent.name.includes("head")) {
+                customIndex = 6;
+            }
+            if (renderArray[m].parent.name.includes("Weapon_left") || renderArray[m].parent.name.includes("weapon_left")) {
+                customIndex = 7;
+            }
+            if (renderArray[m].parent.name.includes("Weapon_right") || renderArray[m].parent.name.includes("weapon_right")) {
+                customIndex = 8;
+            }
+
             let currentObj = {
                 name: renderArray[m].name,
+                parent: renderArray[m].parent.name,
                 value: rawImageData,
-                zIndex: renderArray[m].z_index,
+                zIndex: customIndex,
                 type: "selected",
                 offsetX: renderArray[m].attribs.offsets[0],
                 offsetY: renderArray[m].attribs.offsets[1],
             };
-           stuffToRender.push(currentObj);
+            stuffToRender.push(currentObj);
         }
 
 
-        //console.log(stuffToRender);
+        stuffToRender.sort((a, b) => a.zIndex - b.zIndex);
 
-        finalRender(stuffToRender);
+        /* console.log(" ");
+        for (let t = 0; t < stuffToRender.length; t++) {
+            console.log(stuffToRender[t].zIndex, stuffToRender[t].parent, stuffToRender[t].name);
+        }
+        console.log(" "); */
+
+        finalRender(stuffToRender, paramCount);
+    }
+
+    function handleDrawAvatarClick() {
+        let arcadianCount = 0;
+        let avatarInterval = setInterval(() => {
+            if (window.nextRender === true) {
+                handleDrawAvatar(arcadianCount);
+                arcadianCount += 1;
+                if (arcadianCount >= 100) {
+                    clearInterval(avatarInterval);
+                }
+            }
+            window.nextRender = false;
+        }, 1);
     }
 
     return (
@@ -298,7 +352,7 @@ export default function AvatarMinter(props) {
                 <span style={{ width: "100%" }}>
                     <Button
                         style={{ marginRight: 8 }}
-                        onClick={handleDrawAvatar}
+                        onClick={handleDrawAvatarClick}
                         size="large"
                         shape="round"
                     >
@@ -309,6 +363,7 @@ export default function AvatarMinter(props) {
                         </span>
                         Draw
                     </Button>
+                    <a id="currentdownload"></a>
                 </span>
             </div>
 

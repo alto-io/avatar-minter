@@ -1,4 +1,6 @@
 import { ConsoleSqlOutlined } from "@ant-design/icons";
+import { load } from "dotenv";
+import { doc } from "prettier";
 import { useRef, useEffect, useState } from "react";
 /*
   ~ What it does? ~
@@ -90,7 +92,7 @@ const useAvatar = props => {
     const loadProject = async (fileLocation) => {
         if (fileLocation instanceof Blob === false) {
             console.log("Loading default file");
-            let loaded_file = await fetch(`avatars/avatarnew.ora`).then(r => r.blob());
+            let loaded_file = await fetch(`avatars/avatarimages.ora`).then(r => r.blob());
             await project.load(loaded_file);
         }
         else {
@@ -294,7 +296,7 @@ const useAvatar = props => {
 
                 currentCanvas.remove();
 
-                if(i ===paramArray.length - 1) {
+                if (i === paramArray.length - 1) {
                     console.log(Date.now() - lastTime);
                 }
             }
@@ -512,23 +514,48 @@ const useAvatar = props => {
         }
     }
 
-    function finalRender(paramArray) {
+    function finalRender(paramArray, paramCount) {
         const canvas1 = canvasRef.current;
         const ctx1 = canvas1.getContext("2d");
         var newCanvas = { width: 400, height: 400 };
         ctx1.clearRect(0, 0, newCanvas.width, newCanvas.height);
 
-        //paramArray.sort((a, b) => a.zIndex - b.zIndex);
+        let loadedImages = [];
+        let controlCounter = 0;
 
         for (let i = 0; i < paramArray.length; i++) {
             let currentImg = new Image(newCanvas.width, newCanvas.height);
             currentImg.src = paramArray[i].value;
             currentImg.onload = function () {
-                if (paramArray[i].type === "selected") {
-                   ctx1.drawImage(currentImg, paramArray[i].offsetX, paramArray[i].offsetY);
-                }
-                else {
-                    ctx1.drawImage(currentImg, 0, 0);
+                let controlImage = {};
+                controlImage.zIndex = paramArray[i].zIndex;
+                controlImage.image = currentImg;
+                controlImage.offsetX = paramArray[i].offsetX;
+                controlImage.offsetY = paramArray[i].offsetY;
+                controlImage.type = paramArray[i].type;
+                loadedImages.push(controlImage);
+                controlCounter += 1;
+                if (controlCounter === paramArray.length) {
+                    //console.log("LOADED ALL PICS");
+                    loadedImages.sort((a, b) => a.zIndex - b.zIndex);
+                    for (let loadedImg = 0; loadedImg < loadedImages.length; loadedImg++) {
+                        if (loadedImages[loadedImg].type === "selected") {
+                            ctx1.drawImage(loadedImages[loadedImg].image, loadedImages[loadedImg].offsetX, loadedImages[loadedImg].offsetY);
+                        }
+                        else {
+                            ctx1.drawImage(loadedImages[loadedImg].image, 0, 0);
+                        }
+                    }
+                    //console.log(loadedImages);
+                    let downloadLink = document.getElementById("currentdownload");
+                    downloadLink.setAttribute("download", "arcadian" + paramCount + ".png")
+                    let myIMG = canvas1.toDataURL("image/png").replace("image/png", "image/octet-stream");
+                    downloadLink.setAttribute("href", myIMG);
+                    downloadLink.click();
+                    window.nextRender = true;
+                    if (paramCount >= 99) {
+                        alert("Exported all avatars.");
+                    }
                 }
             }
         }
