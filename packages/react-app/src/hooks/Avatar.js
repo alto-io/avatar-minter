@@ -452,7 +452,7 @@ const useAvatar = props => {
     const minWeight = weightedChoices.reduce((accum, curr) => (curr.weight < accum ? curr.weight : accum), Infinity);
     const adjustedChoices = weightedChoices.map(elem => ({
       ...elem,
-      weight: elem.weight / minWeight,
+      weight: elem.weight && elem.weight / minWeight,
     }));
 
     const totalWeight = adjustedChoices.reduce((accum, curr) => accum + (curr.weight || 1), 0);
@@ -480,7 +480,7 @@ const useAvatar = props => {
     }
     classesObject.forEach(cls => {
       _.forOwn(cls, (value, key) => {
-        if (key === "name") {
+        if (!Array.isArray(cls[key])) {
           return;
         }
         cls[key] = prepareWeightedArray(cls[key], partsCount);
@@ -563,10 +563,10 @@ const useAvatar = props => {
     // Female:
     const randomFemaleBackgrounds = prepareWeightedArray(backgrounds, femaleAvatarsCount);
     const randomFemaleClasses = prepareWeightedArray(femaleClasses, femaleAvatarsCount);
-    // assuming here that classes are not weighted.
-    // +1 to compensate rounding filling up with random elements in prepareWeightedArray
-    const eachFemaleClassCount = Math.ceil(femaleAvatarsCount / femaleClasses.length) + 1;
-    prepareRandomParts(femaleClasses, eachFemaleClassCount);
+    // const eachFemaleClassCount = Math.ceil(femaleAvatarsCount / femaleClasses.length) + 1;
+    // since classes are not weighted and chosen by simple random, eachFemaleClassCount can be up to femaleAvatarsCount
+    const eachFemaleClassCount = femaleAvatarsCount;
+    prepareRandomParts(randomFemaleClasses, eachFemaleClassCount);
     // const eachBasicsCount = Math.ceil(femaleAvatarsCount / femaleBasics.length);
     // TODO: not sure how basics suppose to work, but looks like they are common, so using femaleAvatarsCount here
     prepareRandomParts(femaleBasics, femaleAvatarsCount);
@@ -583,7 +583,7 @@ const useAvatar = props => {
         background: chosenBg,
       };
       _.forOwn(chosenClass, (value, key) => {
-        if (key === "name" || key === "generatedCount") {
+        if (!Array.isArray(chosenClass[key])) {
           return;
         }
         avatar[key] = chosenClass[key][chosenClass.generatedCount];
@@ -596,9 +596,10 @@ const useAvatar = props => {
     const randomMaleBackgrounds = prepareWeightedArray(backgrounds, maleAvatarsCount);
     const randomMaleClasses = prepareWeightedArray(maleClasses, maleAvatarsCount);
     // assuming here that classes are not weighted:
-    // +1 to compensate rounding filling up with random elements in prepareWeightedArray
-    const eachMaleClassCount = Math.ceil(maleAvatarsCount / maleClasses.length) + 1;
-    prepareRandomParts(maleClasses, eachMaleClassCount);
+    // const eachMaleClassCount = Math.ceil(maleAvatarsCount / maleClasses.length) + 1;
+    // since classes are not weighted and chosen by simple random, eachMaleClassCount can be up to femaleAvatarsCount
+    const eachMaleClassCount = maleAvatarsCount;
+    prepareRandomParts(randomMaleClasses, eachMaleClassCount);
     // const eachMaleBasicsCount = Math.ceil(maleAvatarsCount / maleClasses.length);
     // TODO: not sure how basics suppose to work, but looks like they are common, so using femaleAvatarsCount here
     prepareRandomParts(maleBasics, maleAvatarsCount);
@@ -615,7 +616,7 @@ const useAvatar = props => {
         background: chosenBg,
       };
       _.forOwn(chosenClass, (value, key) => {
-        if (key === "name" || key === "generatedCount") {
+        if (!Array.isArray(chosenClass[key])) {
           return;
         }
         avatar[key] = chosenClass[key][chosenClass.generatedCount];
@@ -624,6 +625,8 @@ const useAvatar = props => {
       mintArray.push(avatar);
     }
 
+    // randomize male/female
+    randomShuffle(mintArray);
     const ret = {
       tokenMetadata: mintArray,
     };
