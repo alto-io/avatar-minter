@@ -446,14 +446,14 @@ const useAvatar = props => {
     }
   };
 
-  // weightdChoices must be an array of objects with 'weight' property,
+  // weightedChoices must be an array of objects with 'weight' property,
   // if 'weight' missing, randomizes as if all objects have equal weight
-  const prepareWeightedArray = (weightdChoices, neededLength) => {
-    const totalWeight = weightdChoices.reduce((accum, curr) => accum + (curr.weight || 1));
+  const prepareWeightedArray = (weightedChoices, neededLength) => {
+    const totalWeight = weightedChoices.reduce((accum, curr) => accum + (curr.weight || 1), 0);
     const adjustedBgWeight = Math.floor(neededLength / totalWeight);
     const ret = [];
-    for (let i = 0; i < weightdChoices.length; i++) {
-      const object = weightdChoices[i];
+    for (let i = 0; i < weightedChoices.length; i++) {
+      const object = weightedChoices[i];
       const count = object.weight * adjustedBgWeight;
       for (let ii = 0; ii < count; ii++) {
         ret.push(object);
@@ -462,7 +462,7 @@ const useAvatar = props => {
     // fill up with simple randoms, because flooring adjustedBgWeight,
     // total length may be lesser than needed
     while (ret.length < neededLength) {
-      ret.push(weightdChoices[Math.floor(Math.random() * weightdChoices.length)]);
+      ret.push(weightedChoices[Math.floor(Math.random() * weightedChoices.length)]);
     }
     randomShuffle(ret);
     return ret;
@@ -538,6 +538,7 @@ const useAvatar = props => {
     const maleAvatarsCount = amountToCreate - femaleAvatarsCount;
 
     // Female:
+    const test = prepareWeightedArray([], 5);
     const randomFemaleBackgrounds = prepareWeightedArray(backgrounds, femaleAvatarsCount);
     const randomFemaleClasses = prepareWeightedArray(femaleClasses, femaleAvatarsCount);
     // assuming here that classes are not weighted:
