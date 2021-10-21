@@ -449,12 +449,18 @@ const useAvatar = props => {
   // weightedChoices must be an array of objects with 'weight' property,
   // if 'weight' missing, randomizes as if all objects have equal weight
   const prepareWeightedArray = (weightedChoices, neededLength) => {
-    const totalWeight = weightedChoices.reduce((accum, curr) => accum + (curr.weight || 1), 0);
-    const adjustedBgWeight = Math.floor(neededLength / totalWeight);
+    const minWeight = weightedChoices.reduce((accum, curr) => (curr.weight < accum ? curr.weight : accum), Infinity);
+    const adjustedChoices = weightedChoices.map(elem => ({
+      ...elem,
+      weight: elem.weight / minWeight,
+    }));
+
+    const totalWeight = adjustedChoices.reduce((accum, curr) => accum + (curr.weight || 1), 0);
+    const adjustedWeight = Math.max(neededLength / totalWeight, 1.0);
     const ret = [];
-    for (let i = 0; i < weightedChoices.length; i++) {
-      const object = weightedChoices[i];
-      const count = object.weight * adjustedBgWeight;
+    for (let i = 0; i < adjustedChoices.length; i++) {
+      const object = adjustedChoices[i];
+      const count = Math.floor(object.weight * adjustedWeight);
       for (let ii = 0; ii < count; ii++) {
         ret.push(object);
       }
@@ -462,7 +468,7 @@ const useAvatar = props => {
     // fill up with simple randoms, because flooring adjustedBgWeight,
     // total length may be lesser than needed
     while (ret.length < neededLength) {
-      ret.push(weightedChoices[Math.floor(Math.random() * weightedChoices.length)]);
+      ret.push(adjustedChoices[Math.floor(Math.random() * adjustedChoices.length)]);
     }
     randomShuffle(ret);
     return ret;
