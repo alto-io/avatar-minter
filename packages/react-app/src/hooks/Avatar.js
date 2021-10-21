@@ -468,6 +468,21 @@ const useAvatar = props => {
     return ret;
   };
 
+  const prepareRandomParts = (classesObject, partsCount) => {
+    if (!classesObject) {
+      return;
+    }
+    classesObject.forEach(cls => {
+      _.forOwn(cls, (value, key) => {
+        if (key === "name") {
+          return;
+        }
+        cls[key] = prepareWeightedArray(cls[key], partsCount);
+      });
+      cls.generatedCount = 0;
+    });
+  };
+
   async function generateMetadataJson(mintingConfigJSON) {
     console.log("generateMetadataJsonNew");
     if (!mintingConfigJSON.initialized) {
@@ -542,25 +557,23 @@ const useAvatar = props => {
     // Female:
     const randomFemaleBackgrounds = prepareWeightedArray(backgrounds, femaleAvatarsCount);
     const randomFemaleClasses = prepareWeightedArray(femaleClasses, femaleAvatarsCount);
-    // assuming here that classes are not weighted:
-    const eachFemaleClassCount = Math.ceil(femaleAvatarsCount / femaleClasses.length)
-    femaleClasses.forEach(cls => {
-      _.forOwn(cls, (value, key) => {
-        if (key === "name") {
-          return;
-        }
-        cls[key] = prepareWeightedArray(cls[key], eachFemaleClassCount);
-      });
-      cls.generatedCount = 0;
-    });
+    // assuming here that classes are not weighted.
+    // +1 to compensate rounding filling up with random elements in prepareWeightedArray
+    const eachFemaleClassCount = Math.ceil(femaleAvatarsCount / femaleClasses.length) + 1;
+    prepareRandomParts(femaleClasses, eachFemaleClassCount);
+    // const eachBasicsCount = Math.ceil(femaleAvatarsCount / femaleBasics.length);
+    // TODO: not sure how basics suppose to work, but looks like they are common, so using femaleAvatarsCount here
+    prepareRandomParts(femaleBasics, femaleAvatarsCount);
+    const femaleBases = femaleBasics.find(elem => elem.name === "Female_base"); // can it have different name?
 
     for (let i = 0; i < femaleAvatarsCount; i++) {
       const chosenBg = randomFemaleBackgrounds[i];
+      const chosenBase = femaleBases.parts[i];
       const chosenClass = randomFemaleClasses[i];
 
       const avatar = {
         name: chosenClass.name,
-        base: femaleBasics[2].parts[0], // ?
+        base: chosenBase,
         background: chosenBg,
       };
       _.forOwn(chosenClass, (value, key) => {
@@ -577,24 +590,22 @@ const useAvatar = props => {
     const randomMaleBackgrounds = prepareWeightedArray(backgrounds, maleAvatarsCount);
     const randomMaleClasses = prepareWeightedArray(maleClasses, maleAvatarsCount);
     // assuming here that classes are not weighted:
-    const eachMaleClassCount = Math.ceil(maleAvatarsCount / maleClasses.length)
-    maleClasses.forEach(cls => {
-      _.forOwn(cls, (value, key) => {
-        if (key === "name") {
-          return;
-        }
-        cls[key] = prepareWeightedArray(cls[key], eachMaleClassCount);
-      });
-      cls.generatedCount = 0;
-    });
+    // +1 to compensate rounding filling up with random elements in prepareWeightedArray
+    const eachMaleClassCount = Math.ceil(maleAvatarsCount / maleClasses.length) + 1;
+    prepareRandomParts(maleClasses, eachMaleClassCount);
+    // const eachMaleBasicsCount = Math.ceil(maleAvatarsCount / maleClasses.length);
+    // TODO: not sure how basics suppose to work, but looks like they are common, so using femaleAvatarsCount here
+    prepareRandomParts(maleBasics, maleAvatarsCount);
+    const maleBases = maleBasics.find(elem => elem.name === "male_base"); // can it have different name?
 
     for (let i = 0; i < maleAvatarsCount; i++) {
       const chosenBg = randomMaleBackgrounds[i];
+      const chosenBase = maleBases.parts[i];
       const chosenClass = randomMaleClasses[i];
 
       const avatar = {
         name: chosenClass.name,
-        base: maleBasics[2].parts[0], // ?
+        base: chosenBase,
         background: chosenBg,
       };
       _.forOwn(chosenClass, (value, key) => {
@@ -609,12 +620,12 @@ const useAvatar = props => {
 
     const ret = {
       tokenMetadata: mintArray,
-    }
+    };
 
-    const myAvatars = JSON.parse(localStorage.getItem('myAvatars'));
+    const myAvatars = JSON.parse(localStorage.getItem("myAvatars"));
     myAvatars.push(ret);
-    localStorage.setItem('myAvatars', JSON.stringify(myAvatars));
-    const currentAvatars = JSON.parse(localStorage.getItem('myAvatars'));
+    localStorage.setItem("myAvatars", JSON.stringify(myAvatars));
+    const currentAvatars = JSON.parse(localStorage.getItem("myAvatars"));
     console.log(`Now we have ${currentAvatars.length} avatars!`);
 
     setMetadataJson(ret);
