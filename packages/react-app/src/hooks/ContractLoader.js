@@ -107,7 +107,7 @@ export default function useContractLoader(providerOrSigner, config = {}) {
           }, {});
           if (active) setContracts(newContracts);
         } catch (e) {
-          console.log("ERROR LOADING CONTRACTS!!", e);
+          //console.log("ERROR LOADING CONTRACTS!!", e);
         }
       }
     }
