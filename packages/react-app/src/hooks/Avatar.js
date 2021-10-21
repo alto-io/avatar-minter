@@ -493,8 +493,10 @@ const useAvatar = props => {
         });
       }
     });
-    // rwc needs "id"
-    backgrounds.forEach(bg => (bg.id = bg.name))
+    if (backgrounds.length === 0) {
+      console.warn('Backgrounds array is empty.')
+      return
+    }
 
     const femaleParts = Object.keys(currentParts["CLASS female"]);
     let femaleClasses = [];
@@ -538,7 +540,6 @@ const useAvatar = props => {
     const maleAvatarsCount = amountToCreate - femaleAvatarsCount;
 
     // Female:
-    const test = prepareWeightedArray([], 5);
     const randomFemaleBackgrounds = prepareWeightedArray(backgrounds, femaleAvatarsCount);
     const randomFemaleClasses = prepareWeightedArray(femaleClasses, femaleAvatarsCount);
     // assuming here that classes are not weighted:
