@@ -275,10 +275,10 @@ function App(props) {
   // If you want to make 🔐 write transactions to your contracts, use the userSigner:
   const writeContracts = useContractLoader(userSigner, contractConfig, localChainId);
 
-  const totalSupply = useContractReader(readContracts, "YourCollectible", "totalSupply");
-  const tokenPrice = useContractReader(readContracts, "YourCollectible", "price", 10000);
-  const ogTokenPrice = useContractReader(readContracts, "YourCollectible", "ogPrice", 10000);
-  const tokenLimit = useContractReader(readContracts, "YourCollectible", "MAX_ENTRIES", 10000);
+  // const totalSupply = useContractReader(readContracts, "YourCollectible", "totalSupply");
+  // const tokenPrice = useContractReader(readContracts, "YourCollectible", "price", 10000);
+  // const ogTokenPrice = useContractReader(readContracts, "YourCollectible", "ogPrice", 10000);
+  // const tokenLimit = useContractReader(readContracts, "YourCollectible", "MAX_ENTRIES", 10000);
 
   // EXTERNAL CONTRACT EXAMPLE:
   //
@@ -296,52 +296,52 @@ function App(props) {
   ]);
 
   // keep track of a variable from the contract in the local React state:
-  const balance = useContractReader(readContracts, "YourCollectible", "balanceOf", [address]);
+  // const balance = useContractReader(readContracts, "YourCollectible", "balanceOf", [address]);
   //console.log("🤗 balance:", balance);
 
   // 📟 Listen for broadcast events
-  const transferEvents = useEventListener(readContracts, "YourCollectible", "Transfer", localProvider, 1);
+  // const transferEvents = useEventListener(readContracts, "YourCollectible", "Transfer", localProvider, 1);
   //console.log("📟 Transfer events:", transferEvents);
 
   //
   // 🧠 This effect will update yourCollectibles by polling when your balance changes
   //
-  const yourBalance = balance && balance.toNumber && balance.toNumber();
+  // const yourBalance = balance && balance.toNumber && balance.toNumber();
   
   const [yourCollectibles, setYourCollectibles] = useState();
   const [minting, setMinting] = useState(false);
 
-  useEffect(() => {
-    const updateYourCollectibles = async () => {
-      const collectibleUpdate = [];
-      for (let tokenIndex = 0; tokenIndex < balance; tokenIndex++) {
-        try {
-          console.log("GEtting token index", tokenIndex);
-          const tokenId = await readContracts.YourCollectible.tokenOfOwnerByIndex(address, tokenIndex);
-          console.log("tokenId", tokenId);
-          const tokenURI = await readContracts.YourCollectible.tokenURI(tokenId);
-          console.log("tokenURI", tokenURI);
+  // useEffect(() => {
+  //   const updateYourCollectibles = async () => {
+  //     const collectibleUpdate = [];
+  //     for (let tokenIndex = 0; tokenIndex < balance; tokenIndex++) {
+  //       try {
+  //         console.log("GEtting token index", tokenIndex);
+  //         const tokenId = await readContracts.YourCollectible.tokenOfOwnerByIndex(address, tokenIndex);
+  //         console.log("tokenId", tokenId);
+  //         const tokenURI = await readContracts.YourCollectible.tokenURI(tokenId);
+  //         console.log("tokenURI", tokenURI);
 
-          const ipfsHash = tokenURI.replace("https://ipfs.io/ipfs/", "");
-          console.log("ipfsHash", ipfsHash);
+  //         const ipfsHash = tokenURI.replace("https://ipfs.io/ipfs/", "");
+  //         console.log("ipfsHash", ipfsHash);
 
-          const jsonManifestBuffer = await getFromIPFS(ipfsHash);
+  //         const jsonManifestBuffer = await getFromIPFS(ipfsHash);
 
-          try {
-            const jsonManifest = JSON.parse(jsonManifestBuffer.toString());
-            console.log("jsonManifest", jsonManifest);
-            collectibleUpdate.push({ id: tokenId, uri: tokenURI, owner: address, ...jsonManifest });
-          } catch (e) {
-            console.log(e);
-          }
-        } catch (e) {
-          console.log(e);
-        }
-      }
-      setYourCollectibles(collectibleUpdate);
-    };
-    updateYourCollectibles();
-  }, [address, yourBalance]);
+  //         try {
+  //           const jsonManifest = JSON.parse(jsonManifestBuffer.toString());
+  //           console.log("jsonManifest", jsonManifest);
+  //           collectibleUpdate.push({ id: tokenId, uri: tokenURI, owner: address, ...jsonManifest });
+  //         } catch (e) {
+  //           console.log(e);
+  //         }
+  //       } catch (e) {
+  //         console.log(e);
+  //       }
+  //     }
+  //     setYourCollectibles(collectibleUpdate);
+  //   };
+  //   updateYourCollectibles();
+  // }, [address, yourBalance]);
 
   /*
   const addressFromENS = useResolveName(mainnetProvider, "austingriffith.eth");
@@ -717,12 +717,7 @@ function App(props) {
               </Button>   
             )}         
           </Route>
-          <Route exact path="/youravatars">
-            {/*
-                🎛 this scaffolding is full of commonly used components
-                this <Contract/> component will automatically parse your ABI
-                and give you a form to interact with it locally
-            */}
+          {/* <Route exact path="/youravatars">
             <div style={{ width: 640, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
               <List
                 bordered
@@ -776,9 +771,9 @@ function App(props) {
                 }}
               />
             </div>
-          </Route>
+          </Route> */}
 
-          <Route exact path="/transfers">
+          {/* <Route exact path="/transfers">
             <div style={{ width: 600, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
               <List
                 bordered
@@ -794,7 +789,7 @@ function App(props) {
                 }}
               />
             </div>
-          </Route>
+          </Route> */}
 
           <Route path="/avatarviewer">
             <AvatarViewer />
@@ -907,7 +902,7 @@ function App(props) {
       <ThemeSwitch />
 
       {/* 👨‍💼 Your account is in the top right with a wallet at connect options */}
-      <div style={{ position: "fixed", textAlign: "right", right: 0, top: 0, padding: 10 }}>
+      {/* <div style={{ position: "fixed", textAlign: "right", right: 0, top: 0, padding: 10 }}>
         <Account
           address={address}
           localProvider={localProvider}
@@ -920,7 +915,7 @@ function App(props) {
           blockExplorer={blockExplorer}
         />
         {faucetHint}
-      </div>
+      </div> */}
 
       {/* 🗺 Extra UI like gas price, eth price, faucet, and support: */}
       <div style={{ position: "fixed", textAlign: "left", left: 0, bottom: 20, padding: 10 }}>
@@ -948,10 +943,9 @@ function App(props) {
           </Col>
         </Row>
 
-        <Row align="middle" gutter={[4, 4]}>
+        {/* <Row align="middle" gutter={[4, 4]}>
           <Col span={24}>
             {
-              /*  if the local provider has a signer, let's show the faucet:  */
               faucetAvailable ? (
                 <Faucet localProvider={localProvider} price={price} ensProvider={mainnetProvider} />
               ) : (
@@ -959,7 +953,7 @@ function App(props) {
               )
             }
           </Col>
-        </Row>
+        </Row> */}
       </div>
     </div>
   );
