@@ -246,7 +246,7 @@ export default function AvatarViewer() {
                 <div>
                     <canvas className="Avatar-canvas" ref={canvasRef} width={canvasWidth} height={canvasHeight} />
                 </div>
-                <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 350 350">
+                {/* <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 350 350">
                     <style>
                         {`.Common { fill: white; font-family: serif; font-size: 14px; }
               .Rare { fill: deepskyblue; font-family: serif; font-size: 14px; }
@@ -261,7 +261,7 @@ export default function AvatarViewer() {
                             </text>
                         );
                     })}
-                </svg>
+                </svg> */}
                 <div>
                     {
                     /*
