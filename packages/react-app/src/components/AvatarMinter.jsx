@@ -70,7 +70,9 @@ export default function AvatarMinter(props) {
         getMintingConfig,
         generateMetadataJson,
         oldGenerateMetadataJson,
+        singleClassGenerateMetadataJson,
         setMintingConfig,
+        setMetadataJson,
         metadataJson,
         uploadedTokenURI,
         startIPFSUpload,
@@ -105,10 +107,12 @@ export default function AvatarMinter(props) {
         if (localStorage.getItem('myAvatars') === null) {
             let myAvatars = [];
             localStorage.setItem('myAvatars', JSON.stringify(myAvatars));
+            setMetadataJson(myAvatars);
         }
         else {
             let currentAvatars = JSON.parse(localStorage.getItem('myAvatars'));
             console.log(`We already have ${currentAvatars.length} avatars!`);
+            setMetadataJson(currentAvatars);
         }
 
     }, []);
@@ -135,7 +139,7 @@ export default function AvatarMinter(props) {
     const handleDrawAvatar = async (paramCount) => {
 
         let myCurrentData = await fillImageData();
-        //console.log(myCurrentData);
+        console.log(myCurrentData);
         let currentAvatars = JSON.parse(localStorage.getItem('myAvatars'));
         let selectedAvatar = currentAvatars[0].tokenMetadata[Math.floor(Math.random() * currentAvatars[0].tokenMetadata.length)];
 
