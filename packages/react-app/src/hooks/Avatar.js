@@ -471,19 +471,47 @@ const useAvatar = props => {
 
     }
 
-    const randomShuffle = arr => {
-        if (!Array.isArray(arr)) {
-            return;
-        }
-        let currentIndex = arr.length;
-        let randomIndex = 0;
+  const randomShuffle = arr => {
+    if (!Array.isArray(arr)) {
+      return;
+    }
+    let currentIndex = arr.length;
+    let randomIndex = 0;
 
-        while (currentIndex != 0) {
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex--;
-            [arr[currentIndex], arr[randomIndex]] = [arr[randomIndex], arr[currentIndex]];
-        }
-    };
+    while (currentIndex != 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+      [arr[currentIndex], arr[randomIndex]] = [arr[randomIndex], arr[currentIndex]];
+    }
+  };
+
+  // weightedChoices must be an array of objects with 'weight' property,
+  // if 'weight' missing, randomizes as if all objects have equal weight
+  const prepareWeightedArray = (weightedChoices, neededLength) => {
+    const minWeight = weightedChoices.reduce((accum, curr) => (curr.weight < accum ? curr.weight : accum), Infinity);
+    const adjustedChoices = weightedChoices.map(elem => ({
+      ...elem,
+      weight: elem.weight && elem.weight / minWeight,
+    }));
+
+    const totalWeight = adjustedChoices.reduce((accum, curr) => accum + (curr.weight || 1), 0);
+    const adjustedWeight = Math.max(neededLength / totalWeight, 1.0);
+    const ret = [];
+    for (let i = 0; i < adjustedChoices.length; i++) {
+      const object = adjustedChoices[i];
+      const count = Math.floor(object.weight * adjustedWeight);
+      for (let ii = 0; ii < count; ii++) {
+        ret.push(object);
+      }
+    }
+    // fill up with simple randoms, because flooring adjustedBgWeight,
+    // total length may be lesser than needed
+    while (ret.length < neededLength) {
+      ret.push(adjustedChoices[Math.floor(Math.random() * adjustedChoices.length)]);
+    }
+    randomShuffle(ret);
+    return ret;
+  };
 
   const randomizePartsForClass = (classObject, avatarsCount) => {
     const allparts = {};
@@ -535,127 +563,15 @@ const useAvatar = props => {
       tokenMetadata: mintArray,
     };
 
-        const femaleParts = Object.keys(currentParts["CLASS female"]);
-        let femaleClasses = [];
-        let femaleBasics = [];
-        for (let i = 0; i < femaleParts.length; i++) {
-            if (femaleParts[i].includes("CLASS")) {
-                const currentObj = currentParts["CLASS female"][femaleParts[i]];
-                currentObj.name = femaleParts[i];
-                femaleClasses.push(currentObj);
-            } else {
-                const currentObj = {};
-                currentObj.parts = currentParts["CLASS female"][femaleParts[i]];
-                currentObj.name = femaleParts[i];
-                femaleBasics.push(currentObj);
-            }
-        }
-        // filter out incorrect ora values
-        femaleClasses = femaleClasses.filter(obj => !Array.isArray(obj) && !!obj.name);
-        femaleBasics = femaleBasics.filter(obj => !Array.isArray(obj) && Array.isArray(obj.parts) && !!obj.name);
+    const myAvatars = JSON.parse(localStorage.getItem("myAvatars"));
+    myAvatars.push(ret);
+    localStorage.setItem("myAvatars", JSON.stringify(myAvatars));
+    const currentAvatars = JSON.parse(localStorage.getItem("myAvatars"));
+    console.log(`Now we have ${currentAvatars.length} avatars!`);
 
-        const maleParts = Object.keys(currentParts["CLASS male"]);
-        let maleClasses = [];
-        let maleBasics = [];
-        for (let i = 0; i < maleParts.length; i++) {
-            if (maleParts[i].includes("CLASS")) {
-                const currentObj = currentParts["CLASS male"][maleParts[i]];
-                currentObj.name = maleParts[i];
-                maleClasses.push(currentObj);
-            } else {
-                const currentObj = {};
-                currentObj.parts = currentParts["CLASS male"][maleParts[i]];
-                currentObj.name = maleParts[i];
-                maleBasics.push(currentObj);
-            }
-        }
-        // filter out incorrect ora values
-        maleClasses = maleClasses.filter(obj => !Array.isArray(obj) && !!obj.name);
-        maleBasics = maleBasics.filter(obj => !Array.isArray(obj) && Array.isArray(obj.parts) && !!obj.name);
-
-        const femaleAvatarsCount = Math.ceil(amountToCreate / 2);
-        const maleAvatarsCount = amountToCreate - femaleAvatarsCount;
-
-        // Female:
-        const randomFemaleBackgrounds = prepareWeightedArray(backgrounds, femaleAvatarsCount);
-        const randomFemaleClasses = prepareWeightedArray(femaleClasses, femaleAvatarsCount);
-        // const eachFemaleClassCount = Math.ceil(femaleAvatarsCount / femaleClasses.length) + 1;
-        // since classes are not weighted and chosen by simple random, eachFemaleClassCount can be up to femaleAvatarsCount
-        const eachFemaleClassCount = femaleAvatarsCount;
-        prepareRandomParts(randomFemaleClasses, eachFemaleClassCount);
-        // const eachBasicsCount = Math.ceil(femaleAvatarsCount / femaleBasics.length);
-        // TODO: not sure how basics suppose to work, but looks like they are common, so using femaleAvatarsCount here
-        prepareRandomParts(femaleBasics, femaleAvatarsCount);
-        const femaleBases = femaleBasics.find(elem => elem.name === "Female_base"); // can it have different name?
-
-        for (let i = 0; i < femaleAvatarsCount; i++) {
-            const chosenBg = randomFemaleBackgrounds[i];
-            const chosenBase = femaleBases.parts[i];
-            const chosenClass = randomFemaleClasses[i];
-
-            const avatar = {
-                name: chosenClass.name,
-                base: chosenBase,
-                background: chosenBg,
-            };
-            _.forOwn(chosenClass, (value, key) => {
-                if (!Array.isArray(chosenClass[key])) {
-                    return;
-                }
-                avatar[key] = chosenClass[key][chosenClass.generatedCount];
-            });
-            chosenClass.generatedCount += 1;
-            mintArray.push(avatar);
-        }
-
-        // Male:
-        const randomMaleBackgrounds = prepareWeightedArray(backgrounds, maleAvatarsCount);
-        const randomMaleClasses = prepareWeightedArray(maleClasses, maleAvatarsCount);
-        // assuming here that classes are not weighted:
-        // const eachMaleClassCount = Math.ceil(maleAvatarsCount / maleClasses.length) + 1;
-        // since classes are not weighted and chosen by simple random, eachMaleClassCount can be up to femaleAvatarsCount
-        const eachMaleClassCount = maleAvatarsCount;
-        prepareRandomParts(randomMaleClasses, eachMaleClassCount);
-        // const eachMaleBasicsCount = Math.ceil(maleAvatarsCount / maleClasses.length);
-        // TODO: not sure how basics suppose to work, but looks like they are common, so using femaleAvatarsCount here
-        prepareRandomParts(maleBasics, maleAvatarsCount);
-        const maleBases = maleBasics.find(elem => elem.name === "male_base"); // can it have different name?
-
-        for (let i = 0; i < maleAvatarsCount; i++) {
-            const chosenBg = randomMaleBackgrounds[i];
-            const chosenBase = maleBases.parts[i];
-            const chosenClass = randomMaleClasses[i];
-
-            const avatar = {
-                name: chosenClass.name,
-                base: chosenBase,
-                background: chosenBg,
-            };
-            _.forOwn(chosenClass, (value, key) => {
-                if (!Array.isArray(chosenClass[key])) {
-                    return;
-                }
-                avatar[key] = chosenClass[key][chosenClass.generatedCount];
-            });
-            chosenClass.generatedCount += 1;
-            mintArray.push(avatar);
-        }
-
-        // randomize male/female
-        randomShuffle(mintArray);
-        const ret = {
-            tokenMetadata: mintArray,
-        };
-
-        const myAvatars = JSON.parse(localStorage.getItem("myAvatars"));
-        myAvatars.push(ret);
-        localStorage.setItem("myAvatars", JSON.stringify(myAvatars));
-        const currentAvatars = JSON.parse(localStorage.getItem("myAvatars"));
-        console.log(`Now we have ${currentAvatars.length} avatars!`);
-
-        setMetadataJson(ret);
-        return ret;
-    }
+    setMetadataJson(ret);
+    return ret;
+  }
 
     async function oldGenerateMetadataJson(mintingConfigJSON) {
         if (mintingConfigJSON.initialized) {
