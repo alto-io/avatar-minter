@@ -30,6 +30,45 @@ var dataParts = [];
 var tempLootText = [];
 var colors = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#00FFFF", "#FF00FF", "#FFA500", "#FF69B4", "#DAA520", "#B22222", "#F0FFF0", "#C0C0C0", "#00FF00", "#808000", "#FF6347"];
 
+
+const Common = "Common";
+const Rare = "Rare";
+const Legendary = "Legendary";
+const Mythical = "Mythical";
+
+const RarityWeights = {
+  Common: 60,
+  Rare: 30,
+  Legendary: 10,
+  Mythical: 1,
+};
+
+const PartRarities = {
+  "Female Knight": {
+    "Samurai Helmet": Rare,
+    "Viking Helmet": Rare,
+    "Centurion Helmet": Common,
+    "Wild Hair": Common,
+    "Green Pony": Common,
+    "Scythe L": Common,
+    "Trident L": Common,
+    "Poison Sword L": Legendary,
+    "Axe L": Common,
+    "Scythe R": Common,
+    "Trident R": Common,
+    "Poison Sword R": Legendary,
+    "Axe R": Common,
+    "Samurai Armor": Rare,
+    "Barbarian Armor": Common,
+    "Amazon Armor": Common,
+    "Witcher Tunic": Common,
+    "Samurai Leggings": Rare,
+    "Barbarian Leggings": Common,
+    "Amazon Leggings": Common,
+    "Witcher Leggings": Common,
+  },
+};
+
 const useAvatar = props => {
     // load jsora and lodash
     const jsora = window.jsora;
@@ -474,19 +513,24 @@ const useAvatar = props => {
     return ret;
   };
 
-  const prepareRandomParts = (classesObject, partsCount) => {
-    if (!classesObject) {
-      return;
-    }
-    classesObject.forEach(cls => {
-      _.forOwn(cls, (value, key) => {
-        if (!Array.isArray(cls[key])) {
-          return;
-        }
-        cls[key] = prepareWeightedArray(cls[key], partsCount);
-      });
-      cls.generatedCount = 0;
+  const randomizePartsForClass = (classObject, avatarsCount) => {
+    const allparts = {};
+    const ret = []
+
+    _.forOwn(classObject, (val, key) => {
+      if (!Array.isArray(val)) {
+        return;
+      }
+      allparts[key] = prepareWeightedArray(val, avatarsCount)
     });
+    for (let i = 0; i < avatarsCount; i++) {
+      const newAvatar = {}
+      _.forOwn(classObject, (_, key) => {
+        newAvatar[key] = allparts[key][i]
+      });
+      ret.push(newAvatar);
+    }
+    return ret;
   };
 
   async function generateMetadataJson(mintingConfigJSON) {
@@ -496,137 +540,25 @@ const useAvatar = props => {
         filename: "metadata.json",
       };
     }
+
+    // because of partial .ora file, assuming for now here that we want 
+    // to create amountToCreate of each found class (in a partial ora there's only one class)
     const amountToCreate = mintingConfigJSON.amountToCreate;
     const mintArray = [];
 
     const currentParts = JSON.parse(localStorage.getItem("myParts"));
-    const backgrounds = [];
 
-    // YP: avatarsnew.ora has this nested background structure, flatten here
-    _.forOwn(currentParts["Background UNIVERSAL"], value => {
-      if (Array.isArray(value)) {
-        backgrounds.push(...value)
-      } else {
-        _.forOwn(value, valval => {
-          if (Array.isArray(valval)) {
-            backgrounds.push(...valval);
-          }
-        });
+    // e.g. value can be "Backgrounds", "Female Knight", etc
+    _.forOwn(currentParts, (val, key) => {
+      const keyLowerCase = key.toLowerCase()
+      if (keyLowerCase.startsWith("background")) {
+        // TODO: backrounds
+      } else if (keyLowerCase.startsWith("female") || keyLowerCase.startsWith("male")) {
+        mintArray.push(...randomizePartsForClass(val, amountToCreate));
       }
     });
-    if (backgrounds.length === 0) {
-      console.warn('Backgrounds array is empty.')
-      return
-    }
 
-    const femaleParts = Object.keys(currentParts["CLASS female"]);
-    let femaleClasses = [];
-    let femaleBasics = [];
-    for (let i = 0; i < femaleParts.length; i++) {
-      if (femaleParts[i].includes("CLASS")) {
-        const currentObj = currentParts["CLASS female"][femaleParts[i]];
-        currentObj.name = femaleParts[i];
-        femaleClasses.push(currentObj);
-      } else {
-        const currentObj = {};
-        currentObj.parts = currentParts["CLASS female"][femaleParts[i]];
-        currentObj.name = femaleParts[i];
-        femaleBasics.push(currentObj);
-      }
-    }
-    // filter out incorrect ora values
-    femaleClasses = femaleClasses.filter(obj => !Array.isArray(obj) && !!obj.name);
-    femaleBasics = femaleBasics.filter(obj => !Array.isArray(obj) && Array.isArray(obj.parts) && !!obj.name);
-
-    const maleParts = Object.keys(currentParts["CLASS male"]);
-    let maleClasses = [];
-    let maleBasics = [];
-    for (let i = 0; i < maleParts.length; i++) {
-      if (maleParts[i].includes("CLASS")) {
-        const currentObj = currentParts["CLASS male"][maleParts[i]];
-        currentObj.name = maleParts[i];
-        maleClasses.push(currentObj);
-      } else {
-        const currentObj = {};
-        currentObj.parts = currentParts["CLASS male"][maleParts[i]];
-        currentObj.name = maleParts[i];
-        maleBasics.push(currentObj);
-      }
-    }
-    // filter out incorrect ora values
-    maleClasses = maleClasses.filter(obj => !Array.isArray(obj) && !!obj.name);
-    maleBasics = maleBasics.filter(obj => !Array.isArray(obj) && Array.isArray(obj.parts) && !!obj.name);
-
-    const femaleAvatarsCount = Math.ceil(amountToCreate / 2);
-    const maleAvatarsCount = amountToCreate - femaleAvatarsCount;
-
-    // Female:
-    const randomFemaleBackgrounds = prepareWeightedArray(backgrounds, femaleAvatarsCount);
-    const randomFemaleClasses = prepareWeightedArray(femaleClasses, femaleAvatarsCount);
-    // const eachFemaleClassCount = Math.ceil(femaleAvatarsCount / femaleClasses.length) + 1;
-    // since classes are not weighted and chosen by simple random, eachFemaleClassCount can be up to femaleAvatarsCount
-    const eachFemaleClassCount = femaleAvatarsCount;
-    prepareRandomParts(randomFemaleClasses, eachFemaleClassCount);
-    // const eachBasicsCount = Math.ceil(femaleAvatarsCount / femaleBasics.length);
-    // TODO: not sure how basics suppose to work, but looks like they are common, so using femaleAvatarsCount here
-    prepareRandomParts(femaleBasics, femaleAvatarsCount);
-    const femaleBases = femaleBasics.find(elem => elem.name === "Female_base"); // can it have different name?
-
-    for (let i = 0; i < femaleAvatarsCount; i++) {
-      const chosenBg = randomFemaleBackgrounds[i];
-      const chosenBase = femaleBases.parts[i];
-      const chosenClass = randomFemaleClasses[i];
-
-      const avatar = {
-        name: chosenClass.name,
-        base: chosenBase,
-        background: chosenBg,
-      };
-      _.forOwn(chosenClass, (value, key) => {
-        if (!Array.isArray(chosenClass[key])) {
-          return;
-        }
-        avatar[key] = chosenClass[key][chosenClass.generatedCount];
-      });
-      chosenClass.generatedCount += 1;
-      mintArray.push(avatar);
-    }
-
-    // Male:
-    const randomMaleBackgrounds = prepareWeightedArray(backgrounds, maleAvatarsCount);
-    const randomMaleClasses = prepareWeightedArray(maleClasses, maleAvatarsCount);
-    // assuming here that classes are not weighted:
-    // const eachMaleClassCount = Math.ceil(maleAvatarsCount / maleClasses.length) + 1;
-    // since classes are not weighted and chosen by simple random, eachMaleClassCount can be up to femaleAvatarsCount
-    const eachMaleClassCount = maleAvatarsCount;
-    prepareRandomParts(randomMaleClasses, eachMaleClassCount);
-    // const eachMaleBasicsCount = Math.ceil(maleAvatarsCount / maleClasses.length);
-    // TODO: not sure how basics suppose to work, but looks like they are common, so using femaleAvatarsCount here
-    prepareRandomParts(maleBasics, maleAvatarsCount);
-    const maleBases = maleBasics.find(elem => elem.name === "male_base"); // can it have different name?
-
-    for (let i = 0; i < maleAvatarsCount; i++) {
-      const chosenBg = randomMaleBackgrounds[i];
-      const chosenBase = maleBases.parts[i];
-      const chosenClass = randomMaleClasses[i];
-
-      const avatar = {
-        name: chosenClass.name,
-        base: chosenBase,
-        background: chosenBg,
-      };
-      _.forOwn(chosenClass, (value, key) => {
-        if (!Array.isArray(chosenClass[key])) {
-          return;
-        }
-        avatar[key] = chosenClass[key][chosenClass.generatedCount];
-      });
-      chosenClass.generatedCount += 1;
-      mintArray.push(avatar);
-    }
-
-    // randomize male/female
-    randomShuffle(mintArray);
+    // randomShuffle(mintArray);
     const ret = {
       tokenMetadata: mintArray,
     };
@@ -793,12 +725,21 @@ const useAvatar = props => {
     }
 
     function addToPartsList(partString) {
-        var objectToAdd = recursivelyCreateNodes(partString.split(".").reverse());
-        var partStringArray = partString.split(".");
+        const objectToAdd = recursivelyCreateNodes(partString.split(".").reverse());
+        const partStringArray = partString.split(".");
 
-        var partToAdd = {
-            name: partStringArray[partStringArray.length - 1],
-            weight: 10,
+        const className = partStringArray[1]
+        const name = partStringArray[partStringArray.length - 1]
+        let weight = RarityWeights.Common
+        if (PartRarities[className] && PartRarities[className][name]) {
+          weight = RarityWeights[PartRarities[className][name]]
+        } else {
+          console.warn(`Part rarity not found for: ${name}, assigning Common.`)
+        }
+
+        const partToAdd = {
+            name,
+            weight,
 
             // weight is used to detemine chance to get.
             //
