@@ -1,4 +1,4 @@
-import { ConsoleSqlOutlined } from "@ant-design/icons";
+import { ConsoleSqlOutlined, ControlOutlined } from "@ant-design/icons";
 import { load } from "dotenv";
 import { doc } from "prettier";
 import { useRef, useEffect, useState } from "react";
@@ -513,23 +513,59 @@ const useAvatar = props => {
     return ret;
   };
 
+  const printReport = (avatars, className) => {
+    if (!Array.isArray(avatars)) {
+      return;
+    }
+    const counts = {};
+    avatars.forEach(avatar => {
+      _.forOwn(avatar, (val, key) => {
+        if (!counts[key]) {
+          counts[key] = {}
+        }
+        if (!counts[key][val.name]) {
+          counts[key][val.name] = {
+            count: 0,
+          };
+        }
+        counts[key][val.name].count += 1;
+      });
+    });
+    console.log(`Report for class: ${className}:`);
+    _.forOwn(counts, val => {
+      _.forOwn(val, valval => {
+        valval.percent = Math.round((100.0 * valval.count) / avatars.length);
+      });
+    });
+    console.log(JSON.stringify(counts))
+/*
+    counts.forEach((val, key) => {
+      const rarity = PartRarities[className] && PartRarities[className][key] ? PartRarities[className][key] : Common;
+      const percent = Math.round((100.0 * val) / avatars.length);
+      console.log(`Part ${key}, rarity ${rarity}, count: ${val}, ~${percent}%`);
+    });
+*/
+  };
+
   const randomizePartsForClass = (classObject, avatarsCount) => {
     const allparts = {};
-    const ret = []
+    const ret = [];
 
     _.forOwn(classObject, (val, key) => {
       if (!Array.isArray(val)) {
         return;
       }
-      allparts[key] = prepareWeightedArray(val, avatarsCount)
+      allparts[key] = prepareWeightedArray(val, avatarsCount);
     });
     for (let i = 0; i < avatarsCount; i++) {
-      const newAvatar = {}
+      const newAvatar = {};
       _.forOwn(classObject, (_, key) => {
-        newAvatar[key] = allparts[key][i]
+        newAvatar[key] = allparts[key][i];
       });
       ret.push(newAvatar);
     }
+    // temp hardcoded "Female Knight"
+    printReport(ret, "Female Knight");
     return ret;
   };
 
