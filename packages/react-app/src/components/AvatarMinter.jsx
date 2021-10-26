@@ -90,9 +90,9 @@ export default function AvatarMinter(props) {
 
     useEffect(() => {
         /*  async function load() {
-                     await loadProject();
-                 }
-                 load(); */
+                         await loadProject();
+                     }
+                     load(); */
 
         //console.log(project);
 
@@ -133,8 +133,7 @@ export default function AvatarMinter(props) {
         });
     };
 
-    const handleDrawAvatar = async paramCount => {
-        let myCurrentData = await fillImageData();
+    const handleDrawAvatar = async (paramCount, myCurrentData) => {
         let currentAvatars = JSON.parse(localStorage.getItem("myAvatars"));
         let selectedAvatar = currentAvatars[paramCount];
 
@@ -202,24 +201,25 @@ export default function AvatarMinter(props) {
         stuffToRender.sort((a, b) => a.zIndex - b.zIndex);
 
         /* console.log(" ");
-                for (let t = 0; t < stuffToRender.length; t++) {
-                    console.log(stuffToRender[t].zIndex, stuffToRender[t].parent, stuffToRender[t].name);
-                }
-                console.log(" "); */
+                    for (let t = 0; t < stuffToRender.length; t++) {
+                        console.log(stuffToRender[t].zIndex, stuffToRender[t].parent, stuffToRender[t].name);
+                    }
+                    console.log(" "); */
 
         finalRender(stuffToRender, paramCount);
     };
 
-    function handleDrawAvatarClick() {
+    async function handleDrawAvatarClick() {
+        let myCurrentData = await fillImageData();
         let totalAvatars = JSON.parse(localStorage.getItem("myAvatars")).length;
         let arcadianCount = 0;
         let avatarInterval = setInterval(() => {
             if (window.nextRender === true) {
-                handleDrawAvatar(arcadianCount);
+                handleDrawAvatar(arcadianCount, myCurrentData);
                 arcadianCount += 1;
                 if (arcadianCount >= totalAvatars) {
                     clearInterval(avatarInterval);
-                    alert("Generated " + totalAvatars + "avatars !")
+                    alert("Generated " + totalAvatars + " avatars !");
                 }
             }
             window.nextRender = false;
