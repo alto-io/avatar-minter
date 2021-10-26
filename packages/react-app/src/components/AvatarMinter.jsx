@@ -42,11 +42,10 @@ import ReactJson from "react-json-view";
 
 // if initialized == false, use INIT_CONFIG. Otherwise specify config info here
 const STARTING_CONFIG_JSON = {
-    "initialized": false
+    initialized: false,
 };
 
 export default function AvatarMinter(props) {
-
     const callSetURI = props.callSetURI;
     const callMintMultiple = props.callMintMultiple;
 
@@ -82,7 +81,7 @@ export default function AvatarMinter(props) {
         selectedClass,
         configTree,
         setConfigTree,
-        lootText
+        lootText,
     ] = useAvatar();
     const [mintingConfigJSON, setMintingConfigJSON] = useState(STARTING_CONFIG_JSON);
 
@@ -91,97 +90,66 @@ export default function AvatarMinter(props) {
 
     useEffect(() => {
         /*  async function load() {
-             await loadProject();
-         }
-         load(); */
+                     await loadProject();
+                 }
+                 load(); */
 
         //console.log(project);
 
         window.nextRender = true;
 
-        if (localStorage.getItem('myParts') === null) {
+        if (localStorage.getItem("myParts") === null) {
             let myParts = {};
-            localStorage.setItem('myParts', JSON.stringify(myParts));
+            localStorage.setItem("myParts", JSON.stringify(myParts));
         }
 
-        if (localStorage.getItem('myAvatars') === null) {
+        if (localStorage.getItem("myAvatars") === null) {
             let myAvatars = [];
-            localStorage.setItem('myAvatars', JSON.stringify(myAvatars));
+            localStorage.setItem("myAvatars", JSON.stringify(myAvatars));
             setMetadataJson(myAvatars);
-        }
-        else {
-            let currentAvatars = JSON.parse(localStorage.getItem('myAvatars'));
+        } else {
+            let currentAvatars = JSON.parse(localStorage.getItem("myAvatars"));
             console.log(`We already have ${currentAvatars.length} avatars!`);
             setMetadataJson(currentAvatars);
         }
-
     }, []);
 
-    const handleClickInitConfigButton = async (event) => {
+    const handleClickInitConfigButton = async event => {
         setMintingConfigJSON(await getMintingConfig());
-    }
+    };
 
-    const handleClickGenerateButton = async (event) => {
+    const handleClickGenerateButton = async event => {
         //generateMetadataJson(mintingConfigJSON);
         //oldGenerateMetadataJson(mintingConfigJSON);
         singleClassGenerateMetadataJson(mintingConfigJSON);
-    }
+    };
 
-    const handleClickUploadButton = async (event) => {
+    const handleClickUploadButton = async event => {
         setSending(true);
         startIPFSUpload().then(() => {
             setTimeout(() => {
                 setSending(false);
             }, 1);
-
         });
-    }
+    };
 
-    const handleDrawAvatar = async (paramCount) => {
-
+    const handleDrawAvatar = async paramCount => {
         let myCurrentData = await fillImageData();
-        console.log(myCurrentData);
-        let currentAvatars = JSON.parse(localStorage.getItem('myAvatars'));
-        let selectedAvatar = currentAvatars[0].tokenMetadata[Math.floor(Math.random() * currentAvatars[0].tokenMetadata.length)];
-
+        let currentAvatars = JSON.parse(localStorage.getItem("myAvatars"));
+        let selectedAvatar = currentAvatars[paramCount];
 
         let renderArray = [];
 
-        for (let a = 0; a < myCurrentData.background.length; a++) {
-            if (selectedAvatar.background.name === myCurrentData.background[a].name) {
-                renderArray.push(myCurrentData.background[a]);
-            }
-        }
-
-        if (selectedAvatar.base.name.includes("Female_base") === true) {
-            renderArray.push(myCurrentData.base[0]);
-        }
-        else {
-            renderArray.push(myCurrentData.base[1]);
-        }
-
-
-
-        for (let i = 0; i < myCurrentData.class.length; i++) {
-            if (selectedAvatar.name === myCurrentData.class[i].name) {
-                //console.log("IT'S A MATCH", myCurrentData.class[i].children);
-                let selectedParts = Object.keys(selectedAvatar);
-                //let allItems = [];
-                for (let j = 0; j < selectedParts.length; j++) {
-                    for (let k = 0; k < myCurrentData.class[i].children.length; k++) {
-                        if (selectedParts[j] === myCurrentData.class[i].children[k].name) {
-                            for (let l = 0; l < myCurrentData.class[i].children[k].children.length; l++) {
-                                if (selectedAvatar[selectedParts[j]].name === myCurrentData.class[i].children[k].children[l].name) {
-                                    renderArray.push(myCurrentData.class[i].children[k].children[l]);
-                                }
-                            }
+        for (let i = 0; i < myCurrentData.length; i++) {
+            let selectedParts = Object.keys(selectedAvatar);
+            for (let j = 0; j < selectedParts.length; j++) {
+                if (selectedParts[j] === myCurrentData[i].name) {
+                    for (let k = 0; k < myCurrentData[i].children.length; k++) {
+                        if (selectedAvatar[selectedParts[j]].name === myCurrentData[i].children[k].name) {
+                            renderArray.push(myCurrentData[i].children[k]);
                         }
                     }
-                    /* if (selectedAvatar[selectedParts[j]].name !== undefined) {
-                        allItems.push(selectedAvatar[selectedParts[j]].name);
-                    } */
                 }
-                //console.log(allItems);
             }
         }
 
@@ -191,33 +159,31 @@ export default function AvatarMinter(props) {
             let rawImageData = await renderArray[m].get_base64();
             //console.log(renderArray[m].parent.name);
             let customIndex = 9;
-            if (renderArray[m].parent.name.includes("Background") || renderArray[m].parent.name.includes("background")) {
+            if (renderArray[m].parent.name.includes("Shadow")) {
                 customIndex = 0;
             }
-            if (renderArray[m].name.includes("Base") || renderArray[m].name.includes("base")) {
+            if (renderArray[m].parent.name.includes("Skin")) {
                 customIndex = 1;
             }
-            if ((renderArray[m].parent.name.includes("Top") || renderArray[m].parent.name.includes("top")) ||
-                renderArray[m].name.includes("Top") || renderArray[m].name.includes("top")) {
+            if (renderArray[m].parent.name.includes("Top")) {
                 customIndex = 2;
             }
-            if ((renderArray[m].parent.name.includes("Bottom") || renderArray[m].parent.name.includes("bottom")) ||
-                renderArray[m].name.includes("Bottom") || renderArray[m].name.includes("bottom")) {
+            if (renderArray[m].parent.name.includes("Bottom")) {
                 customIndex = 3;
             }
-            if (renderArray[m].parent.name.includes("Eyes") || renderArray[m].parent.name.includes("eyes")) {
+            if (renderArray[m].parent.name.includes("Eyes")) {
                 customIndex = 4;
             }
-            if (renderArray[m].parent.name.includes("Mouth") || renderArray[m].parent.name.includes("mouth")) {
+            if (renderArray[m].parent.name.includes("Mouth")) {
                 customIndex = 5;
             }
-            if (renderArray[m].parent.name.includes("Head") || renderArray[m].parent.name.includes("head")) {
+            if (renderArray[m].parent.name.includes("Head")) {
                 customIndex = 6;
             }
-            if (renderArray[m].parent.name.includes("Weapon_left") || renderArray[m].parent.name.includes("weapon_left")) {
+            if (renderArray[m].parent.name.includes("Left Hand")) {
                 customIndex = 7;
             }
-            if (renderArray[m].parent.name.includes("Weapon_right") || renderArray[m].parent.name.includes("weapon_right")) {
+            if (renderArray[m].parent.name.includes("Right Hand")) {
                 customIndex = 8;
             }
 
@@ -233,26 +199,27 @@ export default function AvatarMinter(props) {
             stuffToRender.push(currentObj);
         }
 
-
         stuffToRender.sort((a, b) => a.zIndex - b.zIndex);
 
         /* console.log(" ");
-        for (let t = 0; t < stuffToRender.length; t++) {
-            console.log(stuffToRender[t].zIndex, stuffToRender[t].parent, stuffToRender[t].name);
-        }
-        console.log(" "); */
+                for (let t = 0; t < stuffToRender.length; t++) {
+                    console.log(stuffToRender[t].zIndex, stuffToRender[t].parent, stuffToRender[t].name);
+                }
+                console.log(" "); */
 
         finalRender(stuffToRender, paramCount);
-    }
+    };
 
     function handleDrawAvatarClick() {
+        let totalAvatars = JSON.parse(localStorage.getItem("myAvatars")).length;
         let arcadianCount = 0;
         let avatarInterval = setInterval(() => {
             if (window.nextRender === true) {
                 handleDrawAvatar(arcadianCount);
                 arcadianCount += 1;
-                if (arcadianCount >= 100) {
+                if (arcadianCount >= totalAvatars) {
                     clearInterval(avatarInterval);
+                    alert("Generated " + totalAvatars + "avatars !")
                 }
             }
             window.nextRender = false;
@@ -263,7 +230,6 @@ export default function AvatarMinter(props) {
         <div style={{ paddingTop: 32, width: 740, margin: "auto", textAlign: "left" }}>
             <h3>How to Mint</h3>
             <div style={{ paddingBottom: 8 }}>
-
                 <div style={{ paddingBottom: 8 }}>
                     <b>[1a]</b> Press
                     <span
@@ -272,23 +238,17 @@ export default function AvatarMinter(props) {
                     >
                         📝 Initialize
                     </span>{" "}
-                    to retrieve the config parameters from the ORA file, then
-                    edit the <b>json file</b> below with the desired randomization parameters.
+                    to retrieve the config parameters from the ORA file, then edit the <b>json file</b> below with the desired
+                    randomization parameters.
                 </div>
 
                 <div style={{ paddingBottom: 8 }}>
                     <b>[1b]</b> Alternatively, we can edit <b>STARTING_CONFIG_JSON</b> in AvatarMinter.jsx directly.
                 </div>
-
             </div>
-            <div style={{ paddingBottom: 16 }} >
+            <div style={{ paddingBottom: 16 }}>
                 <span style={{ width: "100%" }}>
-                    <Button
-                        style={{ marginRight: 8 }}
-                        onClick={handleClickInitConfigButton}
-                        size="large"
-                        shape="round"
-                    >
+                    <Button style={{ marginRight: 8 }} onClick={handleClickInitConfigButton} size="large" shape="round">
                         <span style={{ marginRight: 8 }}>
                             <span role="img" aria-label="fuelpump">
                                 📝
@@ -299,8 +259,7 @@ export default function AvatarMinter(props) {
                 </span>
             </div>
 
-            <div
-                style={{ padding: 8, height: "400px", overflowY: "auto" }}>
+            <div style={{ padding: 8, height: "400px", overflowY: "auto" }}>
                 <ReactJson
                     style={{ padding: 8 }}
                     src={mintingConfigJSON}
@@ -323,7 +282,6 @@ export default function AvatarMinter(props) {
             </div>
 
             <div style={{ paddingBottom: 8 }}>
-
                 <div style={{ paddingBottom: 8 }}>
                     <b>[2]</b> Once config.json above is initialized, press
                     <span
@@ -336,15 +294,9 @@ export default function AvatarMinter(props) {
                 </div>
             </div>
 
-
-            <div style={{ paddingBottom: 16, paddingTop: 16 }} >
+            <div style={{ paddingBottom: 16, paddingTop: 16 }}>
                 <span style={{ width: "100%" }}>
-                    <Button
-                        style={{ marginRight: 8 }}
-                        onClick={handleClickGenerateButton}
-                        size="large"
-                        shape="round"
-                    >
+                    <Button style={{ marginRight: 8 }} onClick={handleClickGenerateButton} size="large" shape="round">
                         <span style={{ marginRight: 8 }}>
                             <span role="img" aria-label="fuelpump">
                                 🎲
@@ -355,14 +307,9 @@ export default function AvatarMinter(props) {
                 </span>
             </div>
 
-            <div style={{ paddingBottom: 16, paddingTop: 16 }} >
+            <div style={{ paddingBottom: 16, paddingTop: 16 }}>
                 <span style={{ width: "100%" }}>
-                    <Button
-                        style={{ marginRight: 8 }}
-                        onClick={handleDrawAvatarClick}
-                        size="large"
-                        shape="round"
-                    >
+                    <Button style={{ marginRight: 8 }} onClick={handleDrawAvatarClick} size="large" shape="round">
                         <span style={{ marginRight: 8 }}>
                             <span role="img" aria-label="fuelpump">
                                 🎨
@@ -374,9 +321,7 @@ export default function AvatarMinter(props) {
                 </span>
             </div>
 
-            <div
-                style={{ display: "flex", flexDirection: "row" }}>
-
+            <div style={{ display: "flex", flexDirection: "row" }}>
                 <ReactJson
                     style={{ padding: 8, height: "400px", overflowY: "auto" }}
                     src={metadataJson}
@@ -385,17 +330,11 @@ export default function AvatarMinter(props) {
                     collapsed={2}
                 />
                 <div>
-                    <canvas
-                        className="Avatar-canvas"
-                        ref={canvasRef}
-                        width={canvasWidth}
-                        height={canvasHeight}
-                    />
+                    <canvas className="Avatar-canvas" ref={canvasRef} width={canvasWidth} height={canvasHeight} />
                 </div>
             </div>
 
             <div style={{ paddingBottom: 8 }}>
-
                 <div style={{ paddingBottom: 8 }}>
                     <b>[3]</b> Press
                     <span
@@ -408,9 +347,8 @@ export default function AvatarMinter(props) {
                 </div>
             </div>
 
-            <div style={{ paddingBottom: 16, paddingTop: 16 }} >
+            <div style={{ paddingBottom: 16, paddingTop: 16 }}>
                 <span style={{ width: "100%" }}>
-
                     <Button
                         style={{ marginRight: 8 }}
                         onClick={handleClickUploadButton}
@@ -428,8 +366,7 @@ export default function AvatarMinter(props) {
                 </span>
             </div>
 
-            <div
-                style={{ padding: 8, height: "400px", overflowY: "auto" }}>
+            <div style={{ padding: 8, height: "400px", overflowY: "auto" }}>
                 <ReactJson
                     style={{ padding: 8 }}
                     src={uploadedTokenURI}
@@ -441,25 +378,21 @@ export default function AvatarMinter(props) {
                 />
             </div>
 
-
             <div style={{ padding: 16, paddingBottom: 30 }}>
                 <a href={"https://ipfs.io/ipfs/" + ipfsHash} target="_blank">
                     IPFS Hash: {ipfsHash}
                 </a>
             </div>
 
-
             <div style={{ paddingBottom: 8 }}>
-
                 <div style={{ paddingBottom: 8 }}>
                     <b>[4] </b>
                     Once Upload is completed, press 📜 Set Base URI to update the contract URI.
                 </div>
             </div>
 
-            <div style={{ paddingBottom: 16, paddingTop: 16 }} >
+            <div style={{ paddingBottom: 16, paddingTop: 16 }}>
                 <span style={{ width: "100%" }}>
-
                     <Button
                         style={{ marginRight: 8 }}
                         onClick={() => callSetURI("https://ipfs.io/ipfs/" + ipfsHash + "/")}
@@ -478,16 +411,17 @@ export default function AvatarMinter(props) {
             </div>
 
             <div style={{ paddingBottom: 8 }}>
-
                 <div style={{ paddingBottom: 8 }}>
                     <b>[5] </b>
-                    Finally, input the amount to mint below and press <BankOutlined />. Go to <b>MyCollectibles</b> to see your NFTs!
+                    Finally, input the amount to mint below and press <BankOutlined />. Go to <b>MyCollectibles</b> to see your
+                    NFTs!
                 </div>
             </div>
 
-            <div style={{ paddingBottom: 16, paddingTop: 16 }} >
+            <div style={{ paddingBottom: 16, paddingTop: 16 }}>
                 <span style={{ width: "100%" }}>
-                    <Input style={{ width: "100%", marginTop: 16, marginBottom: 150 }}
+                    <Input
+                        style={{ width: "100%", marginTop: 16, marginBottom: 150 }}
                         size="large"
                         placeholder={"amount to mint"}
                         onChange={e => {
@@ -495,13 +429,7 @@ export default function AvatarMinter(props) {
                         }}
                         suffix={
                             <Tooltip title="Mint: Mint the specified quantity to current wallet.">
-                                <Button
-                                    onClick={() =>
-                                        callMintMultiple(parseInt(mintAmount))
-                                    }
-                                    shape="circle"
-                                    icon={<BankOutlined />}
-                                />
+                                <Button onClick={() => callMintMultiple(parseInt(mintAmount))} shape="circle" icon={<BankOutlined />} />
                             </Tooltip>
                         }
                     />

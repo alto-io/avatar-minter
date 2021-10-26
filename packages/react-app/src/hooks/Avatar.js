@@ -787,9 +787,6 @@ const useAvatar = props => {
                     downloadLink.setAttribute("href", myIMG);
                     downloadLink.click();
                     window.nextRender = true;
-                    if (paramCount >= 99) {
-                        alert("Exported all avatars.");
-                    }
                 }
             }
         }
@@ -937,30 +934,9 @@ const useAvatar = props => {
     }
 
     function getClassImageData(param) {
-        console.log(param);
-
-        let obj = {};
-        obj.class = [];
-        obj.base = [];
-        obj.background = [];
+        let obj = [];
         for (let i = 0; i < param.children[0].children.length; i++) {
-            if (param.children[0].children[i].name.includes("CLASS") === true) {
-                obj.class.push(param.children[0].children[i]);
-            }
-            if (param.children[0].children[i].name.includes("base") === true) {
-                obj.base.push(param.children[0].children[i]);
-            }
-        }
-        for (let i = 0; i < param.children[1].children.length; i++) {
-            if (param.children[1].children[i].name.includes("CLASS") === true) {
-                obj.class.push(param.children[1].children[i]);
-            }
-            if (param.children[1].children[i].name.includes("base") === true) {
-                obj.base.push(param.children[1].children[i]);
-            }
-        }
-        for (let i = 0; i < param.children[2].children.length; i++) {
-            obj.background.push(param.children[2].children[i]);
+            obj.push(param.children[0].children[i]);
         }
         return obj;
     }
