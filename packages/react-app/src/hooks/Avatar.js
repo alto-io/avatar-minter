@@ -592,22 +592,25 @@ const useAvatar = props => {
     // because of partial .ora file, assuming for now here that we want
     // to create amountToCreate of each found class (in a partial ora there's only one class)
     const amountToCreate = mintingConfigJSON.amountToCreate;
-    const mintArray = [];
-
+    const myAvatars = JSON.parse(localStorage.getItem("myAvatars"));
     const currentParts = JSON.parse(localStorage.getItem("myParts"));
 
     // e.g. value can be "Backgrounds", "Female Knight", etc
     _.forOwn(currentParts, (val, key) => {
       const keyLowerCase = key.toLowerCase();
       if (keyLowerCase.startsWith("background")) {
-        // TODO: backrounds
+        console.warn("Backgrounds ora processing not implemented."); // TODO: backrounds
       } else if (keyLowerCase.startsWith("female") || keyLowerCase.startsWith("male")) {
-        mintArray.push(...randomizePartsForClass(val, amountToCreate));
+        myAvatars.push(...randomizePartsForClass(val, amountToCreate));
+      } else {
+        console.warn("Unknown ora class.")
       }
     });
 
-    mintArray.forEach((avatar, idx) => {
-      avatar.name = `Arcadian #${idx + 1}`; // TODO
+    // assuming always single class
+    const className = Object.keys(currentParts)[0]
+    myAvatars.forEach((avatar, idx) => {
+      avatar.name = `${className} #${idx + 1}`; // TODO
       avatar.description = "Placeholder description"; // TODO
       avatar.image = ""; // will be assigned later
       avatar.attributes = [];
@@ -619,19 +622,12 @@ const useAvatar = props => {
       });
     });
 
-    // randomShuffle(mintArray);
-    const ret = {
-      tokenMetadata: mintArray,
-    };
-
-    const myAvatars = JSON.parse(localStorage.getItem("myAvatars"));
-    myAvatars.push(ret);
     localStorage.setItem("myAvatars", JSON.stringify(myAvatars));
-    const currentAvatars = JSON.parse(localStorage.getItem("myAvatars"));
+    let currentAvatars = JSON.parse(localStorage.getItem("myAvatars"));
     console.log(`Now we have ${currentAvatars.length} avatars!`);
 
-    setMetadataJson(ret);
-    return ret;
+    setMetadataJson(currentAvatars);
+    return currentAvatars;
   }
 
   async function oldGenerateMetadataJson(mintingConfigJSON) {
