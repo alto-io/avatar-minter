@@ -573,7 +573,7 @@ const useAvatar = props => {
         valval.percent = Math.round((100.0 * valval.count) / avatars.length);
       });
     });
-    console.log(JSON.stringify(counts));
+    console.log(JSON.stringify(counts), null, 2);
     /*
             counts.forEach((val, key) => {
               const rarity = PartRarities[className] && PartRarities[className][key] ? PartRarities[className][key] : Common;
@@ -635,23 +635,28 @@ const useAvatar = props => {
     const className = Object.keys(currentParts)[0]
     myAvatars.forEach((avatar, idx) => {
 
-      avatar.name = `${className} #${idx + 1}`; // Will be renamed to "Arcadians #${idx + 1}" after reshuffle
-      avatar.description = "Arcadians is a collection of 10,000 NFT avatars built around the arcade of the metaverse!";
-      avatar.image = ""; // will be assigned later
-      avatar.attributes = [];
+      avatar.metadata = {};
+      avatar.metadata.attributes = [];
 
       // push class into attributes, used by Avatar Battler
-      avatar.attributes.push({
+      avatar.metadata.attributes.push({
         trait_type: "Class",
         value: className
       });
       
       _.forOwn(avatar, (value, key) => {
-        avatar.attributes.push({
-          trait_type: key,
-          value: value.name,
-        });
+        if (key != "attributes") {
+          avatar.metadata.attributes.push({
+            trait_type: key,
+            value: value.name,
+          });
+        }
       });
+
+      avatar.metadata.name = `${className} #${idx + 1}`; // Will be renamed to "Arcadians #${idx + 1}" after reshuffle
+      avatar.metadata.description = "Arcadians is a collection of 10,000 NFT avatars built around the arcade of the metaverse!";
+      avatar.metadata.image = `${className}_${idx + 1}.png`; // will be assigned later
+
     });
 
     localStorage.setItem("myAvatars", JSON.stringify(myAvatars));
