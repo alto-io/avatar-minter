@@ -171,6 +171,32 @@ export default function AvatarMinter(props) {
         }, 1);
     }
 
+    async function handleExportToCSV() {
+
+        const downloadToFile = (content, filename, contentType) => {
+            const a = document.createElement('a');
+            const file = new Blob([content], {type: contentType});
+            
+            a.href= URL.createObjectURL(file);
+            a.download = filename;
+            a.click();
+          
+              URL.revokeObjectURL(a.href);
+          };
+
+        var csv = "";
+        const header = "id\tpayload\n";
+        csv += header;
+
+        let avatarArray = JSON.parse(localStorage.getItem("myAvatars"));
+
+        for (var i = 0; i < avatarArray.length; i++) {
+            csv += (i+1) + "\t" + JSON.stringify(avatarArray[i].metadata) + "\n";
+        }
+
+        downloadToFile(csv, "avatars.csv", "text/plain");
+    }
+
     return (
         <div style={{ paddingTop: 32, width: 740, margin: "auto", textAlign: "left" }}>
             <h3>How to Mint</h3>
@@ -265,6 +291,20 @@ export default function AvatarMinter(props) {
                     <a id="currentdownload"></a>
                 </span>
             </div>
+
+            <div style={{ paddingBottom: 16, paddingTop: 16 }}>
+                <span style={{ width: "100%" }}>
+                    <Button style={{ marginRight: 8 }} onClick={handleExportToCSV} size="large" shape="round">
+                        <span style={{ marginRight: 8 }}>
+                            <span role="img" aria-label="fuelpump">
+                                📊
+                            </span>
+                        </span>
+                        Export to CSV
+                    </Button>
+                </span>
+            </div>
+
 
             <div style={{ display: "flex", flexDirection: "row" }}>
                 <ReactJson
