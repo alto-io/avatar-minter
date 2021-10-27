@@ -37,36 +37,36 @@ const Legendary = "Legendary";
 const Mythical = "Mythical";
 
 const RarityWeights = {
-  Common: 60,
-  Rare: 30,
-  Legendary: 10,
-  Mythical: 1,
+    Common: 60,
+    Rare: 30,
+    Legendary: 10,
+    Mythical: 1,
 };
 
 const PartRarities = {
-  "Female Knight": {
-    "Samurai Helmet": Rare,
-    "Viking Helmet": Rare,
-    "Centurion Helmet": Common,
-    "Wild Hair": Common,
-    "Green Pony": Common,
-    "Scythe L": Common,
-    "Trident L": Common,
-    "Poison Sword L": Legendary,
-    "Axe L": Common,
-    "Scythe R": Common,
-    "Trident R": Common,
-    "Poison Sword R": Legendary,
-    "Axe R": Common,
-    "Samurai Armor": Rare,
-    "Barbarian Armor": Common,
-    "Amazon Armor": Common,
-    "Witcher Tunic": Common,
-    "Samurai Leggings": Rare,
-    "Barbarian Leggings": Common,
-    "Amazon Leggings": Common,
-    "Witcher Leggings": Common,
-  },
+    "Female Knight": {
+        "Samurai Helmet": Rare,
+        "Viking Helmet": Rare,
+        "Centurion Helmet": Common,
+        "Wild Hair": Common,
+        "Green Pony": Common,
+        "Scythe L": Common,
+        "Trident L": Common,
+        "Poison Sword L": Legendary,
+        "Axe L": Common,
+        "Scythe R": Common,
+        "Trident R": Common,
+        "Poison Sword R": Legendary,
+        "Axe R": Common,
+        "Samurai Armor": Rare,
+        "Barbarian Armor": Common,
+        "Amazon Armor": Common,
+        "Witcher Tunic": Common,
+        "Samurai Leggings": Rare,
+        "Barbarian Leggings": Common,
+        "Amazon Leggings": Common,
+        "Witcher Leggings": Common,
+    },
 };
 
 const useAvatar = props => {
@@ -143,9 +143,9 @@ const useAvatar = props => {
     };
 
     const loadBackgrounds = async () => {
-            console.log("Backgrounds loaded");
-            let loaded_background = await fetch(`avatars/backgrounds.ora`).then(r => r.blob());
-            await project.load(loaded_background);
+        console.log("Backgrounds loaded");
+        let loaded_background = await fetch(`avatars/backgrounds.ora`).then(r => r.blob());
+        await project.load(loaded_background);
     };
 
     async function drawAvatarFromMetadata(metadata, index, amountToCreate) {
@@ -477,156 +477,156 @@ const useAvatar = props => {
 
     }
 
-  const randomShuffle = arr => {
-    if (!Array.isArray(arr)) {
-      return;
-    }
-    let currentIndex = arr.length;
-    let randomIndex = 0;
-
-    while (currentIndex != 0) {
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-      [arr[currentIndex], arr[randomIndex]] = [arr[randomIndex], arr[currentIndex]];
-    }
-  };
-
-  // weightedChoices must be an array of objects with 'weight' property,
-  // if 'weight' missing, randomizes as if all objects have equal weight
-  const prepareWeightedArray = (weightedChoices, neededLength) => {
-    const minWeight = weightedChoices.reduce((accum, curr) => (curr.weight < accum ? curr.weight : accum), Infinity);
-    const adjustedChoices = weightedChoices.map(elem => ({
-      ...elem,
-      weight: elem.weight && elem.weight / minWeight,
-    }));
-
-    const totalWeight = adjustedChoices.reduce((accum, curr) => accum + (curr.weight || 1), 0);
-    const adjustedWeight = Math.max(neededLength / totalWeight, 1.0);
-    const ret = [];
-    for (let i = 0; i < adjustedChoices.length; i++) {
-      const object = adjustedChoices[i];
-      const count = Math.floor(object.weight * adjustedWeight);
-      for (let ii = 0; ii < count; ii++) {
-        ret.push(object);
-      }
-    }
-    // fill up with simple randoms, because flooring adjustedBgWeight,
-    // total length may be lesser than needed
-    while (ret.length < neededLength) {
-      ret.push(adjustedChoices[Math.floor(Math.random() * adjustedChoices.length)]);
-    }
-    randomShuffle(ret);
-    return ret;
-  };
-
-  const printReport = (avatars, className) => {
-    if (!Array.isArray(avatars)) {
-      return;
-    }
-    const counts = {};
-    avatars.forEach(avatar => {
-      _.forOwn(avatar, (val, key) => {
-        if (!counts[key]) {
-          counts[key] = {}
+    const randomShuffle = arr => {
+        if (!Array.isArray(arr)) {
+            return;
         }
-        if (!counts[key][val.name]) {
-          counts[key][val.name] = {
-            count: 0,
-          };
+        let currentIndex = arr.length;
+        let randomIndex = 0;
+
+        while (currentIndex != 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [arr[currentIndex], arr[randomIndex]] = [arr[randomIndex], arr[currentIndex]];
         }
-        counts[key][val.name].count += 1;
-      });
-    });
-    console.log(`Report for class: ${className}:`);
-    _.forOwn(counts, val => {
-      _.forOwn(val, valval => {
-        valval.percent = Math.round((100.0 * valval.count) / avatars.length);
-      });
-    });
-    console.log(JSON.stringify(counts))
-/*
-    counts.forEach((val, key) => {
-      const rarity = PartRarities[className] && PartRarities[className][key] ? PartRarities[className][key] : Common;
-      const percent = Math.round((100.0 * val) / avatars.length);
-      console.log(`Part ${key}, rarity ${rarity}, count: ${val}, ~${percent}%`);
-    });
-*/
-  };
-
-  const randomizePartsForClass = (classObject, avatarsCount) => {
-    const allparts = {};
-    const ret = [];
-
-    _.forOwn(classObject, (val, key) => {
-      if (!Array.isArray(val)) {
-        return;
-      }
-      allparts[key] = prepareWeightedArray(val, avatarsCount);
-    });
-    for (let i = 0; i < avatarsCount; i++) {
-      const newAvatar = {};
-      _.forOwn(classObject, (_, key) => {
-        newAvatar[key] = allparts[key][i];
-      });
-      ret.push(newAvatar);
-    }
-    // temp hardcoded "Female Knight"
-    printReport(ret, "Female Knight");
-    return ret;
-  };
-
-  async function generateMetadataJson(mintingConfigJSON) {
-    console.log("generateMetadataJsonNew");
-    if (!mintingConfigJSON.initialized) {
-      return {
-        filename: "metadata.json",
-      };
-    }
-
-    // because of partial .ora file, assuming for now here that we want 
-    // to create amountToCreate of each found class (in a partial ora there's only one class)
-    const amountToCreate = mintingConfigJSON.amountToCreate;
-    const mintArray = [];
-
-    const currentParts = JSON.parse(localStorage.getItem("myParts"));
-
-    // e.g. value can be "Backgrounds", "Female Knight", etc
-    _.forOwn(currentParts, (val, key) => {
-      const keyLowerCase = key.toLowerCase()
-      if (keyLowerCase.startsWith("background")) {
-        // TODO: backrounds
-      } else if (keyLowerCase.startsWith("female") || keyLowerCase.startsWith("male")) {
-        mintArray.push(...randomizePartsForClass(val, amountToCreate));
-      }
-    });
-
-    mintArray.forEach((avatar, idx) => {
-      avatar.name = `Arcadian #${idx + 1}`; // TODO
-      avatar.description = "Placeholder description"; // TODO
-      avatar.image = ""; // will be assigned later
-      avatar.attributes = [];
-      _.forOwn(avatar, (value, key) => {
-        avatar.attributes.push({
-          trait_type: key,
-          value: value.name,
-        });
-      });
-    });
-
-    // randomShuffle(mintArray);
-    const ret = {
-      tokenMetadata: mintArray,
     };
 
-    const myAvatars = JSON.parse(localStorage.getItem("myAvatars"));
-    myAvatars.push(ret);
-    localStorage.setItem("myAvatars", JSON.stringify(myAvatars));
-    const currentAvatars = JSON.parse(localStorage.getItem("myAvatars"));
-    console.log(`Now we have ${currentAvatars.length} avatars!`);
+    // weightedChoices must be an array of objects with 'weight' property,
+    // if 'weight' missing, randomizes as if all objects have equal weight
+    const prepareWeightedArray = (weightedChoices, neededLength) => {
+        const minWeight = weightedChoices.reduce((accum, curr) => (curr.weight < accum ? curr.weight : accum), Infinity);
+        const adjustedChoices = weightedChoices.map(elem => ({
+            ...elem,
+            weight: elem.weight && elem.weight / minWeight,
+        }));
 
-    setMetadataJson(ret);
-    return ret;
-  }
+        const totalWeight = adjustedChoices.reduce((accum, curr) => accum + (curr.weight || 1), 0);
+        const adjustedWeight = Math.max(neededLength / totalWeight, 1.0);
+        const ret = [];
+        for (let i = 0; i < adjustedChoices.length; i++) {
+            const object = adjustedChoices[i];
+            const count = Math.floor(object.weight * adjustedWeight);
+            for (let ii = 0; ii < count; ii++) {
+                ret.push(object);
+            }
+        }
+        // fill up with simple randoms, because flooring adjustedBgWeight,
+        // total length may be lesser than needed
+        while (ret.length < neededLength) {
+            ret.push(adjustedChoices[Math.floor(Math.random() * adjustedChoices.length)]);
+        }
+        randomShuffle(ret);
+        return ret;
+    };
+
+    const printReport = (avatars, className) => {
+        if (!Array.isArray(avatars)) {
+            return;
+        }
+        const counts = {};
+        avatars.forEach(avatar => {
+            _.forOwn(avatar, (val, key) => {
+                if (!counts[key]) {
+                    counts[key] = {}
+                }
+                if (!counts[key][val.name]) {
+                    counts[key][val.name] = {
+                        count: 0,
+                    };
+                }
+                counts[key][val.name].count += 1;
+            });
+        });
+        console.log(`Report for class: ${className}:`);
+        _.forOwn(counts, val => {
+            _.forOwn(val, valval => {
+                valval.percent = Math.round((100.0 * valval.count) / avatars.length);
+            });
+        });
+        console.log(JSON.stringify(counts))
+        /*
+            counts.forEach((val, key) => {
+              const rarity = PartRarities[className] && PartRarities[className][key] ? PartRarities[className][key] : Common;
+              const percent = Math.round((100.0 * val) / avatars.length);
+              console.log(`Part ${key}, rarity ${rarity}, count: ${val}, ~${percent}%`);
+            });
+        */
+    };
+
+    const randomizePartsForClass = (classObject, avatarsCount) => {
+        const allparts = {};
+        const ret = [];
+
+        _.forOwn(classObject, (val, key) => {
+            if (!Array.isArray(val)) {
+                return;
+            }
+            allparts[key] = prepareWeightedArray(val, avatarsCount);
+        });
+        for (let i = 0; i < avatarsCount; i++) {
+            const newAvatar = {};
+            _.forOwn(classObject, (_, key) => {
+                newAvatar[key] = allparts[key][i];
+            });
+            ret.push(newAvatar);
+        }
+        // temp hardcoded "Female Knight"
+        printReport(ret, "Female Knight");
+        return ret;
+    };
+
+    async function generateMetadataJson(mintingConfigJSON) {
+        console.log("generateMetadataJsonNew");
+        if (!mintingConfigJSON.initialized) {
+            return {
+                filename: "metadata.json",
+            };
+        }
+
+        // because of partial .ora file, assuming for now here that we want 
+        // to create amountToCreate of each found class (in a partial ora there's only one class)
+        const amountToCreate = mintingConfigJSON.amountToCreate;
+        const mintArray = [];
+
+        const currentParts = JSON.parse(localStorage.getItem("myParts"));
+
+        // e.g. value can be "Backgrounds", "Female Knight", etc
+        _.forOwn(currentParts, (val, key) => {
+            const keyLowerCase = key.toLowerCase()
+            if (keyLowerCase.startsWith("background")) {
+                // TODO: backrounds
+            } else if (keyLowerCase.startsWith("female") || keyLowerCase.startsWith("male")) {
+                mintArray.push(...randomizePartsForClass(val, amountToCreate));
+            }
+        });
+
+        mintArray.forEach((avatar, idx) => {
+            avatar.name = `Arcadian #${idx + 1}`; // TODO
+            avatar.description = "Placeholder description"; // TODO
+            avatar.image = ""; // will be assigned later
+            avatar.attributes = [];
+            _.forOwn(avatar, (value, key) => {
+                avatar.attributes.push({
+                    trait_type: key,
+                    value: value.name,
+                });
+            });
+        });
+
+        // randomShuffle(mintArray);
+        const ret = {
+            tokenMetadata: mintArray,
+        };
+
+        const myAvatars = JSON.parse(localStorage.getItem("myAvatars"));
+        myAvatars.push(ret);
+        localStorage.setItem("myAvatars", JSON.stringify(myAvatars));
+        const currentAvatars = JSON.parse(localStorage.getItem("myAvatars"));
+        console.log(`Now we have ${currentAvatars.length} avatars!`);
+
+        setMetadataJson(ret);
+        return ret;
+    }
 
     async function oldGenerateMetadataJson(mintingConfigJSON) {
         if (mintingConfigJSON.initialized) {
@@ -721,7 +721,7 @@ const useAvatar = props => {
                 }
                 myAvatars.push(newAvatar);
             }
-            
+
             localStorage.setItem('myAvatars', JSON.stringify(myAvatars));
             let currentAvatars = JSON.parse(localStorage.getItem('myAvatars'));
             console.log(`Now we have ${currentAvatars.length} avatars!`);
@@ -819,9 +819,9 @@ const useAvatar = props => {
         const name = partStringArray[partStringArray.length - 1]
         let weight = RarityWeights.Common
         if (PartRarities[className] && PartRarities[className][name]) {
-          weight = RarityWeights[PartRarities[className][name]]
+            weight = RarityWeights[PartRarities[className][name]]
         } else {
-          console.warn(`Part rarity not found for: ${name}, assigning Common.`)
+            console.warn(`Part rarity not found for: ${name}, assigning Common.`)
         }
 
         const partToAdd = {
@@ -929,10 +929,47 @@ const useAvatar = props => {
         }
     }
 
-    function getClassImageData(param) {
+    async function getClassImageData(param) {
         let obj = [];
-        for (let i = 0; i < param.children[0].children.length; i++) {
-            obj.push(param.children[0].children[i]);
+        for (let i = 0; i < param.children_recursive.length; i++) {
+            let customIndex = 9;
+            if (param.children_recursive[i].parent.name.includes("Shadow")) {
+                customIndex = 0;
+            }
+            if (param.children_recursive[i].parent.name.includes("Skin")) {
+                customIndex = 1;
+            }
+            if (param.children_recursive[i].parent.name.includes("Top")) {
+                customIndex = 2;
+            }
+            if (param.children_recursive[i].parent.name.includes("Bottom")) {
+                customIndex = 3;
+            }
+            if (param.children_recursive[i].parent.name.includes("Eyes")) {
+                customIndex = 4;
+            }
+            if (param.children_recursive[i].parent.name.includes("Mouth")) {
+                customIndex = 5;
+            }
+            if (param.children_recursive[i].parent.name.includes("Head")) {
+                customIndex = 6;
+            }
+            if (param.children_recursive[i].parent.name.includes("Left Hand")) {
+                customIndex = 7;
+            }
+            if (param.children_recursive[i].parent.name.includes("Right Hand")) {
+                customIndex = 8;
+            }
+            let currentObj = {
+                name: param.children_recursive[i].name,
+                parent: param.children_recursive[i].parent.name,
+                value: await param.children_recursive[i].get_base64(),
+                zIndex: customIndex,
+                type: "selected",
+                offsetX: param.children_recursive[i].attribs.offsets[0],
+                offsetY: param.children_recursive[i].attribs.offsets[1],
+            };
+            obj.push(currentObj);
         }
         return obj;
     }
@@ -942,7 +979,7 @@ const useAvatar = props => {
         return getClassImageData(project);
     }
 
-  async function getBackgroundsImageData(param) {
+    async function getBackgroundsImageData(param) {
         let obj = [];
         for (let i = 0; i < param.children_recursive.length; i++) {
             let currentObj = {

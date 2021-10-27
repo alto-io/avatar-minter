@@ -137,76 +137,18 @@ export default function AvatarMinter(props) {
         let currentAvatars = JSON.parse(localStorage.getItem("myAvatars"));
         let selectedAvatar = currentAvatars[paramCount];
 
-        let renderArray = [];
-
+        let stuffToRender = [];
+        let selectedParts = Object.keys(selectedAvatar);
         for (let i = 0; i < myCurrentData.length; i++) {
-            let selectedParts = Object.keys(selectedAvatar);
             for (let j = 0; j < selectedParts.length; j++) {
-                if (selectedParts[j] === myCurrentData[i].name) {
-                    for (let k = 0; k < myCurrentData[i].children.length; k++) {
-                        if (selectedAvatar[selectedParts[j]].name === myCurrentData[i].children[k].name) {
-                            renderArray.push(myCurrentData[i].children[k]);
-                        }
-                    }
+                if (selectedAvatar[selectedParts[j]].name === myCurrentData[i].name) {
+                    stuffToRender.push(myCurrentData[i]);
                 }
             }
         }
 
-        let stuffToRender = [];
-
-        for (let m = 0; m < renderArray.length; m++) {
-            let rawImageData = await renderArray[m].get_base64();
-            //console.log(renderArray[m].parent.name);
-            let customIndex = 9;
-            if (renderArray[m].parent.name.includes("Shadow")) {
-                customIndex = 0;
-            }
-            if (renderArray[m].parent.name.includes("Skin")) {
-                customIndex = 1;
-            }
-            if (renderArray[m].parent.name.includes("Top")) {
-                customIndex = 2;
-            }
-            if (renderArray[m].parent.name.includes("Bottom")) {
-                customIndex = 3;
-            }
-            if (renderArray[m].parent.name.includes("Eyes")) {
-                customIndex = 4;
-            }
-            if (renderArray[m].parent.name.includes("Mouth")) {
-                customIndex = 5;
-            }
-            if (renderArray[m].parent.name.includes("Head")) {
-                customIndex = 6;
-            }
-            if (renderArray[m].parent.name.includes("Left Hand")) {
-                customIndex = 7;
-            }
-            if (renderArray[m].parent.name.includes("Right Hand")) {
-                customIndex = 8;
-            }
-
-            let currentObj = {
-                name: renderArray[m].name,
-                parent: renderArray[m].parent.name,
-                value: rawImageData,
-                zIndex: customIndex,
-                type: "selected",
-                offsetX: renderArray[m].attribs.offsets[0],
-                offsetY: renderArray[m].attribs.offsets[1],
-            };
-            stuffToRender.push(currentObj);
-        }
-
         stuffToRender.push(myBackgrounds[Math.floor(Math.random() * myBackgrounds.length)]);
-
         stuffToRender.sort((a, b) => a.zIndex - b.zIndex);
-
-        /* console.log(" ");
-                    for (let t = 0; t < stuffToRender.length; t++) {
-                        console.log(stuffToRender[t].zIndex, stuffToRender[t].parent, stuffToRender[t].name);
-                    }
-                    console.log(" "); */
 
         finalRender(stuffToRender, paramCount);
     };
