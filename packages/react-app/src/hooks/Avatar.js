@@ -600,6 +600,19 @@ const useAvatar = props => {
       }
     });
 
+    mintArray.forEach((avatar, idx) => {
+      avatar.name = `Arcadian #${idx + 1}`; // TODO
+      avatar.description = "Placeholder description"; // TODO
+      avatar.image = ""; // will be assigned later
+      avatar.attributes = [];
+      _.forOwn(avatar, (value, key) => {
+        avatar.attributes.push({
+          trait_type: key,
+          value: value.name,
+        });
+      });
+    });
+
     // randomShuffle(mintArray);
     const ret = {
       tokenMetadata: mintArray,

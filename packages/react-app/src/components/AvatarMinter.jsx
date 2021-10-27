@@ -120,9 +120,7 @@ export default function AvatarMinter(props) {
     };
 
     const handleClickGenerateButton = async event => {
-        //generateMetadataJson(mintingConfigJSON);
-        //oldGenerateMetadataJson(mintingConfigJSON);
-        singleClassGenerateMetadataJson(mintingConfigJSON);
+        generateMetadataJson(mintingConfigJSON);
     };
 
     const handleClickUploadButton = async event => {
