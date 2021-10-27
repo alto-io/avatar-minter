@@ -559,7 +559,7 @@ const useAvatar = props => {
         */
   };
 
-  const randomizePartsForClass = (classObject, avatarsCount) => {
+  const randomizePartsForClass = (className, classObject, avatarsCount) => {
     const allparts = {};
     const ret = [];
 
@@ -576,8 +576,7 @@ const useAvatar = props => {
       });
       ret.push(newAvatar);
     }
-    // temp hardcoded "Female Knight"
-    printReport(ret, "Female Knight");
+    printReport(ret, className);
     return ret;
   };
 
@@ -601,9 +600,9 @@ const useAvatar = props => {
       if (keyLowerCase.startsWith("background")) {
         console.warn("Backgrounds ora processing not implemented."); // TODO: backrounds
       } else if (keyLowerCase.startsWith("female") || keyLowerCase.startsWith("male")) {
-        myAvatars.push(...randomizePartsForClass(val, amountToCreate));
+        myAvatars.push(...randomizePartsForClass(key, val, amountToCreate));
       } else {
-        console.warn("Unknown ora class.")
+        console.warn("Unknown ora class.");
       }
     });
 
