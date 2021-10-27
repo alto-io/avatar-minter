@@ -630,13 +630,22 @@ const useAvatar = props => {
       }
     });
 
+
     // assuming always single class
     const className = Object.keys(currentParts)[0]
     myAvatars.forEach((avatar, idx) => {
-      avatar.name = `${className} #${idx + 1}`; // TODO
-      avatar.description = "Placeholder description"; // TODO
+
+      avatar.name = `${className} #${idx + 1}`; // Will be renamed to "Arcadians #${idx + 1}" after reshuffle
+      avatar.description = "Arcadians is a collection of 10,000 NFT avatars built around the arcade of the metaverse!";
       avatar.image = ""; // will be assigned later
       avatar.attributes = [];
+
+      // push class into attributes, used by Avatar Battler
+      avatar.attributes.push({
+        trait_type: "Class",
+        value: className
+      });
+      
       _.forOwn(avatar, (value, key) => {
         avatar.attributes.push({
           trait_type: key,
