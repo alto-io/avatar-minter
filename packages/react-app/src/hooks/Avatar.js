@@ -142,6 +142,12 @@ const useAvatar = props => {
         }
     };
 
+    const loadBackgrounds = async () => {
+            console.log("Backgrounds loaded");
+            let loaded_background = await fetch(`avatars/backgrounds.ora`).then(r => r.blob());
+            await project.load(loaded_background);
+    };
+
     async function drawAvatarFromMetadata(metadata, index, amountToCreate) {
         setRandomConfig({ Root: {} });
 
@@ -923,6 +929,28 @@ const useAvatar = props => {
         return getClassImageData(project);
     }
 
+  async function getBackgroundsImageData(param) {
+        let obj = [];
+        for (let i = 0; i < param.children_recursive.length; i++) {
+            let currentObj = {
+                name: param.children_recursive[i].name,
+                parent: param.children_recursive[i].parent.name,
+                value: await param.children_recursive[i].get_base64(),
+                zIndex: -1,
+                type: "selected",
+                offsetX: param.children_recursive[i].attribs.offsets[0],
+                offsetY: param.children_recursive[i].attribs.offsets[1],
+            };
+            obj.push(currentObj);
+        }
+        return obj;
+    }
+
+    const fillBackgroundData = async () => {
+        await loadBackgrounds();
+        return getBackgroundsImageData(project);
+    }
+
     function randomizePart(partString, hideAll) {
         // var currentPart = partString.split("//")[1];
 
@@ -1247,6 +1275,7 @@ const useAvatar = props => {
         dataParts,
         loadProject,
         fillImageData,
+        fillBackgroundData,
         reloadConfig,
         getAvatar,
         infoDataParts,
