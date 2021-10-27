@@ -59,6 +59,7 @@ const RarityWeights = {
 };
 
 const PartRarities = {
+/*
   "Female Knight": {
     "Samurai Helmet": Rare,
     "Viking Helmet": Rare,
@@ -82,6 +83,7 @@ const PartRarities = {
     "Amazon Leggings": Common,
     "Witcher Leggings": Common,
   },
+ */
 };
 
 const useAvatar = props => {
@@ -146,12 +148,34 @@ const useAvatar = props => {
   const loadProject = async fileLocation => {
     if (fileLocation instanceof Blob === false) {
       console.log("Loading default file");
-      let loaded_file = await fetch(`avatars/female_knight.ora`).then(r => r.blob());
-      await project.load(loaded_file);
+      const fileName = "female_knight";
+      await loadRarities(fileName)
+      const loadedFile = await fetch(`avatars/${fileName}.ora`).then(r => r.blob());
+      await project.load(loadedFile);
     } else {
       console.log("Loading specified file");
       await project.load(fileLocation);
     }
+  };
+
+  const loadRarities = async fileName => {
+    const raritiesJson = await fetch(`avatars/${fileName}.json`).then(r => r.json());
+    if (!raritiesJson.class) {
+      console.warn("Missing rarities class.");
+      return;
+    }
+    if (!Array.isArray(raritiesJson.rarity)) {
+      console.warn("Incorrect rarities format, not an array.");
+      return;
+    }
+    PartRarities[raritiesJson.class] = {};
+    raritiesJson.rarity.forEach(rarity => {
+      const partName = rarity["Part Name"];
+      if (!partName) {
+        return;
+      }
+      PartRarities[raritiesJson.class][partName] = rarity.Rarity;
+    });
   };
 
   const loadBackgrounds = async () => {
