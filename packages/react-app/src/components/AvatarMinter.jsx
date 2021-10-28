@@ -55,6 +55,7 @@ export default function AvatarMinter(props) {
         loadProject,
         fillImageData,
         fillBackgroundData,
+        fillPetsData,
         reloadConfig,
         getAvatar,
         infoDataParts,
@@ -82,7 +83,7 @@ export default function AvatarMinter(props) {
         selectedClass,
         configTree,
         setConfigTree,
-        lootText
+        lootText,
     ] = useAvatar();
     const [mintingConfigJSON, setMintingConfigJSON] = useState(STARTING_CONFIG_JSON);
 
@@ -133,7 +134,7 @@ export default function AvatarMinter(props) {
         });
     };
 
-    const handleDrawAvatar = async (paramCount, myCurrentData, myBackgrounds) => {
+    const handleDrawAvatar = async (paramCount, myCurrentData, myBackgrounds, myPets) => {
         let currentAvatars = JSON.parse(localStorage.getItem("myAvatars"));
         let selectedAvatar = currentAvatars[paramCount];
 
@@ -148,19 +149,21 @@ export default function AvatarMinter(props) {
         }
 
         stuffToRender.push(myBackgrounds[Math.floor(Math.random() * myBackgrounds.length)]);
+        stuffToRender.push(myPets[Math.floor(Math.random() * myPets.length)]);
         stuffToRender.sort((a, b) => a.zIndex - b.zIndex);
 
         finalRender(stuffToRender, paramCount);
     };
 
     async function handleDrawAvatarClick() {
+        let myPets = await fillPetsData();
         let myBackgrounds = await fillBackgroundData();
         let myCurrentData = await fillImageData();
         let totalAvatars = JSON.parse(localStorage.getItem("myAvatars")).length;
         let arcadianCount = 0;
         let avatarInterval = setInterval(() => {
             if (window.nextRender === true) {
-                handleDrawAvatar(arcadianCount, myCurrentData, myBackgrounds);
+                handleDrawAvatar(arcadianCount, myCurrentData, myBackgrounds, myPets);
                 arcadianCount += 1;
                 if (arcadianCount >= totalAvatars) {
                     clearInterval(avatarInterval);

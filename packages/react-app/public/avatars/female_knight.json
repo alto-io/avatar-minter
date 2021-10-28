@@ -1,0 +1,225 @@
+{
+  "class": "Female Knight",
+  "rarity": [
+    {
+      "Part Name": "",
+      "Part Layer": "",
+      "Rarity": ""
+    },
+    {
+      "Part Name": "Scythe L",
+      "Part Layer": "Left Hand",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Trident L",
+      "Part Layer": "Left Hand",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Poison Sword L",
+      "Part Layer": "Left Hand",
+      "Rarity": "Mythical"
+    },
+    {
+      "Part Name": "Axe L",
+      "Part Layer": "Left Hand",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "",
+      "Part Layer": "",
+      "Rarity": ""
+    },
+    {
+      "Part Name": "Scythe R",
+      "Part Layer": "Right Hand",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Trident R",
+      "Part Layer": "Right Hand",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Poison Sword R",
+      "Part Layer": "Right Hand",
+      "Rarity": "Mythical"
+    },
+    {
+      "Part Name": "Axe R",
+      "Part Layer": "Right Hand",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "",
+      "Part Layer": "",
+      "Rarity": ""
+    },
+    {
+      "Part Name": "One Fang",
+      "Part Layer": "Mouth",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Vampire Fangs",
+      "Part Layer": "Mouth",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "uwu Mouth",
+      "Part Layer": "Mouth",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Pucker",
+      "Part Layer": "Mouth",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "",
+      "Part Layer": "",
+      "Rarity": ""
+    },
+    {
+      "Part Name": "Scar",
+      "Part Layer": "Eyes",
+      "Rarity": "Rare"
+    },
+    {
+      "Part Name": "Eyepatch",
+      "Part Layer": "Eyes",
+      "Rarity": "Legendary"
+    },
+    {
+      "Part Name": "Winking",
+      "Part Layer": "Eyes",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "uwu Eyes",
+      "Part Layer": "Eyes",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Mischief",
+      "Part Layer": "Eyes",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "",
+      "Part Layer": "",
+      "Rarity": ""
+    },
+    {
+      "Part Name": "Samurai Helmet",
+      "Part Layer": "Head",
+      "Rarity": "Rare"
+    },
+    {
+      "Part Name": "Viking Helmet",
+      "Part Layer": "Head",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Centurion Helmet",
+      "Part Layer": "Head",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Wild Hair",
+      "Part Layer": "Head",
+      "Rarity": "Rare"
+    },
+    {
+      "Part Name": "Green Pony",
+      "Part Layer": "Head",
+      "Rarity": "Legendary"
+    },
+    {
+      "Part Name": "",
+      "Part Layer": "",
+      "Rarity": ""
+    },
+    {
+      "Part Name": "Samurai Armor",
+      "Part Layer": "Top",
+      "Rarity": "Rare"
+    },
+    {
+      "Part Name": "Barbarian Armor",
+      "Part Layer": "Top",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Amazon Armor",
+      "Part Layer": "Top",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Witcher Tunic",
+      "Part Layer": "Top",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "",
+      "Part Layer": "",
+      "Rarity": ""
+    },
+    {
+      "Part Name": "Samurai Leggings",
+      "Part Layer": "Bottom",
+      "Rarity": "Rare"
+    },
+    {
+      "Part Name": "Barbarian Leggings",
+      "Part Layer": "Bottom",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Amazon Leggings",
+      "Part Layer": "Bottom",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Witcher Leggings",
+      "Part Layer": "Bottom",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "",
+      "Part Layer": "",
+      "Rarity": ""
+    },
+    {
+      "Part Name": "Metal ",
+      "Part Layer": "Skin",
+      "Rarity": "Legendary"
+    },
+    {
+      "Part Name": "Gold",
+      "Part Layer": "Skin",
+      "Rarity": "Mythical"
+    },
+    {
+      "Part Name": "Zombie",
+      "Part Layer": "Skin",
+      "Rarity": "Rare"
+    },
+    {
+      "Part Name": "Orc",
+      "Part Layer": "Skin",
+      "Rarity": "Rare"
+    },
+    {
+      "Part Name": "Dark",
+      "Part Layer": "Skin",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Light",
+      "Part Layer": "Skin",
+      "Rarity": "Common"
+    }
+  ]
+}

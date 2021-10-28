@@ -59,31 +59,31 @@ const RarityWeights = {
 };
 
 const PartRarities = {
-/*
-  "Female Knight": {
-    "Samurai Helmet": Rare,
-    "Viking Helmet": Rare,
-    "Centurion Helmet": Common,
-    "Wild Hair": Common,
-    "Green Pony": Common,
-    "Scythe L": Common,
-    "Trident L": Common,
-    "Poison Sword L": Legendary,
-    "Axe L": Common,
-    "Scythe R": Common,
-    "Trident R": Common,
-    "Poison Sword R": Legendary,
-    "Axe R": Common,
-    "Samurai Armor": Rare,
-    "Barbarian Armor": Common,
-    "Amazon Armor": Common,
-    "Witcher Tunic": Common,
-    "Samurai Leggings": Rare,
-    "Barbarian Leggings": Common,
-    "Amazon Leggings": Common,
-    "Witcher Leggings": Common,
-  },
- */
+  /*
+    "Female Knight": {
+      "Samurai Helmet": Rare,
+      "Viking Helmet": Rare,
+      "Centurion Helmet": Common,
+      "Wild Hair": Common,
+      "Green Pony": Common,
+      "Scythe L": Common,
+      "Trident L": Common,
+      "Poison Sword L": Legendary,
+      "Axe L": Common,
+      "Scythe R": Common,
+      "Trident R": Common,
+      "Poison Sword R": Legendary,
+      "Axe R": Common,
+      "Samurai Armor": Rare,
+      "Barbarian Armor": Common,
+      "Amazon Armor": Common,
+      "Witcher Tunic": Common,
+      "Samurai Leggings": Rare,
+      "Barbarian Leggings": Common,
+      "Amazon Leggings": Common,
+      "Witcher Leggings": Common,
+    },
+   */
 };
 
 const useAvatar = props => {
@@ -149,7 +149,7 @@ const useAvatar = props => {
     if (fileLocation instanceof Blob === false) {
       console.log("Loading default file");
       const fileName = "female_knight";
-      await loadRarities(fileName)
+      await loadRarities(fileName);
       const loadedFile = await fetch(`avatars/${fileName}.ora`).then(r => r.blob());
       await project.load(loadedFile);
     } else {
@@ -182,6 +182,12 @@ const useAvatar = props => {
     console.log("Backgrounds loaded");
     let loaded_background = await fetch(`avatars/backgrounds.ora`).then(r => r.blob());
     await project.load(loaded_background);
+  };
+
+  const loadPets = async () => {
+    console.log("Pets loaded");
+    let loaded_pets = await fetch(`avatars/pets.ora`).then(r => r.blob());
+    await project.load(loaded_pets);
   };
 
   async function drawAvatarFromMetadata(metadata, index, amountToCreate) {
@@ -630,20 +636,18 @@ const useAvatar = props => {
       }
     });
 
-
     // assuming always single class
-    const className = Object.keys(currentParts)[0]
+    const className = Object.keys(currentParts)[0];
     myAvatars.forEach((avatar, idx) => {
-
       avatar.metadata = {};
       avatar.metadata.attributes = [];
 
       // push class into attributes, used by Avatar Battler
       avatar.metadata.attributes.push({
         trait_type: "Class",
-        value: className
+        value: className,
       });
-      
+
       _.forOwn(avatar, (value, key) => {
         if (key != "attributes") {
           avatar.metadata.attributes.push({
@@ -654,9 +658,9 @@ const useAvatar = props => {
       });
 
       avatar.metadata.name = `${className} #${idx + 1}`; // Will be renamed to "Arcadians #${idx + 1}" after reshuffle
-      avatar.metadata.description = "Arcadians is a collection of 10,000 NFT avatars built around the arcade of the metaverse!";
+      avatar.metadata.description =
+        "Arcadians is a collection of 10,000 NFT avatars built around the arcade of the metaverse!";
       avatar.metadata.image = `${className}_${idx + 1}.png`; // will be assigned later
-
     });
 
     localStorage.setItem("myAvatars", JSON.stringify(myAvatars));
@@ -1022,16 +1026,18 @@ const useAvatar = props => {
   async function getBackgroundsImageData(param) {
     let obj = [];
     for (let i = 0; i < param.children_recursive.length; i++) {
-      let currentObj = {
-        name: param.children_recursive[i].name,
-        parent: param.children_recursive[i].parent.name,
-        value: await param.children_recursive[i].get_base64(),
-        zIndex: -1,
-        type: "selected",
-        offsetX: param.children_recursive[i].attribs.offsets[0],
-        offsetY: param.children_recursive[i].attribs.offsets[1],
-      };
-      obj.push(currentObj);
+      if (param.children_recursive[i].children === undefined) {
+        let currentObj = {
+          name: param.children_recursive[i].name,
+          parent: param.children_recursive[i].parent.name,
+          value: await param.children_recursive[i].get_base64(),
+          zIndex: -1,
+          type: "selected",
+          offsetX: param.children_recursive[i].attribs.offsets[0],
+          offsetY: param.children_recursive[i].attribs.offsets[1],
+        };
+        obj.push(currentObj);
+      }
     }
     return obj;
   }
@@ -1040,6 +1046,30 @@ const useAvatar = props => {
     await loadBackgrounds();
     return getBackgroundsImageData(project);
   };
+
+  const fillPetsData = async () => {
+    await loadPets();
+    return getPetsImageData(project);
+  };
+
+  async function getPetsImageData(param) {
+    let obj = [];
+    for (let i = 0; i < param.children_recursive.length; i++) {
+      if (param.children_recursive[i].children === undefined) {
+        let currentObj = {
+          name: param.children_recursive[i].name,
+          parent: param.children_recursive[i].parent.name,
+          value: await param.children_recursive[i].get_base64(),
+          zIndex: 10,
+          type: "selected",
+          offsetX: param.children_recursive[i].attribs.offsets[0],
+          offsetY: param.children_recursive[i].attribs.offsets[1],
+        };
+        obj.push(currentObj);
+      }
+    }
+    return obj;
+  }
 
   function randomizePart(partString, hideAll) {
     // var currentPart = partString.split("//")[1];
@@ -1355,6 +1385,7 @@ const useAvatar = props => {
     loadProject,
     fillImageData,
     fillBackgroundData,
+    fillPetsData,
     reloadConfig,
     getAvatar,
     infoDataParts,
