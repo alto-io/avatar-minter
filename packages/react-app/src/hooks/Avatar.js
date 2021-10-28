@@ -680,7 +680,7 @@ const useAvatar = props => {
       });
 
       _.forOwn(avatar, (value, key) => {
-        if (key != "attributes") {
+        if (!["attributes", "name", "metadata", "description"].includes(key)) {
           avatar.metadata.attributes.push({
             trait_type: key,
             value: value.name,
