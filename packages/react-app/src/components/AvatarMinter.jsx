@@ -134,7 +134,7 @@ export default function AvatarMinter(props) {
         });
     };
 
-    const handleDrawAvatar = async (paramCount, myCurrentData, myBackgrounds, myPets) => {
+    const handleDrawAvatar = async (paramCount, myCurrentData, myBackgrounds, myPets, totalAvatars) => {
         let currentAvatars = JSON.parse(localStorage.getItem("myAvatars"));
         let selectedAvatar = currentAvatars[paramCount];
 
@@ -152,10 +152,11 @@ export default function AvatarMinter(props) {
         stuffToRender.push(myPets[Math.floor(Math.random() * myPets.length)]);
         stuffToRender.sort((a, b) => a.zIndex - b.zIndex);
 
-        finalRender(stuffToRender, paramCount);
+        finalRender(stuffToRender, paramCount, totalAvatars);
     };
 
     async function handleDrawAvatarClick() {
+        window.nextRender = true;
         let myPets = await fillPetsData();
         let myBackgrounds = await fillBackgroundData();
         let myCurrentData = await fillImageData();
@@ -163,11 +164,10 @@ export default function AvatarMinter(props) {
         let arcadianCount = 0;
         let avatarInterval = setInterval(() => {
             if (window.nextRender === true) {
-                handleDrawAvatar(arcadianCount, myCurrentData, myBackgrounds, myPets);
+                handleDrawAvatar(arcadianCount, myCurrentData, myBackgrounds, myPets, totalAvatars);
                 arcadianCount += 1;
                 if (arcadianCount >= totalAvatars) {
                     clearInterval(avatarInterval);
-                    alert("Generated " + totalAvatars + " avatars !");
                 }
             }
             window.nextRender = false;

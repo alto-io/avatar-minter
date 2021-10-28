@@ -778,7 +778,7 @@ const useAvatar = props => {
     }
   }
 
-  function finalRender(paramArray, paramCount) {
+  function finalRender(paramArray, paramCount, totalAvatars) {
     const canvas1 = canvasRef.current;
     const ctx1 = canvas1.getContext("2d");
     var newCanvas = { width: 400, height: 400 };
@@ -816,10 +816,13 @@ const useAvatar = props => {
           //console.log(loadedImages);
           let downloadLink = document.getElementById("currentdownload");
           downloadLink.setAttribute("download", "arcadian" + paramCount + ".png");
-          let myIMG = canvas1.toDataURL("image/png").replace("image/png", "image/octet-stream");
-          downloadLink.setAttribute("href", myIMG);
+          let myImage = canvas1.toDataURL("image/png").replace("image/png", "image/octet-stream");
+          downloadLink.setAttribute("href", myImage);
           downloadLink.click();
           window.nextRender = true;
+          if (paramCount >= totalAvatars - 1) {
+            alert("Generated " + totalAvatars + " avatars !");
+          }
         }
       };
     }
