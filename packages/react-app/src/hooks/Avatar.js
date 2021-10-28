@@ -862,8 +862,14 @@ const useAvatar = props => {
 
   async function getMintingConfig() {
     console.log("getMintingConfig");
-    await loadProject();
 
+    await loadProject();
+    await getAllPartsJson(project);
+
+    await loadBackgrounds();
+    await getAllPartsJson(project);
+
+    await loadPets();
     await getAllPartsJson(project);
 
     var newConfig = _.merge(mintingConfig, tempPartsList);
