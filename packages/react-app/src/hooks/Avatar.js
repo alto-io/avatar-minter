@@ -657,8 +657,13 @@ const useAvatar = props => {
         }
       } else if (keyLowerCase.startsWith("female") || keyLowerCase.startsWith("male")) {
         myAvatars.push(...randomizePartsForClass(key, val, amountToCreate));
+      } else if (keyLowerCase === "pets") {
+        const randomPets = prepareWeightedArray(val, amountToCreate);
+        for (let i = 0; i < Math.min(myAvatars.length, amountToCreate); i++) {
+          myAvatars[i]["Pet"] = randomPets[i];
+        }
       } else {
-        console.warn("Unknown ora class.");
+        console.warn(`Unknown ora class: ${key}`);
       }
     });
 
