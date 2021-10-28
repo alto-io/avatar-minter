@@ -692,7 +692,8 @@ const useAvatar = props => {
       avatar.metadata.name = `${className} #${idx + 1}`; // Will be renamed to "Arcadians #${idx + 1}" after reshuffle
       avatar.metadata.description =
         "Arcadians is a collection of 10,000 NFT avatars built around the arcade of the metaverse!";
-      avatar.metadata.image = `${className}_${idx + 1}.png`; // will be assigned later
+      //avatar.metadata.image = `${className}_${idx + 1}.png`; // will be assigned later
+      avatar.metadata.image = `Arcadians-${uuidv4()}.png`; // Assigned unique identifier
     });
 
     localStorage.setItem("myAvatars", JSON.stringify(myAvatars));
@@ -810,7 +811,7 @@ const useAvatar = props => {
     }
   }
 
-  function finalRender(paramArray, paramCount, totalAvatars) {
+  function finalRender(paramArray, paramCount, totalAvatars, currentName) {
     const canvas1 = canvasRef.current;
     const ctx1 = canvas1.getContext("2d");
     var newCanvas = { width: 400, height: 400 };
@@ -847,7 +848,7 @@ const useAvatar = props => {
           }
           //console.log(loadedImages);
           let downloadLink = document.getElementById("currentdownload");
-          downloadLink.setAttribute("download", "arcadian-" + uuidv4() + ".png");
+          downloadLink.setAttribute("download", currentName);
           let myImage = canvas1.toDataURL("image/png").replace("image/png", "image/octet-stream");
           downloadLink.setAttribute("href", myImage);
           downloadLink.click();
