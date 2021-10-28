@@ -148,7 +148,7 @@ const useAvatar = props => {
   const loadProject = async fileLocation => {
     if (fileLocation instanceof Blob === false) {
       console.log("Loading default file");
-      const fileName = "female_knight";
+      const fileName = "backgrounds";
       await loadRarities(fileName);
       const loadedFile = await fetch(`avatars/${fileName}.ora`).then(r => r.blob());
       await project.load(loadedFile);
@@ -159,7 +159,15 @@ const useAvatar = props => {
   };
 
   const loadRarities = async fileName => {
-    const raritiesJson = await fetch(`avatars/${fileName}.json`).then(r => r.json());
+    let raritiesJson = null;
+    const fullFileName = `${fileName}.json`;
+    try {
+      raritiesJson = await fetch(`avatars/${fullFileName}`).then(r => r.json());
+    } catch (err) {
+      console.error(`Error loading rarities from ${fullFileName}:`);
+      console.error(err);
+      return;
+    }
     if (!raritiesJson.class) {
       console.warn("Missing rarities class.");
       return;
@@ -628,7 +636,25 @@ const useAvatar = props => {
     _.forOwn(currentParts, (val, key) => {
       const keyLowerCase = key.toLowerCase();
       if (keyLowerCase.startsWith("background")) {
-        console.warn("Backgrounds ora processing not implemented."); // TODO: backrounds
+        const flattenBackgrounds = [];
+        _.forOwn(val, bgGroup => {
+          _.forOwn(bgGroup, bgList => {
+            if (!Array.isArray(bgList)) {
+              _.forOwn(bgList, bgSubList => {
+                if (!Array.isArray(bgSubList)) {
+                  return;
+                }
+                flattenBackgrounds.push(...bgSubList);
+              });
+            } else {
+              flattenBackgrounds.push(...bgList);
+            }
+          });
+        });
+        const randomBackgrounds = prepareWeightedArray(flattenBackgrounds, amountToCreate);
+        for (let i = 0; i < Math.min(myAvatars.length, amountToCreate); i++) {
+          myAvatars[i]["Background"] = randomBackgrounds[i];
+        }
       } else if (keyLowerCase.startsWith("female") || keyLowerCase.startsWith("male")) {
         myAvatars.push(...randomizePartsForClass(key, val, amountToCreate));
       } else {
