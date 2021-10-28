@@ -1,6 +1,7 @@
 import { ConsoleSqlOutlined, ControlOutlined } from "@ant-design/icons";
 import { load } from "dotenv";
 import { doc } from "prettier";
+import { v4 as uuidv4 } from "uuid";
 import { useRef, useEffect, useState } from "react";
 import rwc from "random-weighted-choice";
 
@@ -846,7 +847,7 @@ const useAvatar = props => {
           }
           //console.log(loadedImages);
           let downloadLink = document.getElementById("currentdownload");
-          downloadLink.setAttribute("download", "arcadian" + paramCount + ".png");
+          downloadLink.setAttribute("download", "arcadian-" + uuidv4() + ".png");
           let myImage = canvas1.toDataURL("image/png").replace("image/png", "image/octet-stream");
           downloadLink.setAttribute("href", myImage);
           downloadLink.click();
