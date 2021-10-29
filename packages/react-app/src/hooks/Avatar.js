@@ -182,7 +182,11 @@ const useAvatar = props => {
     raritiesJson.rarity.forEach(rarity => {
       const partName = rarity["Part Name"];
       if (!partName) {
-        return;
+        const layerName = rarity["Part Layer"];
+        if (!layerName) {
+          return;
+        }
+        PartRarities[raritiesJson.class][layerName] = rarity.Rarity;
       }
       PartRarities[raritiesJson.class][partName] = rarity.Rarity;
     });
@@ -909,8 +913,16 @@ const useAvatar = props => {
     const className = partStringArray[1];
     const name = partStringArray[partStringArray.length - 1];
     let weight = RarityWeights.Common;
-    if (PartRarities[className] && PartRarities[className][name]) {
-      weight = RarityWeights[PartRarities[className][name]];
+
+    if (PartRarities[className]) {
+      let rarity = Common;
+      for (let i = partStringArray.length - 1; i >= 0; i -= 1) {
+        if (PartRarities[className][partStringArray[i]]) {
+          rarity = PartRarities[className][partStringArray[i]];
+          break;
+        }
+      }
+      weight = RarityWeights[rarity];
     } else {
       console.warn(`Part rarity not found for: ${name}, assigning Common.`);
     }
