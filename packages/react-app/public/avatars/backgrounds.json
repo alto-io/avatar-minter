@@ -1,0 +1,125 @@
+{
+    "class": "Backgrounds",
+    "rarity": [
+      {
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Layer": "Glitch_Hero",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Layer": "Glitch_Villain",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Layer": "Glitch_Rasta",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Layer": "Glitch_Beach",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Layer": "Glitch_Soldier",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Layer": "Glitch_Tech",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Layer": "Glitch_Science",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Layer": "Glitch_Sci_fi",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Layer": "Glitch_Magic",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Layer": "Glitch_Mischievous",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Layer": "Glitch_Princess",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Layer": "Glitch_Fantasy",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Layer": "Gold",
+        "Rarity": "Common"
+      },
+      {
+        "Part Layer": "Butter",
+        "Rarity": "Common"
+      },
+      {
+        "Part Layer": "Bumblebee",
+        "Rarity": "Common"
+      },
+      {
+        "Part Layer": "Banana",
+        "Rarity": "Common"
+      },
+      {
+        "Part Layer": "Jade",
+        "Rarity": "Common"
+      },
+      {
+        "Part Layer": "Sea",
+        "Rarity": "Common"
+      },
+      {
+        "Part Layer": "Grass",
+        "Rarity": "Common"
+      },
+      {
+        "Part Layer": "Forest",
+        "Rarity": "Common"
+      },
+      {
+        "Part Layer": "Watermelon",
+        "Rarity": "Common"
+      },
+      {
+        "Part Layer": "Fuscia",
+        "Rarity": "Common"
+      },
+      {
+        "Part Layer": "Eggplant",
+        "Rarity": "Common"
+      },
+      {
+        "Part Layer": "Apple_red",
+        "Rarity": "Common"
+      },
+      {
+        "Part Layer": "Red_orange",
+        "Rarity": "Common"
+      },
+      {
+        "Part Layer": "Air_force",
+        "Rarity": "Common"
+      },
+      {
+        "Part Layer": "Cobalt",
+        "Rarity": "Common"
+      },
+      {
+        "Part Layer": "Sky_blue",
+        "Rarity": "Common"
+      },
+      {
+        "Part Layer": "Teal",
+        "Rarity": "Common"
+      }
+    ]
+  }

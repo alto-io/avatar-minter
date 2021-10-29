@@ -38,5 +38,5 @@ yarn-debug.log*
 yarn-error.log*
 
 .idea
-packages/react-app/public/avatars/*.ora
+# packages/react-app/public/avatars/*.ora
 packages/hardhat/temp/*

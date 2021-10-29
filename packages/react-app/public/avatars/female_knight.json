@@ -7,6 +7,26 @@
       "Rarity": ""
     },
     {
+      "Part Name": "Knight Sword L",
+      "Part Layer": "Left Hand",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Knight Flaming Sword L",
+      "Part Layer": "Left Hand",
+      "Rarity": "Legendary"
+    },
+    {
+      "Part Name": "Sword L",
+      "Part Layer": "Left Hand",
+      "Rarity": "Mythical"
+    },
+    {
+      "Part Name": "Knight Cross L",
+      "Part Layer": "Left Hand",
+      "Rarity": "Common"
+    },
+    {
       "Part Name": "Scythe L",
       "Part Layer": "Left Hand",
       "Rarity": "Common"
@@ -14,12 +34,12 @@
     {
       "Part Name": "Trident L",
       "Part Layer": "Left Hand",
-      "Rarity": "Common"
+      "Rarity": "Rare"
     },
     {
       "Part Name": "Poison Sword L",
       "Part Layer": "Left Hand",
-      "Rarity": "Mythical"
+      "Rarity": "Rare"
     },
     {
       "Part Name": "Axe L",
@@ -32,6 +52,21 @@
       "Rarity": ""
     },
     {
+      "Part Name": "Lance R",
+      "Part Layer": "Right Hand",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Knight Shield R",
+      "Part Layer": "Right Hand",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Chainsaw R",
+      "Part Layer": "Right Hand",
+      "Rarity": "Common"
+    },
+    {
       "Part Name": "Scythe R",
       "Part Layer": "Right Hand",
       "Rarity": "Common"
@@ -39,12 +74,12 @@
     {
       "Part Name": "Trident R",
       "Part Layer": "Right Hand",
-      "Rarity": "Common"
+      "Rarity": "Rare"
     },
     {
       "Part Name": "Poison Sword R",
       "Part Layer": "Right Hand",
-      "Rarity": "Mythical"
+      "Rarity": "Rare"
     },
     {
       "Part Name": "Axe R",
@@ -57,6 +92,111 @@
       "Rarity": ""
     },
     {
+      "Part Name": "Metroid Helmet",
+      "Part Layer": "Head",
+      "Rarity": "Mythical"
+    },
+    {
+      "Part Name": "Samurai Helmet",
+      "Part Layer": "Head",
+      "Rarity": "Legendary"
+    },
+    {
+      "Part Name": "Viking Helmet",
+      "Part Layer": "Head",
+      "Rarity": "Rare"
+    },
+    {
+      "Part Name": "Centurion Helmet",
+      "Part Layer": "Head",
+      "Rarity": "Rare"
+    },
+    {
+      "Part Name": "Wild Hair",
+      "Part Layer": "Head",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Green Pony",
+      "Part Layer": "Head",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Red Head Pony",
+      "Part Layer": "Head",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "High Pony",
+      "Part Layer": "Head",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Rat Tail",
+      "Part Layer": "Head",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Mechanic Brown Rat",
+      "Part Layer": "Head",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Short White Hair",
+      "Part Layer": "Head",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Orange Hair",
+      "Part Layer": "Head",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Light Blond Hair",
+      "Part Layer": "Head",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "",
+      "Part Layer": "",
+      "Rarity": ""
+    },
+    {
+      "Part Name": "Okay",
+      "Part Layer": "Mouth",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Very Sad",
+      "Part Layer": "Mouth",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Sad",
+      "Part Layer": "Mouth",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Toothless",
+      "Part Layer": "Mouth",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Closed Smile",
+      "Part Layer": "Mouth",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Little Smile",
+      "Part Layer": "Mouth",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Smile",
+      "Part Layer": "Mouth",
+      "Rarity": "Common"
+    },
+    {
       "Part Name": "One Fang",
       "Part Layer": "Mouth",
       "Rarity": "Common"
@@ -64,12 +204,12 @@
     {
       "Part Name": "Vampire Fangs",
       "Part Layer": "Mouth",
-      "Rarity": "Common"
+      "Rarity": "Legendary"
     },
     {
-      "Part Name": "uwu Mouth",
+      "Part Name": "Uwu Mouth",
       "Part Layer": "Mouth",
-      "Rarity": "Common"
+      "Rarity": "Legendary"
     },
     {
       "Part Name": "Pucker",
@@ -80,6 +220,66 @@
       "Part Name": "",
       "Part Layer": "",
       "Rarity": ""
+    },
+    {
+      "Part Name": "Glasses and Eyebrows",
+      "Part Layer": "Eyes",
+      "Rarity": "Legendary"
+    },
+    {
+      "Part Name": "Poison Stare",
+      "Part Layer": "Eyes",
+      "Rarity": "Rare"
+    },
+    {
+      "Part Name": "Fiery Stare",
+      "Part Layer": "Eyes",
+      "Rarity": "Rare"
+    },
+    {
+      "Part Name": "Icy Stare",
+      "Part Layer": "Eyes",
+      "Rarity": "Rare"
+    },
+    {
+      "Part Name": "White Glasses",
+      "Part Layer": "Eyes",
+      "Rarity": "Rare"
+    },
+    {
+      "Part Name": "Bushy Eyebrows",
+      "Part Layer": "Eyes",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Sunglasses",
+      "Part Layer": "Eyes",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Shellsocked",
+      "Part Layer": "Eyes",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Happy",
+      "Part Layer": "Eyes",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Sneaky",
+      "Part Layer": "Eyes",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Angry",
+      "Part Layer": "Eyes",
+      "Rarity": "Common"
+    },
+    {
+      "Part Name": "Original",
+      "Part Layer": "Eyes",
+      "Rarity": "Common"
     },
     {
       "Part Name": "Scar",
@@ -112,39 +312,19 @@
       "Rarity": ""
     },
     {
-      "Part Name": "Samurai Helmet",
-      "Part Layer": "Head",
-      "Rarity": "Rare"
-    },
-    {
-      "Part Name": "Viking Helmet",
-      "Part Layer": "Head",
-      "Rarity": "Common"
-    },
-    {
-      "Part Name": "Centurion Helmet",
-      "Part Layer": "Head",
-      "Rarity": "Common"
-    },
-    {
-      "Part Name": "Wild Hair",
-      "Part Layer": "Head",
-      "Rarity": "Rare"
-    },
-    {
-      "Part Name": "Green Pony",
-      "Part Layer": "Head",
+      "Part Name": "Deedlit Armor",
+      "Part Layer": "Top",
       "Rarity": "Legendary"
     },
     {
-      "Part Name": "",
-      "Part Layer": "",
-      "Rarity": ""
+      "Part Name": "Kerrigan Armor",
+      "Part Layer": "Top",
+      "Rarity": "Mythical"
     },
     {
       "Part Name": "Samurai Armor",
       "Part Layer": "Top",
-      "Rarity": "Rare"
+      "Rarity": "Legendary"
     },
     {
       "Part Name": "Barbarian Armor",
@@ -165,6 +345,21 @@
       "Part Name": "",
       "Part Layer": "",
       "Rarity": ""
+    },
+    {
+      "Part Name": "Metroid Leggings ",
+      "Part Layer": "Bottom",
+      "Rarity": "Mythical"
+    },
+    {
+      "Part Name": "Kerrigan Leggings",
+      "Part Layer": "Bottom",
+      "Rarity": "Mythical"
+    },
+    {
+      "Part Name": "Deedlit Leggings",
+      "Part Layer": "Bottom",
+      "Rarity": "Legendary"
     },
     {
       "Part Name": "Samurai Leggings",
@@ -192,7 +387,7 @@
       "Rarity": ""
     },
     {
-      "Part Name": "Metal ",
+      "Part Name": "Metal",
       "Part Layer": "Skin",
       "Rarity": "Legendary"
     },
