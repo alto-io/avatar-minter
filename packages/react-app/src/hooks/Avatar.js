@@ -96,7 +96,7 @@ const useAvatar = props => {
 
   const [randomConfig, setRandomConfig] = useState({ Root: {} });
   const [mintingConfig, setMintingConfig] = useState({
-    amountToCreate: 2,
+    amountToCreate: 1000,
     description: "An avatar for the open metaverse!",
     external_url: "https://kernel.community/en/track-gaming/module-1",
     initialized: false,
@@ -149,7 +149,7 @@ const useAvatar = props => {
   const loadProject = async (fileLocation, originalFileName) => {
     if (fileLocation instanceof Blob === false) {
       console.log("Loading default file");
-      const fileName = "female_knight";
+      const fileName = "male_wizard";
       await loadRarities(fileName);
       const loadedFile = await fetch(`avatars/${fileName}.ora`).then(r => r.blob());
       await project.load(loadedFile);
