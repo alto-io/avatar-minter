@@ -192,14 +192,14 @@ const useAvatar = props => {
     console.log("Backgrounds loaded");
     const fileName = "backgrounds";
     let loaded_background = await fetch(`avatars/${fileName}.ora`).then(r => r.blob());
-    await project.load(loaded_background, fileName);
+    await loadProject(loaded_background, fileName);
   };
 
   const loadPets = async () => {
     console.log("Pets loaded");
     const fileName = "pets";
     let loaded_pets = await fetch(`avatars/${fileName}.ora`).then(r => r.blob());
-    await project.load(loaded_pets, fileName);
+    await loadProject(loaded_pets, fileName);
   };
 
   async function drawAvatarFromMetadata(metadata, index, amountToCreate) {
