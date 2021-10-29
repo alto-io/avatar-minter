@@ -1,0 +1,340 @@
+{
+    "class": "Male Wizard",
+    "rarity": [
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Crystal Sword L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Shield L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Potion L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Mage Staff L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Mage Book L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Spellbook L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Wand L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Lich Sword L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Snake Staff L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Crystal Sword R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Lich Sword R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Knight Sword R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Mage Staff R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Potion Bottle R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Mage Wand R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Spellbook R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Snake Staff R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Frowning",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Flat",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Shouting",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Smiling",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Beard",
+        "Part Layer": "Mouth",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Moustache",
+        "Part Layer": "Mouth",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Cigar",
+        "Part Layer": "Mouth",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Fullbeard",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Poison Stare",
+        "Part Layer": "Eyes",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Fiery Stare",
+        "Part Layer": "Eyes",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Icy State",
+        "Part Layer": "Eyes",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Glasses",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Bushy",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Shades",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Shellshocked",
+        "Part Layer": "Eyes",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Happy",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Sneaky",
+        "Part Layer": "Eyes",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Angry",
+        "Part Layer": "Eyes",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Bright-Eyed",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Lich Skull",
+        "Part Layer": "Head",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Purple Hood",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Green Hood",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Sorcerer Hat",
+        "Part Layer": "Head",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Elven Hair",
+        "Part Layer": "Head",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Gray Hood",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Mage Robe",
+        "Part Layer": "Top",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "White Robe",
+        "Part Layer": "Top",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Purple Robe",
+        "Part Layer": "Top",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Academy Robe",
+        "Part Layer": "Top",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Lich Robe",
+        "Part Layer": "Top",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Common Robe",
+        "Part Layer": "Top",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Lich Bottom",
+        "Part Layer": "Bottom",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Black Pants",
+        "Part Layer": "Bottom",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Red Boots",
+        "Part Layer": "Bottom",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Purple Pants",
+        "Part Layer": "Bottom",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Green Pants",
+        "Part Layer": "Bottom",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Metal",
+        "Part Layer": "Skin",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Gold",
+        "Part Layer": "Skin",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Zombie",
+        "Part Layer": "Skin",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Orc",
+        "Part Layer": "Skin",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Dark",
+        "Part Layer": "Skin",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Light",
+        "Part Layer": "Skin",
+        "Rarity": "Common"
+      }
+    ]
+  }
