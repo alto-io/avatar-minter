@@ -149,7 +149,7 @@ const useAvatar = props => {
   const loadProject = async (fileLocation, originalFileName) => {
     if (fileLocation instanceof Blob === false) {
       console.log("Loading default file");
-      const fileName = "female_wizard";
+      const fileName = "female_assassin";
       await loadRarities(fileName);
       const loadedFile = await fetch(`avatars/${fileName}.ora`).then(r => r.blob());
       await project.load(loadedFile);
