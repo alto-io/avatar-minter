@@ -668,7 +668,10 @@ const useAvatar = props => {
       } else if (keyLowerCase === "pets") {
         const randomPets = prepareWeightedArray(val, amountToCreate);
         for (let i = 0; i < Math.min(myAvatars.length, amountToCreate); i++) {
-          myAvatars[i]["Pet"] = randomPets[i];
+          const pet = randomPets[i];
+          if (pet.name !== "None") {
+            myAvatars[i]["Pet"] = pet;
+          }
         }
       } else {
         console.warn(`Unknown ora class: ${key}`);
@@ -879,6 +882,12 @@ const useAvatar = props => {
 
     await loadPets();
     await getAllPartsJson(project);
+
+    // add a non-existing pet to balance 13 mythicals cats
+    tempPartsList.PartsList.Pets.push({
+      name: "None",
+      weight: 1287, // 13 / (1300 - 13) ~ 0.01 (1%)
+    });
 
     var newConfig = _.merge(mintingConfig, tempPartsList);
     newConfig.initialized = true;
