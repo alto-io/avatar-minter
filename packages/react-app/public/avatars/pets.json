@@ -1,60 +1,70 @@
 {
-    "class": "Pets",
-    "rarity": [
-      {
-        "Part Name": "Mushroom Mania",
-        "Part Layer": "Pets",
-        "Rarity": "Mythical"
-      },
-      {
-        "Part Name": "Assassin Bot",
-        "Part Layer": "Pets",
-        "Rarity": "Mythical"
-      },
-      {
-        "Part Name": "Gunner Bot",
-        "Part Layer": "Pets",
-        "Rarity": "Mythical"
-      },
-      {
-        "Part Name": "Tech Bot",
-        "Part Layer": "Pets",
-        "Rarity": "Mythical"
-      },
-      {
-        "Part Name": "Badlucky",
-        "Part Layer": "Pets",
-        "Rarity": "Mythical"
-      },
-      {
-        "Part Name": "Badlucky Wizard",
-        "Part Layer": "Pets",
-        "Rarity": "Mythical"
-      },
-      {
-        "Part Name": "Badlucky Engineer",
-        "Part Layer": "Pets",
-        "Rarity": "Mythical"
-      },
-      {
-        "Part Name": "Badlucky Paladin",
-        "Part Layer": "Pets",
-        "Rarity": "Mythical"
-      },
-      {
-        "Part Name": "Badlucky Detective",
-        "Part Layer": "Pets",
-        "Rarity": "Mythical"
-      },
-      {
-        "Part Name": "Badlucky Archer",
-        "Part Layer": "Pets",
-        "Rarity": "Mythical"
-      },
-      {
-        "Part Name": "Badlucky Bling",
-        "Part Layer": "Pets",
-        "Rarity": "Mythical"
-      }
-    ]
-  }
+  "class": "Pets",
+  "rarity": [
+    {
+      "Part Name": "Mushroom Mania",
+      "Part Layer": "Pets",
+      "Rarity": "Mythical"
+    },
+    {
+      "Part Name": "Assassin Bot",
+      "Part Layer": "Pets",
+      "Rarity": "Mythical"
+    },
+    {
+      "Part Name": "Gunner Bot",
+      "Part Layer": "Pets",
+      "Rarity": "Mythical"
+    },
+    {
+      "Part Name": "Tech Bot",
+      "Part Layer": "Pets",
+      "Rarity": "Mythical"
+    },
+    {
+      "Part Name": "Badlucky",
+      "Part Layer": "Pets",
+      "Rarity": "Mythical"
+    },
+    {
+      "Part Name": "Badlucky Wizard",
+      "Part Layer": "Pets",
+      "Rarity": "Mythical"
+    },
+    {
+      "Part Name": "Badlucky Engineer",
+      "Part Layer": "Pets",
+      "Rarity": "Mythical"
+    },
+    {
+      "Part Name": "Badlucky Paladin",
+      "Part Layer": "Pets",
+      "Rarity": "Mythical"
+    },
+    {
+      "Part Name": "Badlucky Detective",
+      "Part Layer": "Pets",
+      "Rarity": "Mythical"
+    },
+    {
+      "Part Name": "Badlucky Archer",
+      "Part Layer": "Pets",
+      "Rarity": "Mythical"
+    },
+    {
+      "Part Name": "Badlucky Bling",
+      "Part Layer": "Pets",
+      "Rarity": "Mythical"
+    },
+    {
+      "Part Name": "Badulucky Ninja",
+      "Part Layer": "Pets",
+      "Rarity": "Mythical"
+    },
+    {
+      "Part Name": "Wizard Bot",
+      "Part Layer": "Pets",
+      "Rarity": "Mythical"
+    }
+  ]
+}
