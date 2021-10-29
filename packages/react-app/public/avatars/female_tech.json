@@ -1,0 +1,440 @@
+{
+    "class": "Female Tech",
+    "rarity": [
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Crystal Sword L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Wrench L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Claws L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Battle Guitar L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Pistol L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Mobile Phone L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Cyberpunk Sword L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Cyberpunk Gun L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Mechanic Screwdriver L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Buster Cannon R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Screwdriver R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Claws R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Mobile Phone R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Battle Guitar R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Cyberpunk Sword R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Laptop Decker R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Black Cat",
+        "Part Layer": "Head",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Ombre Green Long",
+        "Part Layer": "Head",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Headset",
+        "Part Layer": "Head",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Rat Tail",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Ombre Green Short",
+        "Part Layer": "Head",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Brown Cat",
+        "Part Layer": "Head",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Mohawk Data Cables",
+        "Part Layer": "Head",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Cat Ears",
+        "Part Layer": "Head",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Mechanic Brown Rat",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Wild Hair",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Green Pony",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Red Head Pony",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "High Pony",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Short White Hair",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Orange Hair",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Light Blond Hair",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Okay",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Very Sad",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Sad",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Toothless",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Closed Smile",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Little Smile",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Smile",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "One Fang",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Vampire Fangs",
+        "Part Layer": "Mouth",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Uwu Mouth",
+        "Part Layer": "Mouth",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Pucker",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Glasses and Eyebrows",
+        "Part Layer": "Eyes",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Poison Stare",
+        "Part Layer": "Eyes",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Fiery Stare",
+        "Part Layer": "Eyes",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Icy Stare",
+        "Part Layer": "Eyes",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "White Glasses",
+        "Part Layer": "Eyes",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Bushy Eyebrows",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Sunglasses",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Shellsocked",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Happy",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Sneaky",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Angry",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Original",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Scar",
+        "Part Layer": "Eyes",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Eyepatch",
+        "Part Layer": "Eyes",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Winking",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "uwu Eyes",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Mischief",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Turtleneck Armor",
+        "Part Layer": "Top",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Formal Tuxedo Armor",
+        "Part Layer": "Top",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Sports Bra",
+        "Part Layer": "Top",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Emo Goth Punk Armor",
+        "Part Layer": "Top",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Cyberpunk Armor",
+        "Part Layer": "Top",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Mechanic Sports Bra",
+        "Part Layer": "Top",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Green Legging",
+        "Part Layer": "Bottom",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Formal Tuxedo Legging",
+        "Part Layer": "Bottom",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Fishnets Legging",
+        "Part Layer": "Bottom",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Blue Legging",
+        "Part Layer": "Bottom",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Emo Goth Punk Legging",
+        "Part Layer": "Bottom",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Cyberpunk Legging",
+        "Part Layer": "Bottom",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Mechanic Blue Legging",
+        "Part Layer": "Bottom",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Metal",
+        "Part Layer": "Skin",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Gold",
+        "Part Layer": "Skin",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Zombie",
+        "Part Layer": "Skin",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Orc",
+        "Part Layer": "Skin",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Dark",
+        "Part Layer": "Skin",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Light",
+        "Part Layer": "Skin",
+        "Rarity": "Common"
+      }
+    ]
+  }
