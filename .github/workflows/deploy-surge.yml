@@ -38,8 +38,8 @@ jobs:
            - name: Install dependencies
              run: yarn install --frozen-lockfile
 
-           - name: Deploy contract
-             run: yarn deploy
+#           - name: Deploy contract
+#            run: yarn deploy
 
            - name: Build React App                              
              run: yarn build-no-ci
