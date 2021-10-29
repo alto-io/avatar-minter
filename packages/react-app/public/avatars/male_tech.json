@@ -1,0 +1,330 @@
+{
+    "class": "Male Tech",
+    "rarity": [
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Energy Blade",
+        "Part Layer": "Left Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Cyber Punk Katana L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Travis Sword L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Halo Rifle L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Cybernetic Arm L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Energy Sword L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Energy Sword R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Cyber Punk Katana R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Travis Sword R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Halo beam R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Buster Cannon R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Cybernetic Arm R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Rail Gun R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Frowning",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Flat",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Shouting",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Smiling",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Beard",
+        "Part Layer": "Mouth",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Moustache",
+        "Part Layer": "Mouth",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Cigar",
+        "Part Layer": "Mouth",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Fullbeard",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Poison Stare",
+        "Part Layer": "Eyes",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Fiery Stare",
+        "Part Layer": "Eyes",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Icy State",
+        "Part Layer": "Eyes",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Glasses",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Bushy",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Shades",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Shellshocked",
+        "Part Layer": "Eyes",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Happy",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Sneaky",
+        "Part Layer": "Eyes",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Angry",
+        "Part Layer": "Eyes",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Bright-Eyed",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Bomber Helm",
+        "Part Layer": "Head",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "AR Googles",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Master Chief Helmet",
+        "Part Layer": "Head",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Sci-Fi Helmet",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Travis Head",
+        "Part Layer": "Head",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Law Helm",
+        "Part Layer": "Head",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Cyber Mask",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Visor",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Master Chief ",
+        "Part Layer": "Top",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Starcraft Marine",
+        "Part Layer": "Top",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Sci-Fi Armor",
+        "Part Layer": "Top",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Travis Jacket",
+        "Part Layer": "Top",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Blue Sci-Fi Armor",
+        "Part Layer": "Top",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Cargo Pants",
+        "Part Layer": "Bottom",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Sci-Fi  Pants",
+        "Part Layer": "Bottom",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Travis Pants",
+        "Part Layer": "Bottom",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Master Chief Pants",
+        "Part Layer": "Bottom",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Denim Pants",
+        "Part Layer": "Bottom",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Blue Sci-fi Pants",
+        "Part Layer": "Bottom",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Metal",
+        "Part Layer": "Skin",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Gold",
+        "Part Layer": "Skin",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Zombie",
+        "Part Layer": "Skin",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Orc",
+        "Part Layer": "Skin",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Dark",
+        "Part Layer": "Skin",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Light",
+        "Part Layer": "Skin",
+        "Rarity": "Common"
+      }
+    ]
+  }
