@@ -148,7 +148,7 @@ export default function AvatarMinter(props) {
             }
         }
         stuffToRender.sort((a, b) => a.zIndex - b.zIndex);
-        finalRender(stuffToRender, paramCount, totalAvatars, selectedAvatar.metadata.image);
+        finalRender(stuffToRender, paramCount, totalAvatars, selectedAvatar.localfile);
     };
 
     async function handleDrawAvatarClick() {

@@ -702,13 +702,18 @@ const useAvatar = props => {
       avatar.metadata.name = `${className} #${idx + 1}`; // Will be renamed to "Arcadians #${idx + 1}" after reshuffle
       avatar.metadata.description =
         "Arcadians is a collection of 10,000 NFT avatars built around the arcade of the metaverse!";
-      //avatar.metadata.image = `${className}_${idx + 1}.png`; // will be assigned later
 
-      // live
-      // avatar.metadata.image = `https://images.arcadians.io/arcadian-${uuidv4()}.png`; // Assigned unique identifier
+      var id = uuidv4();
+
+      avatar.localfile = `arcadian-${id}.png`; // Assigned unique identifier
 
       // test
-      avatar.metadata.image = `http://images.arcadians-test.s3-website-us-east-1.amazonaws.com/arcadian-${uuidv4()}.png`; // Assigned unique identifier
+      avatar.metadata.image = `http://images.arcadians-test.s3-website-us-east-1.amazonaws.com/` + avatar.localfile; // Assigned unique identifier
+
+      // live
+      // avatar.metadata.image = https://images.arcadians.io/` + avatar.localfile; // Assigned unique identifier
+
+
     });
 
     localStorage.setItem("myAvatars", JSON.stringify(myAvatars));
@@ -891,7 +896,7 @@ const useAvatar = props => {
     // add a non-existing pet to balance 13 mythicals cats
     tempPartsList.PartsList.Pets.push({
       name: "None",
-      weight: 1287, // 13 / (1300 - 13) ~ 0.01 (1%)
+      weight: 322, // 13 / (1300 - 13) ~ 0.01 (1%)
     });
 
     var newConfig = _.merge(mintingConfig, tempPartsList);
