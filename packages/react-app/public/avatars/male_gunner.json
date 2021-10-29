@@ -1,0 +1,365 @@
+{
+    "class": "Male Gunner",
+    "rarity": [
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Atomizer Bat L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Flying Guillotine L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Soda Popper L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Ammo Belt L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Rocket Launcher L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Flamethrower L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Grenade Launcher L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Rifle L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Sonic L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Atomizer Bat R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Flying Guillotine R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Soda Popper R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Heavy Machinegun R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Desert Eagle R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "AWP R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Sonic R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Rifle R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Frowning",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Flat",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Shouting",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Smiling",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Beard",
+        "Part Layer": "Mouth",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Moustache",
+        "Part Layer": "Mouth",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Cigar",
+        "Part Layer": "Mouth",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Fullbeard",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Poison Stare",
+        "Part Layer": "Eyes",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Fiery Stare",
+        "Part Layer": "Eyes",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Icy State",
+        "Part Layer": "Eyes",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Glasses",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Bushy",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Shades",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Shellshocked",
+        "Part Layer": "Eyes",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Happy",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Sneaky",
+        "Part Layer": "Eyes",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Angry",
+        "Part Layer": "Eyes",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Bright-Eyed",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "HOUWAR",
+        "Part Layer": "Head",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Blonde Bandana",
+        "Part Layer": "Head",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Buzzcut",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Messy Black Hair",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Black Bandana",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Blonde Buzzcut",
+        "Part Layer": "Head",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Long Blonde Hair",
+        "Part Layer": "Head",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Tank Top Gold Chain",
+        "Part Layer": "Top",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Blue Shirt",
+        "Part Layer": "Top",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Red Shirt",
+        "Part Layer": "Top",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Orange Tank",
+        "Part Layer": "Top",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Black Tank",
+        "Part Layer": "Top",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Blue Tank",
+        "Part Layer": "Top",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Green Tank",
+        "Part Layer": "Top",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Brown Shirt",
+        "Part Layer": "Top",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Greensocks",
+        "Part Layer": "Bottom",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Green Army",
+        "Part Layer": "Bottom",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Midnight Army",
+        "Part Layer": "Bottom",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Orange Army",
+        "Part Layer": "Bottom",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Blue Army",
+        "Part Layer": "Bottom",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Camo Army",
+        "Part Layer": "Bottom",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Green Tactical",
+        "Part Layer": "Bottom",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Metal",
+        "Part Layer": "Skin",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Gold",
+        "Part Layer": "Skin",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Zombie",
+        "Part Layer": "Skin",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Orc",
+        "Part Layer": "Skin",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Dark",
+        "Part Layer": "Skin",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Light",
+        "Part Layer": "Skin",
+        "Rarity": "Common"
+      }
+    ]
+  }

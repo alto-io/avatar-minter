@@ -1,0 +1,440 @@
+{
+    "class": "Female Wizard",
+    "rarity": [
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Mage Staff L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Book L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Priestess Chalice L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Scept L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Magical Quill L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Glowing Scroll L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Gowing Hands L",
+        "Part Layer": "Left Hand",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Mage Staff R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Mage Book R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Snake Staff R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "War Hammer R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Scept R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Magical Quill R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Glowing Scroll R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Glowing Hands R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Mace R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Priestess Hammer R",
+        "Part Layer": "Right Hand",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Brown Hair",
+        "Part Layer": "Head",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Bald Hair",
+        "Part Layer": "Head",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Blonde Bun",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Orange Hair with Pink Glasses",
+        "Part Layer": "Head",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Orange Hair",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "White Elven Hair",
+        "Part Layer": "Head",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Light Blond Hair",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Green Hoodie",
+        "Part Layer": "Head",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Wild Hair",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Green Pony",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Red Head Pony",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "High Pony",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Rat Tail",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Mechanic Brown Rat",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Short White Hair",
+        "Part Layer": "Head",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Okay",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Very Sad",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Sad",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Toothless",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Closed Smile",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Little Smile",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Smile",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "One Fang",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Vampire Fangs",
+        "Part Layer": "Mouth",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Uwu Mouth",
+        "Part Layer": "Mouth",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Pucker",
+        "Part Layer": "Mouth",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Glasses and Eyebrows",
+        "Part Layer": "Eyes",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Poison Stare",
+        "Part Layer": "Eyes",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Fiery Stare",
+        "Part Layer": "Eyes",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Icy Stare",
+        "Part Layer": "Eyes",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "White Glasses",
+        "Part Layer": "Eyes",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Bushy Eyebrows",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Sunglasses",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Shellsocked",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Happy",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Sneaky",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Angry",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Original",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Scar",
+        "Part Layer": "Eyes",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Eyepatch",
+        "Part Layer": "Eyes",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Winking",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "uwu Eyes",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Mischief",
+        "Part Layer": "Eyes",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Challenger Armor",
+        "Part Layer": "Top",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Red Priestess Armor",
+        "Part Layer": "Top",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Priestess Armor",
+        "Part Layer": "Top",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Bloodmage Armor",
+        "Part Layer": "Top",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Green Hoodie Armor",
+        "Part Layer": "Top",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Yellow Robe",
+        "Part Layer": "Top",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Priestess Robe",
+        "Part Layer": "Top",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Yellow Robe Armor",
+        "Part Layer": "Bottom",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Challenger Leggings",
+        "Part Layer": "Bottom",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Priestess Steel Boots",
+        "Part Layer": "Bottom",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Bloodmage Dress",
+        "Part Layer": "Bottom",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Darkmage Dress",
+        "Part Layer": "Bottom",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Priestess Robe Dress",
+        "Part Layer": "Bottom",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "",
+        "Part Layer": "",
+        "Rarity": ""
+      },
+      {
+        "Part Name": "Metal",
+        "Part Layer": "Skin",
+        "Rarity": "Legendary"
+      },
+      {
+        "Part Name": "Gold",
+        "Part Layer": "Skin",
+        "Rarity": "Mythical"
+      },
+      {
+        "Part Name": "Zombie",
+        "Part Layer": "Skin",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Orc",
+        "Part Layer": "Skin",
+        "Rarity": "Rare"
+      },
+      {
+        "Part Name": "Dark",
+        "Part Layer": "Skin",
+        "Rarity": "Common"
+      },
+      {
+        "Part Name": "Light",
+        "Part Layer": "Skin",
+        "Rarity": "Common"
+      }
+    ]
+  }
