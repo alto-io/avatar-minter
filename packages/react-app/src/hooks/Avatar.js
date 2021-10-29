@@ -146,7 +146,7 @@ const useAvatar = props => {
     }
   };
 
-  const loadProject = async fileLocation => {
+  const loadProject = async (fileLocation, originalFileName) => {
     if (fileLocation instanceof Blob === false) {
       console.log("Loading default file");
       const fileName = "female_knight";
@@ -155,6 +155,7 @@ const useAvatar = props => {
       await project.load(loadedFile);
     } else {
       console.log("Loading specified file");
+      await loadRarities(originalFileName);
       await project.load(fileLocation);
     }
   };
@@ -189,14 +190,16 @@ const useAvatar = props => {
 
   const loadBackgrounds = async () => {
     console.log("Backgrounds loaded");
-    let loaded_background = await fetch(`avatars/backgrounds.ora`).then(r => r.blob());
-    await project.load(loaded_background);
+    const fileName = "backgrounds";
+    let loaded_background = await fetch(`avatars/${fileName}.ora`).then(r => r.blob());
+    await project.load(loaded_background, fileName);
   };
 
   const loadPets = async () => {
     console.log("Pets loaded");
-    let loaded_pets = await fetch(`avatars/pets.ora`).then(r => r.blob());
-    await project.load(loaded_pets);
+    const fileName = "pets";
+    let loaded_pets = await fetch(`avatars/${fileName}.ora`).then(r => r.blob());
+    await project.load(loaded_pets, fileName);
   };
 
   async function drawAvatarFromMetadata(metadata, index, amountToCreate) {
