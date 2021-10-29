@@ -149,7 +149,7 @@ const useAvatar = props => {
   const loadProject = async (fileLocation, originalFileName) => {
     if (fileLocation instanceof Blob === false) {
       console.log("Loading default file");
-      const fileName = "male_wizard";
+      const fileName = "female_wizard";
       await loadRarities(fileName);
       const loadedFile = await fetch(`avatars/${fileName}.ora`).then(r => r.blob());
       await project.load(loadedFile);
@@ -699,7 +699,7 @@ const useAvatar = props => {
         }
       });
 
-      avatar.metadata.name = `${className} #${idx + 1}`; // Will be renamed to "Arcadians #${idx + 1}" after reshuffle
+      // avatar.metadata.name = `${className} #${idx + 1}`; // Will be renamed to "Arcadians #${idx + 1}" after reshuffle
       avatar.metadata.description =
         "Arcadians is a collection of 10,000 NFT avatars built around the arcade of the metaverse!";
 
