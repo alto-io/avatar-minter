@@ -57,6 +57,8 @@ export default function AvatarViewer() {
         dataParts,
         loadProject,
         fillImageData,
+        fillBackgroundData,
+        fillPetsData,
         reloadConfig,
         getAvatar,
         infoDataParts,
@@ -71,8 +73,6 @@ export default function AvatarViewer() {
         setNewAvatar,
         getMintingConfig,
         generateMetadataJson,
-        oldGenerateMetadataJson,
-        singleClassGenerateMetadataJson,
         setMintingConfig,
         setMetadataJson,
         metadataJson,
@@ -84,7 +84,7 @@ export default function AvatarViewer() {
         selectedClass,
         configTree,
         setConfigTree,
-        lootText
+        lootText,
     ] = useAvatar();
 
     const [defaultText, setDefaultText] = useState({value: "Default"});

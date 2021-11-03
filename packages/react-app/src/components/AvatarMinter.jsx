@@ -70,8 +70,6 @@ export default function AvatarMinter(props) {
         setNewAvatar,
         getMintingConfig,
         generateMetadataJson,
-        oldGenerateMetadataJson,
-        singleClassGenerateMetadataJson,
         setMintingConfig,
         setMetadataJson,
         metadataJson,

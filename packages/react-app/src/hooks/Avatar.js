@@ -724,113 +724,6 @@ const useAvatar = props => {
     return currentAvatars;
   }
 
-  async function oldGenerateMetadataJson(mintingConfigJSON) {
-    if (mintingConfigJSON.initialized) {
-      var amountToCreate = mintingConfigJSON.amountToCreate;
-      var mintArray = [];
-      console.log("generateMetadaJson");
-      let currentParts = JSON.parse(localStorage.getItem("myParts"));
-      console.log(currentParts);
-      let backgrounds = currentParts["Background UNIVERSAL"];
-      let femaleParts = Object.keys(currentParts["CLASS female"]);
-      let femaleClasses = [];
-      let femaleBasics = [];
-      for (let i = 0; i < femaleParts.length; i++) {
-        if (femaleParts[i].includes("CLASS")) {
-          let currentObj = currentParts["CLASS female"][femaleParts[i]];
-          currentObj.name = femaleParts[i];
-          femaleClasses.push(currentObj);
-        } else {
-          let currentObj = {};
-          currentObj.parts = currentParts["CLASS female"][femaleParts[i]];
-          currentObj.name = femaleParts[i];
-          femaleBasics.push(currentObj);
-        }
-      }
-      let maleParts = Object.keys(currentParts["CLASS male"]);
-      let maleClasses = [];
-      let maleBasics = [];
-      for (let i = 0; i < maleParts.length; i++) {
-        if (maleParts[i].includes("CLASS")) {
-          let currentObj = currentParts["CLASS male"][maleParts[i]];
-          currentObj.name = maleParts[i];
-          maleClasses.push(currentObj);
-        } else {
-          let currentObj = {};
-          currentObj.parts = currentParts["CLASS male"][maleParts[i]];
-          currentObj.name = maleParts[i];
-          maleBasics.push(currentObj);
-        }
-      }
-      for (var i = 1; i <= amountToCreate; i++) {
-        let rBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
-        let rClass =
-          Math.random() > 0.5
-            ? femaleClasses[Math.floor(Math.random() * femaleClasses.length)]
-            : maleClasses[Math.floor(Math.random() * maleClasses.length)];
-        let fillParts = {};
-        fillParts.name = rClass.name;
-        fillParts.base = rClass.name.includes("female") ? femaleBasics[2].parts[0] : maleBasics[2].parts[0];
-        fillParts.background = rBackground;
-        for (let prop in rClass) {
-          if (prop !== "name") {
-            fillParts[prop] = rClass[prop][Math.floor(Math.random() * rClass[prop].length)];
-          }
-        }
-        let allProps = Object.assign({}, fillParts);
-        mintArray.push(allProps);
-        var tempMetadataJson = {
-          tokenMetadata: mintArray,
-        };
-        setMetadataJson(tempMetadataJson);
-      }
-      let myAvatars = JSON.parse(localStorage.getItem("myAvatars"));
-      myAvatars.push(tempMetadataJson);
-      localStorage.setItem("myAvatars", JSON.stringify(myAvatars));
-      let currentAvatars = JSON.parse(localStorage.getItem("myAvatars"));
-      console.log(`Now we have ${currentAvatars.length} avatars!`);
-      return tempMetadataJson;
-    } else {
-      return {
-        filename: "metadata.json",
-      };
-    }
-  }
-
-  async function singleClassGenerateMetadataJson(mintingConfigJSON) {
-    if (mintingConfigJSON.initialized) {
-      console.log("singleClassgenerateMetadaJson");
-
-      var amountToCreate = mintingConfigJSON.amountToCreate;
-
-      let myAvatars = JSON.parse(localStorage.getItem("myAvatars"));
-      let currentClass = JSON.parse(localStorage.getItem("myParts"));
-      let allCategories = currentClass[Object.keys(currentClass)[0]];
-
-      for (var i = 1; i <= amountToCreate; i++) {
-        let newAvatar = {};
-        newAvatar.name = Object.keys(currentClass)[0];
-        for (let prop in allCategories) {
-          if (prop !== "name") {
-            newAvatar[prop] = allCategories[prop][Math.floor(Math.random() * allCategories[prop].length)];
-          }
-        }
-        myAvatars.push(newAvatar);
-      }
-
-      localStorage.setItem("myAvatars", JSON.stringify(myAvatars));
-      let currentAvatars = JSON.parse(localStorage.getItem("myAvatars"));
-      console.log(`Now we have ${currentAvatars.length} avatars!`);
-
-      setMetadataJson(currentAvatars);
-      return currentAvatars;
-    } else {
-      return {
-        filename: "metadata.json",
-      };
-    }
-  }
-
   function finalRender(paramArray, paramCount, totalAvatars, currentName) {
     const canvas1 = canvasRef.current;
     const ctx1 = canvas1.getContext("2d");
@@ -1476,8 +1369,6 @@ const useAvatar = props => {
     setNewAvatar,
     getMintingConfig,
     generateMetadataJson,
-    oldGenerateMetadataJson,
-    singleClassGenerateMetadataJson,
     setMintingConfig,
     setMetadataJson,
     metadataJson,
