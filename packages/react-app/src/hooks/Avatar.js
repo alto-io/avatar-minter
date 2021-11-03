@@ -149,7 +149,18 @@ const useAvatar = props => {
   const loadProject = async (fileLocation, originalFileName) => {
     if (fileLocation instanceof Blob === false) {
       console.log("Loading default file");
+
       const fileName = "female_assassin";
+      // const fileName = "female_knight";
+      // const fileName = "female_gunner";
+      // const fileName = "female_tech";
+      // const fileName = "female_wizard";
+      // const fileName = "male_assassin";
+      // const fileName = "male_knight";
+      // const fileName = "male_gunner";
+      // const fileName = "male_tech";
+      // const fileName = "male_wizard";
+
       await loadRarities(fileName);
       const loadedFile = await fetch(`avatars/${fileName}.ora`).then(r => r.blob());
       await project.load(loadedFile);
@@ -708,10 +719,10 @@ const useAvatar = props => {
       avatar.localfile = `arcadian-${id}.png`; // Assigned unique identifier
 
       // test
-      avatar.metadata.image = `http://images.arcadians-test.s3-website-us-east-1.amazonaws.com/` + avatar.localfile; // Assigned unique identifier
+      // avatar.metadata.image = `http://images.arcadians-test.s3-website-us-east-1.amazonaws.com/` + avatar.localfile; // Assigned unique identifier
 
       // live
-      // avatar.metadata.image = https://images.arcadians.io/` + avatar.localfile; // Assigned unique identifier
+      avatar.metadata.image = "https://images.arcadians.io/" + avatar.localfile; // Assigned unique identifier
 
 
     });
