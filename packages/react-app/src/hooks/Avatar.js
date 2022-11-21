@@ -23,8 +23,12 @@ import rwc from "random-weighted-choice";
 
 export const canvasWidth = 400;
 export const canvasHeight = 400;
-const ipfsAPI = require("ipfs-http-client");
-const ipfs = ipfsAPI({ host: "ipfs.infura.io", port: "5001", protocol: "https" });
+
+// const ipfsAPI = require("ipfs-http-client");
+// const ipfs = ipfsAPI({ host: "ipfs.infura.io", port: "5001", protocol: "https" });
+
+const ipfs = ""; // remove ipfs for now
+
 const all = require("it-all");
 
 var dataParts = [];
