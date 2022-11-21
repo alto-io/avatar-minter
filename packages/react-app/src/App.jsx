@@ -33,6 +33,8 @@ import { getRPCPollTime, Transactor, Web3ModalSetup } from "./helpers";
 import { Home, ExampleUI, Hints, Subgraph } from "./views";
 import { useStaticJsonRPC } from "./hooks";
 
+import { AvatarViewer, AvatarMinter } from "./components";
+
 const { ethers } = require("ethers");
 /*
     Welcome to 🏗 scaffold-eth !
