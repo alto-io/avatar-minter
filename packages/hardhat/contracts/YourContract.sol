@@ -1,5 +1,7 @@
-pragma solidity >=0.8.0 <0.9.0;
+pragma solidity >=0.6.0 <0.7.0;
+// pragma solidity >=0.8.0 <0.9.0;
 //SPDX-License-Identifier: MIT
+
 
 import "hardhat/console.sol";
 // import "@openzeppelin/contracts/access/Ownable.sol"; 
@@ -11,7 +13,7 @@ contract YourContract {
 
   string public purpose = "Building Unstoppable Apps!!!";
 
-  constructor() payable {
+  constructor() public payable {
     // what should we do on deploy?
   }
 
